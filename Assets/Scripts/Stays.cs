@@ -71,14 +71,11 @@ public class Stays : MonoBehaviour
     {
         // Pre-Calculate the size in radians of TubeSide
         float staySpacing = 2.0f * Mathf.PI / numStays;
-        float tubeSideSize = 0.2f * Mathf.PI / numTubeSides;
 
         float theta0;
         float theta1;
         float phi0;
         float phi1;
-        float x0, y0, z0;
-        float x1, y1, z1;
         int segmentIndex;
 
         // We need to draw each branch (called a section) using a number of segments to that we can add curvature to create a drooping stay.
@@ -153,7 +150,7 @@ public class Stays : MonoBehaviour
     GameObject createStayObject()
     {
         GameObject obj = new GameObject("Stay part " + stayObjects.Count);
-        MeshFilter mf = obj.AddComponent<MeshFilter>();
+        obj.AddComponent<MeshFilter>();
         MeshRenderer mr = obj.AddComponent<MeshRenderer>();
 
         obj.transform.SetParent(transform);

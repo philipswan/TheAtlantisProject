@@ -39,7 +39,6 @@ public class Ring : MonoBehaviour {
         int[] triangleIndices = new int[totalIndices];
 
         // Calculate size of a segment and a tube
-        float segmentSize = 2 * Mathf.PI / (float)numSegments;
         float tubeSize = 2 * Mathf.PI / (float)numTubes;
 
         // Create floats for our xyz coordinates
