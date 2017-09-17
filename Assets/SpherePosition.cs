@@ -11,15 +11,15 @@ public class SpherePosition : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        EarthPosition.x = -Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2 * (EarthRadius + RingAltitude) / EarthRadius;
-        EarthPosition.y = -Mathf.Sin(RingLatitude * Mathf.PI / 180) / 2 * (EarthRadius + RingAltitude) / EarthRadius;
+        //EarthPosition.x = -Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2 * (EarthRadius + RingAltitude) / EarthRadius;
+        //EarthPosition.y = -Mathf.Sin(RingLatitude * Mathf.PI / 180) / 2 * (EarthRadius + RingAltitude) / EarthRadius;
         //y = 0.4478496f;
-        EarthPosition.z = 0;
+        //EarthPosition.z = 0;
     }
 
     // Update is called once per frame
     void LateUpdate () {
-        transform.localPosition = EarthPosition;
-        transform.Rotate(0, -1.3f * Time.deltaTime, 0);
+        //transform.localPosition = EarthPosition;
+        transform.Rotate(0, -0.013f * Time.deltaTime, 0);
     }
 }

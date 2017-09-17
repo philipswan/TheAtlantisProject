@@ -20,7 +20,8 @@ public class Stays : MonoBehaviour
         RefreshStays();
     }
 
-    public void ComputeCylinderEndpoints(float start_r, float end_r, float start_t, float end_t, float SegmentLength, int segmentsPerSection) {
+    public void ComputeCylinderEndpoints(float start_r, float end_r, float start_t, float end_t, float SegmentLength, int segmentsPerSection)
+    {
     }
 
     public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)
@@ -80,13 +81,13 @@ public class Stays : MonoBehaviour
 
         // We need to draw each branch (called a section) using a number of segments to that we can add curvature to create a drooping stay.
         // Do do this we linearly interpolate between the start and end of the stay section.
-        for (segmentIndex = 0; segmentIndex<segmentsPerSection; segmentIndex++)
+        for (segmentIndex = 0; segmentIndex < segmentsPerSection; segmentIndex++)
         {
             float t0 = section_start_t + (section_end_t - section_start_t) * (segmentIndex + 0) / segmentsPerSection;
             float t1 = section_start_t + (section_end_t - section_start_t) * (segmentIndex + 1) / segmentsPerSection;
             float d0 = section_start_d + (section_end_d - section_start_d) * (segmentIndex + 0) / segmentsPerSection;
             float d1 = section_start_d + (section_end_d - section_start_d) * (segmentIndex + 1) / segmentsPerSection;
-            theta0 = (instance * numStaysPerInstance + stayIndex - (numStays/2) + t0) * staySpacing;
+            theta0 = (instance * numStaysPerInstance + stayIndex - (numStays / 2) + t0) * staySpacing;
             phi0 = TorusRadius * (1.0f - d0 * 0.04f);
             theta1 = (instance * numStaysPerInstance + stayIndex - (numStays / 2) + t1) * staySpacing;
             phi1 = TorusRadius * (1.0f - d1 * 0.04f);
@@ -99,9 +100,9 @@ public class Stays : MonoBehaviour
             start.x = phi0 * Mathf.Cos(theta0) - TorusRadius;
             start.z = phi0 * Mathf.Sin(theta0);
             start.y = -Mathf.Pow(TorusRadius - phi0, 1.7f) * 10;
-            end.x   = phi1 * Mathf.Cos(theta1) - TorusRadius;
-            end.z   = phi1 * Mathf.Sin(theta1);
-            end.y   = -Mathf.Pow(TorusRadius - phi1, 1.7f) * 10;
+            end.x = phi1 * Mathf.Cos(theta1) - TorusRadius;
+            end.z = phi1 * Mathf.Sin(theta1);
+            end.y = -Mathf.Pow(TorusRadius - phi1, 1.7f) * 10;
 
             DrawCylinder(start, end, TubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
 
@@ -127,7 +128,7 @@ public class Stays : MonoBehaviour
         length = Mathf.Pow(2, numStayLevels) - 1;
         start_d = (length - start_r) / length;
         end_d = (length - end_r) / length;
-        segmentsPerSection = (int)Mathf.Pow(2, numStayLevels-1-currentLevel) * 2;
+        segmentsPerSection = (int)Mathf.Pow(2, numStayLevels - 1 - currentLevel) * 2;
         AddCylinders(instance, stayIndex, ref sectionIndex, start_d, end_d, start_t, end_t, SegmentLength, segmentsPerSection, numSegments, vertices, triangleIndices);
 
         new_level = currentLevel + 1;
@@ -137,8 +138,8 @@ public class Stays : MonoBehaviour
             new_start_r = end_r;
             new_end_r = new_start_r + Mathf.Pow(2, numStayLevels - 1 - new_level);
             new_start_t = end_t;
-            new_target_t0 = target_t - 1.0f / Mathf.Pow(2, new_level+1);
-            new_target_t1 = target_t + 1.0f / Mathf.Pow(2, new_level+1);
+            new_target_t0 = target_t - 1.0f / Mathf.Pow(2, new_level + 1);
+            new_target_t1 = target_t + 1.0f / Mathf.Pow(2, new_level + 1);
             new_end_t0 = new_start_t + (new_target_t0 - new_start_t) * Mathf.Pow(2, numStayLevels - new_level - 1) / (Mathf.Pow(2, numStayLevels - new_level) - 1);
             new_end_t1 = new_start_t + (new_target_t1 - new_start_t) * Mathf.Pow(2, numStayLevels - new_level - 1) / (Mathf.Pow(2, numStayLevels - new_level) - 1);
             NewStaySection(instance, stayIndex, ref sectionIndex, numStayLevels, new_level, new_start_r, new_end_r, new_start_t, new_target_t0, new_end_t0, SegmentLength, segmentsPerSection, numSegments, vertices, triangleIndices);
