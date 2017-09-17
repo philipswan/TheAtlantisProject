@@ -20,3 +20,5 @@ After opening the project, go to the Project tab, and in the search window type 
 
 Press the "Play" button to get start the automatic fly-through.
 ----------------------------------------------------------------------------------------------------------------------------------------------
+Works on the HTC Vive.  Be sure to access the Asset Store in your Unity Editor and download the Steam VR Plugin.  After doing so, the Vive should work
+just as the Oculous does.
