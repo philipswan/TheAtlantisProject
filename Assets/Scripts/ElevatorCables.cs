@@ -95,8 +95,6 @@ public class ElevatorCables : MonoBehaviour
         float tubeSideSize = 2.0f * Mathf.PI / (float)numTubeSides;
 
         // Create floats for our xyz coordinates, and angles
-        float x0 = 0, y0 = 0, z0 = 0;
-        float x1 = 0, y1 = 0, z1 = 0;
         float x2 = 0, y2 = 0, z2 = 0;
         float x3 = 0, y3 = 0, z3 = 0;
         float x4 = 0, y4 = 0, z4 = 0;
@@ -126,19 +124,22 @@ public class ElevatorCables : MonoBehaviour
 
             // Find the current and next segments
 
-            Vector3 start, end;
-            start.x = phi0 * Mathf.Cos(theta) - TorusRadius;
-            start.z = phi0 * Mathf.Sin(theta);
-            start.y = -Mathf.Pow(TorusRadius - phi0, 1.7f) * 10;
-            end.x = phi1 * Mathf.Cos(theta) - TorusRadius;
-            end.z = phi1 * Mathf.Sin(theta);
-            end.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+            Vector3 cabletop, cablebot, cableleft;
+            cabletop.x = phi0 * Mathf.Cos(theta) - TorusRadius;
+            cabletop.z = phi0 * Mathf.Sin(theta);
+            cabletop.y = -Mathf.Pow(TorusRadius - phi0, 1.7f) * 10;
+            cablebot.x = phi1 * Mathf.Cos(theta) - TorusRadius;
+            cablebot.z = phi1 * Mathf.Sin(theta);
+            cablebot.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+            cableleft.x = phi1 * Mathf.Cos(theta) - TorusRadius;
+            cableleft.z = phi1 * Mathf.Sin(theta);
+            cableleft.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
 
-            DrawCylinder(start, end, TubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
+            DrawCylinder(cabletop, cablebot, TubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
 
-            var cabletop = new Vector3(x2, y2, z2);
-            var cablebot = new Vector3(x3, y3, z3);
-            var cableleft = new Vector3(x4, y4, z4);
+            var cabletop_old = new Vector3(x2, y2, z2);
+            var cablebot_old = new Vector3(x3, y3, z3);
+            var cableleft_old = new Vector3(x4, y4, z4);
 
             //var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             //go.transform.parent = this.transform; //ring_edge_transform;
@@ -147,21 +148,22 @@ public class ElevatorCables : MonoBehaviour
 
             // Add an box to represent the ring terminal at the top of each stay 
             var acc_top = Instantiate(top_terminal_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            acc_top.transform.localPosition = Vector3.Lerp(start, end, 0.05f);
+            acc_top.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.95f);
             acc_top.transform.localScale = Vector3.one * 2e-6f;
-            acc_top.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
+            acc_top.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
 
             // Add an capsule somewher along the length of each stay 
             var acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            acc_mid.transform.localPosition = Vector3.Lerp(start, end, 0.5f);
+            acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.5f);
             acc_mid.transform.localScale = Vector3.one * 2e-6f;
-            acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
+            acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
 
             // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
             var acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
             acc_bot.transform.localPosition = new Vector3(x3, y3, z3);
+            //acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.0f); // Why doesn't this work???
             acc_bot.transform.localScale = Vector3.one * 5e-6f;
-            acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
+            acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
 
             //acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
             //acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
