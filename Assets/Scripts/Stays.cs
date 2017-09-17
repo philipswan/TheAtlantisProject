@@ -107,42 +107,7 @@ public class Stays : MonoBehaviour
             end.y   = -Mathf.Pow(TorusRadius - phi1, 1.7f) * 10;
 
             DrawCylinder(start, end, TubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
-            /*
-            for (int j = 0; j < numTubeSides; j++)
-            {
-                // Find next (or first) vertex offset
-                int m = (j + 1) % numTubeSides; // changed currentTube.Count to numTubeSides
 
-                // Find the 4 vertices that make up a quad
-                int iv0 = tubePrimitiveBaseOffset + j * 2 + 0;
-                int iv1 = tubePrimitiveBaseOffset + j * 2 + 1;
-                int iv2 = tubePrimitiveBaseOffset + m * 2 + 0;
-                int iv3 = tubePrimitiveBaseOffset + m * 2 + 1;
-
-                // Calculate X, Y, Z coordinates.
-                x0 = phi0 * Mathf.Cos(theta0 + TubeRadius * Mathf.Cos(j * tubeSideSize) / phi0) - TorusRadius;
-                z0 = phi0 * Mathf.Sin(theta0 + TubeRadius * Mathf.Cos(j * tubeSideSize) / phi0);
-                y0 =                           TubeRadius * Mathf.Sin(j * tubeSideSize) - Mathf.Pow(TorusRadius - phi0, 1.7f) * 10;
-                x1 = phi1 * Mathf.Cos(theta1 + TubeRadius * Mathf.Cos(m * tubeSideSize) / phi1) - TorusRadius;
-                z1 = phi1 * Mathf.Sin(theta1 + TubeRadius * Mathf.Cos(m * tubeSideSize) / phi1);
-                y1 =                           TubeRadius * Mathf.Sin(m * tubeSideSize) - Mathf.Pow(TorusRadius - phi1, 1.7f) * 10;
-
-                // As we itterate around the circumference of the tube, add the vertices at each end of the tube
-                vertices[iv0] = new Vector3(x0, y0, z0);
-                vertices[iv1] = new Vector3(x1, y1, z1);
-
-                // As we itterate around the circumference of the tube, "Draw" the two triangles that make each tube face
-                int ti = tubeIndexBaseOffset + j * 2 * 3;
-                // Triangle 0
-                triangleIndices[ti + 0] = iv0;
-                triangleIndices[ti + 1] = iv2;
-                triangleIndices[ti + 2] = iv1;
-                // Triangle 1
-                triangleIndices[ti + 3] = iv1;
-                triangleIndices[ti + 4] = iv2;
-                triangleIndices[ti + 5] = iv3;
-            }
-            */
             sectionIndex++;
         }
     }
@@ -165,7 +130,7 @@ public class Stays : MonoBehaviour
         length = Mathf.Pow(2, numStayLevels) - 1;
         start_d = (length - start_r) / length;
         end_d = (length - end_r) / length;
-        segmentsPerSection = (int)Mathf.Pow(2, numStayLevels-1-currentLevel) * 4;
+        segmentsPerSection = (int)Mathf.Pow(2, numStayLevels-1-currentLevel) * 2;
         AddCylinders(instance, stayIndex, ref sectionIndex, start_d, end_d, start_t, end_t, SegmentLength, segmentsPerSection, numSegments, vertices, triangleIndices);
 
         new_level = currentLevel + 1;
@@ -269,68 +234,5 @@ public class Stays : MonoBehaviour
                 mFilter.mesh = mesh;
             }
         }
-    }
-
-    public void _RefreshStays()
-    {
-        // Each stay will fork, and then each of those will fork, and this repeats for numStayLevels. So we need "numSegments" which is 1+2+4+8+...2^(n-1)  or 2^n-1 
-        int numSegments = 0;
-        for (int currentLevel = 0; currentLevel < numStayLevels; currentLevel++)
-        {
-            numSegments += (int)Mathf.Pow(2, currentLevel) * (int)Mathf.Pow(2, numStayLevels - 1 - currentLevel) * 4;
-        }
-
-        // Total vertices - We'll construct a tube for each branch and that tube will have numTubeSides. 
-        int totalVertices = numStays * numSegments * numTubeSides * 2;
-
-        // Total primitives
-        int totalPrimitives = numStays * numSegments * numTubeSides * 2;
-
-        // Total indices
-        int totalIndices = totalPrimitives * 3;
-
-        // Init the mesh
-        Mesh mesh = new Mesh();
-
-        // Init the vertex and triangle arrays
-        Vector3[] vertices = new Vector3[totalVertices];
-        int[] triangleIndices = new int[totalIndices];
-
-        // Create floats for our xyz coordinates, and angles
-        int instance = 0;
-        int segmentsPerSection;
-        float SegmentLength;
-        int sectionIndex;
-
-        segmentsPerSection = 1;
-        SegmentLength = 1; // Fix later
-
-        for (int stayIndex = 0; stayIndex < numStays; stayIndex++)
-        {
-            sectionIndex = 0;
-            NewStaySection(
-                instance,
-                stayIndex,
-                ref sectionIndex,
-                numStayLevels,
-                0, // currentLevel
-                0, // start_r
-                Mathf.Pow(2, numStayLevels-1), // end_r
-                0, // start_t
-                0, // target_t
-                0, // end_t
-                SegmentLength,
-                segmentsPerSection,
-                numSegments,
-                vertices,
-                triangleIndices);
-        }
-        mesh.vertices = vertices;
-        mesh.triangles = triangleIndices;
-
-        mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
-        MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
-        mFilter.mesh = mesh;
     }
 }
