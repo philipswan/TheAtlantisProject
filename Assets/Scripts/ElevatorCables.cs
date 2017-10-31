@@ -12,19 +12,19 @@ public class ElevatorCables : MonoBehaviour
 
     public GameObject carrier_prefab;
     public GameObject climber_prefab;
-    public GameObject top_terminal_prefab;
+    //public GameObject top_terminal_prefab;
     public Transform ring_edge_transform;
     public float ringLatitude = -40;
-    public float TubeRadius = 0.00001f;
+    public float tubeRadius = 0.00001f;
     public int numTubeSides = 8;
     public int numElevatorCables = 90;
     public float ringAltitude = .0003f;
     public Waypoints Keymanager;
-    private float TorusRadius;
+    private float tetheredRingRadius;
 
     void Start()
     {
-        TorusRadius = Mathf.Cos(ringLatitude * Mathf.PI / 180) / 2;
+        tetheredRingRadius = Mathf.Cos(ringLatitude * Mathf.PI / 180) / 2;
         RefreshElevatorCables();
     }
 
@@ -105,37 +105,37 @@ public class ElevatorCables : MonoBehaviour
         for (int i = 0; i < numElevatorCables; i++)
         {
             theta = i * elevatorCableSpacing;
-            phi0 = TorusRadius;
-            phi1 = TorusRadius - ringAltitude * Mathf.Cos(ringLatitude * Mathf.Deg2Rad);
+            phi0 = tetheredRingRadius;
+            phi1 = tetheredRingRadius - ringAltitude * Mathf.Cos(ringLatitude * Mathf.Deg2Rad);
 
             // Find the current and next segments
             int tubePrimitiveBaseOffset = i * numTubeSides * 2;
             int tubeIndexBaseOffset = i * numTubeSides * 6;
 
-            x2 = phi1 * Mathf.Cos(theta + TubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1) - TorusRadius;
-            z2 = phi1 * Mathf.Sin(theta + TubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1);
-            y2 = TubeRadius * Mathf.Sin(0 * tubeSideSize);
-            x3 = phi1 * Mathf.Cos(theta + TubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1) - TorusRadius;
-            z3 = phi1 * Mathf.Sin(theta + TubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1);
-            y3 = TubeRadius * Mathf.Sin(0 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
-            x4 = phi1 * Mathf.Cos(theta + TubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1) - TorusRadius;
-            z4 = phi1 * Mathf.Sin(theta + TubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1);
-            y4 = TubeRadius * Mathf.Sin(1 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+            x2 = phi1 * Mathf.Cos(theta + tubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1) - tetheredRingRadius;
+            z2 = phi1 * Mathf.Sin(theta + tubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1);
+            y2 = tubeRadius * Mathf.Sin(0 * tubeSideSize);
+            x3 = phi1 * Mathf.Cos(theta + tubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1) - tetheredRingRadius;
+            z3 = phi1 * Mathf.Sin(theta + tubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1);
+            y3 = tubeRadius * Mathf.Sin(0 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+            x4 = phi1 * Mathf.Cos(theta + tubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1) - tetheredRingRadius;
+            z4 = phi1 * Mathf.Sin(theta + tubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1);
+            y4 = tubeRadius * Mathf.Sin(1 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
 
             // Find the current and next segments
 
             Vector3 cabletop, cablebot, cableleft;
-            cabletop.x = phi0 * Mathf.Cos(theta) - TorusRadius;
+            cabletop.x = phi0 * Mathf.Cos(theta) - tetheredRingRadius;
             cabletop.z = phi0 * Mathf.Sin(theta);
-            cabletop.y = -Mathf.Pow(TorusRadius - phi0, 1.7f) * 10;
-            cablebot.x = phi1 * Mathf.Cos(theta) - TorusRadius;
+            cabletop.y = -Mathf.Pow(tetheredRingRadius - phi0, 1.7f) * 10;
+            cablebot.x = phi1 * Mathf.Cos(theta) - tetheredRingRadius;
             cablebot.z = phi1 * Mathf.Sin(theta);
             cablebot.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
-            cableleft.x = phi0 * Mathf.Cos(theta) - TorusRadius;
+            cableleft.x = phi0 * Mathf.Cos(theta) - tetheredRingRadius;
             cableleft.z = phi0 * Mathf.Sin(theta);
             cableleft.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
 
-            DrawCylinder(cabletop, cablebot, TubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
+            DrawCylinder(cabletop, cablebot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
 
             var cabletop_old = new Vector3(x2, y2, z2);
             var cablebot_old = new Vector3(x3, y3, z3);
@@ -146,38 +146,41 @@ public class ElevatorCables : MonoBehaviour
             //go.transform.localPosition = new Vector3(x2, y2, z2);
             //go.transform.localScale = Vector3.one * 1e-3f;
 
-            // Add an box to represent the ring terminal at the top of each stay 
-            var acc_top = Instantiate(top_terminal_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            acc_top.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.95f);
-            acc_top.transform.localScale = Vector3.one * 4e-5f;
-            //acc_top.transform.localRotation = new Quaternion(0, -90, 0,  0); //This doesn't work
-            acc_top.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
-
-            // Add an capsule somewher along the length of each stay 
-            var acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.5f);
-            acc_mid.transform.localScale = Vector3.one * 3e-6f;
-            // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
-            acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
-
-            // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
-            var acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-            acc_bot.transform.localPosition = new Vector3(x3, y3, z3);
-            //acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.0f); // Why doesn't this work???
-            acc_bot.transform.localScale = Vector3.one * 3e-6f;
-            acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
-            //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
-
-            //acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
-            //acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
-
-            if (i == 0)
+            if (i <= 4)
             {
-                // We're going to set a waypoint so that we can navigate to here later using animation scripts
-                //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
-                Keymanager.waypoints[1].position = -acc_bot.transform.position;
-                Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
-                Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
+                // Add an box to represent the ring terminal at the top of each stay 
+                //var acc_top = Instantiate(top_terminal_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+                //acc_top.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.95f);
+                //acc_top.transform.localScale = Vector3.one * 4e-5f;
+                ////acc_top.transform.localRotation = new Quaternion(0, -90, 0,  0); //This doesn't work
+                //acc_top.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
+
+                // Add an capsule somewher along the length of each stay 
+                var acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+                acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
+                acc_mid.transform.localScale = Vector3.one * 1e-6f;
+                // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
+
+                // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
+                var acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+                acc_bot.transform.localPosition = new Vector3(x3, y3, z3);
+                //acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
+                acc_bot.transform.localScale = Vector3.one * 3e-7f;
+                acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
+                //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
+
+                //acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
+                //acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
+
+                if (i == 0)
+                {
+                    // We're going to set a waypoint so that we can navigate to here later using animation scripts
+                    //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
+                    Keymanager.waypoints[1].position = -acc_bot.transform.position;
+                    Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
+                    Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
+                }
             }
 
 
@@ -191,4 +194,3 @@ public class ElevatorCables : MonoBehaviour
         mFilter.mesh = mesh;
     }
 }
-

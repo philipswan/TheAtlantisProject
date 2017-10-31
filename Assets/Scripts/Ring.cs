@@ -13,11 +13,11 @@ public class Ring : MonoBehaviour {
     public float TubeRadius = 0.001f;
     public int numSegments = 100;
     public int numTubes = 12;
-    private float TorusRadius;
+    private float tetheredRingRadius;
     //public var material : Material;
 
     void Start() {
-        TorusRadius = Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2;
+        tetheredRingRadius = Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2;
         RefreshRing();
     }
 
@@ -39,6 +39,7 @@ public class Ring : MonoBehaviour {
         int[] triangleIndices = new int[totalIndices];
 
         // Calculate size of a segment and a tube
+        float segmentSize = 2 * Mathf.PI / (float)numSegments;
         float tubeSize = 2 * Mathf.PI / (float)numTubes;
 
         // Create floats for our xyz coordinates
@@ -70,8 +71,8 @@ public class Ring : MonoBehaviour {
 
                 // Calculate X, Y, Z coordinates.
 
-                x = (TorusRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Cos(angle) - TorusRadius;
-                z = (TorusRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Sin(angle);
+                x = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Cos(angle) - tetheredRingRadius;
+                z = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Sin(angle);
                 y = TubeRadius * Mathf.Sin(j * tubeSize);
 
                 // Add the vertex to the vertex array

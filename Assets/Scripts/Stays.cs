@@ -6,8 +6,8 @@ public class Stays : MonoBehaviour
 {
 
     public float RingLatitude = -40;
-    private float TorusRadius;
-    public float TubeRadius = 0.001f;
+    private float tetheredRingRadius;
+    public float tubeRadius = 0.001f;
     public int numTubeSides = 12;
     public int numStayLevels = 4;
     public int numStays = 360;
@@ -16,12 +16,8 @@ public class Stays : MonoBehaviour
 
     void Start()
     {
-        TorusRadius = Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2;
+        tetheredRingRadius = Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2;
         RefreshStays();
-    }
-
-    public void ComputeCylinderEndpoints(float start_r, float end_r, float start_t, float end_t, float SegmentLength, int segmentsPerSection)
-    {
     }
 
     public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)
@@ -88,23 +84,23 @@ public class Stays : MonoBehaviour
             float d0 = section_start_d + (section_end_d - section_start_d) * (segmentIndex + 0) / segmentsPerSection;
             float d1 = section_start_d + (section_end_d - section_start_d) * (segmentIndex + 1) / segmentsPerSection;
             theta0 = (instance * numStaysPerInstance + stayIndex - (numStays / 2) + t0) * staySpacing;
-            phi0 = TorusRadius * (1.0f - d0 * 0.04f);
+            phi0 = tetheredRingRadius * (1.0f - d0 * 0.04f);
             theta1 = (instance * numStaysPerInstance + stayIndex - (numStays / 2) + t1) * staySpacing;
-            phi1 = TorusRadius * (1.0f - d1 * 0.04f);
+            phi1 = tetheredRingRadius * (1.0f - d1 * 0.04f);
 
             // Find the current and next segments
             int tubePrimitiveBaseOffset = (stayIndex * numSegments + sectionIndex) * numTubeSides * 2;
             int tubeIndexBaseOffset = (stayIndex * numSegments + sectionIndex) * numTubeSides * 6;
 
             Vector3 start, end;
-            start.x = phi0 * Mathf.Cos(theta0) - TorusRadius;
+            start.x = phi0 * Mathf.Cos(theta0) - tetheredRingRadius;
             start.z = phi0 * Mathf.Sin(theta0);
-            start.y = -Mathf.Pow(TorusRadius - phi0, 1.7f) * 10;
-            end.x = phi1 * Mathf.Cos(theta1) - TorusRadius;
+            start.y = -Mathf.Pow(tetheredRingRadius - phi0, 1.7f) * 10;
+            end.x = phi1 * Mathf.Cos(theta1) - tetheredRingRadius;
             end.z = phi1 * Mathf.Sin(theta1);
-            end.y = -Mathf.Pow(TorusRadius - phi1, 1.7f) * 10;
+            end.y = -Mathf.Pow(tetheredRingRadius - phi1, 1.7f) * 10;
 
-            DrawCylinder(start, end, TubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
+            DrawCylinder(start, end, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
 
             sectionIndex++;
         }
@@ -200,36 +196,39 @@ public class Stays : MonoBehaviour
 
         for (int instance = 0; instance < numInstances; instance++)
         {
-            GameObject obj = createStayObject();
-            Mesh mesh = new Mesh();
-
-            for (int stayIndex = 0; stayIndex < numStaysPerInstance; stayIndex++)
+            if ((instance> numInstances*3/8) && (instance < numInstances*6/8))
             {
-                sectionIndex = 0;
-                NewStaySection(
-                    instance,
-                    stayIndex,
-                    ref sectionIndex,
-                    numStayLevels,
-                    0, // currentLevel
-                    0, // start_r
-                    Mathf.Pow(2, numStayLevels - 1), // end_r
-                    0, // start_t
-                    0, // target_t
-                    0, // end_t
-                    SegmentLength,
-                    segmentsPerSection,
-                    numSegments,
-                    vertices,
-                    triangleIndices);
+                GameObject obj = createStayObject();
+                Mesh mesh = new Mesh();
 
-                mesh.vertices = vertices;
-                mesh.triangles = triangleIndices;
+                for (int stayIndex = 0; stayIndex < numStaysPerInstance; stayIndex++)
+                {
+                    sectionIndex = 0;
+                    NewStaySection(
+                        instance,
+                        stayIndex,
+                        ref sectionIndex,
+                        numStayLevels,
+                        0, // currentLevel
+                        0, // start_r
+                        Mathf.Pow(2, numStayLevels - 1), // end_r
+                        0, // start_t
+                        0, // target_t
+                        0, // end_t
+                        SegmentLength,
+                        segmentsPerSection,
+                        numSegments,
+                        vertices,
+                        triangleIndices);
 
-                mesh.RecalculateBounds();
-                mesh.RecalculateNormals();
-                MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
-                mFilter.mesh = mesh;
+                    mesh.vertices = vertices;
+                    mesh.triangles = triangleIndices;
+
+                    mesh.RecalculateBounds();
+                    mesh.RecalculateNormals();
+                    MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
+                    mFilter.mesh = mesh;
+                }
             }
         }
     }
