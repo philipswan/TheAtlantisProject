@@ -160,7 +160,7 @@ public class ElevatorCables : MonoBehaviour
                 acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
                 acc_mid.transform.localScale = Vector3.one * 1e-6f;
                 // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
-                acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
+                acc_mid.transform.LookAt(this.transform.TransformPoint(cablebot), this.transform.TransformVector(cabletop_old - cablebot_old));
 
                 // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
                 var acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
@@ -169,6 +169,10 @@ public class ElevatorCables : MonoBehaviour
                 acc_bot.transform.localScale = Vector3.one * 3e-7f;
                 acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
                 //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
+
+                acc_mid.GetComponent<ElevatorMotion>().CableTop = ring_edge_transform;
+                acc_mid.GetComponent<ElevatorMotion>().CableBotton = cablebot;
+                acc_mid.GetComponent<ElevatorMotion>().UpdateTarget();
 
                 //acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
                 //acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
