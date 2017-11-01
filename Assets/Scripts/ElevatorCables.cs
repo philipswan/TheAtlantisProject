@@ -170,7 +170,7 @@ public class ElevatorCables : MonoBehaviour
                 acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
                 //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
 
-                acc_mid.GetComponent<ElevatorMotion>().CableTop = ring_edge_transform;
+                acc_mid.GetComponent<ElevatorMotion>().CableTop = cabletop;
                 acc_mid.GetComponent<ElevatorMotion>().CableBotton = cablebot;
                 acc_mid.GetComponent<ElevatorMotion>().UpdateTarget();
 

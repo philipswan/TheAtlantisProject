@@ -8,7 +8,7 @@ public class ElevatorMotion : MonoBehaviour {
     public float TravelTime = 10f;
 
     [HideInInspector]
-    public Transform CableTop;          // Position at the top the of the cable that the elevator should travel to (the ring)
+    public Vector3 CableTop;          // Position at the top the of the cable that the elevator should travel to (the ring)
 
     [HideInInspector]
     public Vector3 CableBotton;         // Position at the bottom of the cable that the elevator should travel to (the ship)
@@ -41,7 +41,7 @@ public class ElevatorMotion : MonoBehaviour {
         switch (currentTarget)
         {
             case target.Top:
-                targetPos = CableTop.localPosition;
+                targetPos = CableTop;
                 transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPos, ref velocity, TravelTime);
                 break;
             case target.Bottom:
@@ -49,7 +49,7 @@ public class ElevatorMotion : MonoBehaviour {
                 transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPos, ref velocity, TravelTime);
                 break;
             default:
-                targetPos = CableTop.localPosition;
+                targetPos = CableTop;
                 transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPos, ref velocity, TravelTime);
                 break;
         }
