@@ -96,9 +96,13 @@ public class Ring : MonoBehaviour {
         MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
         mFilter.mesh = mesh;
         Renderer renderer = GetComponent<MeshRenderer>();
-        Material mat = Resources.Load("earthMat") as Material;
-        renderer.material = mat;
-        print(mat);
+        //Material mat = Resources.Load("RingMaterial") as Material;
+        //renderer.material = mat;
+        //print(mat);
+
+        //Color color = renderer.material.color;
+        //color.a = 0;
+        //renderer.material.color = color;
     }
 
 }

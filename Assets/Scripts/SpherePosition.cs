@@ -25,4 +25,5 @@ public class SpherePosition : MonoBehaviour
         //transform.localPosition = EarthPosition;
         transform.Rotate(0, -0.013f * Time.deltaTime, 0);
     }
+
 }

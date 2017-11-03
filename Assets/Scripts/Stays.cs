@@ -196,7 +196,7 @@ public class Stays : MonoBehaviour
 
         for (int instance = 0; instance < numInstances; instance++)
         {
-            if ((instance> numInstances*3/8) && (instance < numInstances*6/8))
+            if (instance> numInstances*3/8)
             {
                 GameObject obj = createStayObject();
                 Mesh mesh = new Mesh();

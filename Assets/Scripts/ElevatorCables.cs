@@ -1,9 +1,12 @@
-﻿/**
- * Based on a script by Steffen (http://forum.unity3d.com/threads/torus-in-unity.8487/) (in $primitives_966_104.zip, originally named "Primitives.cs")
- *
- * Editted by Michael Zoller on December 6, 2015.
- * It was shortened by about 30 lines (and possibly sped up by a factor of 2) by consolidating math & loops and removing intermediate Collections.
- */
+﻿
+using System;
+using System.Collections.Generic;
+/**
+* Based on a script by Steffen (http://forum.unity3d.com/threads/torus-in-unity.8487/) (in $primitives_966_104.zip, originally named "Primitives.cs")
+*
+* Editted by Michael Zoller on December 6, 2015.
+* It was shortened by about 30 lines (and possibly sped up by a factor of 2) by consolidating math & loops and removing intermediate Collections.
+*/
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -21,11 +24,35 @@ public class ElevatorCables : MonoBehaviour
     public float ringAltitude = .0003f;
     public Waypoints Keymanager;
     private float tetheredRingRadius;
+    private GameObject sphere;
+    private List<GameObject> ships;
+    private GameObject cube;
 
     void Start()
     {
         tetheredRingRadius = Mathf.Cos(ringLatitude * Mathf.PI / 180) / 2;
+        sphere = GameObject.FindWithTag("Earth");
+        ships = new List<GameObject>();
+        //cube = Instantiate(GameObject.CreatePrimitive(PrimitiveType.Cube), Vector3.zero, transform.rotation, this.transform);
+        //cube.transform.localPosition = sphere.transform.localPosition;
+
         RefreshElevatorCables();
+    }
+
+    private void Update()
+    {
+        //cube.transform.localPosition = sphere.transform.GetComponent<Renderer>().bounds.center;
+        Debug.Log(sphere.transform.GetComponent<Renderer>().bounds.center);
+        if (ships.Count > 0)
+        {
+            for (int i = 0; i < ships.Count; i++)
+            {
+                float distance = Vector3.Distance(ships[i].transform.localPosition, sphere.GetComponent<SphereCollider>().center);
+
+                //if (distance < 0.5f)
+                    Debug.Log(ships[i].name + " distance from center: " + distance);
+            }
+        }
     }
 
     public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)
@@ -122,6 +149,8 @@ public class ElevatorCables : MonoBehaviour
             z4 = phi1 * Mathf.Sin(theta + tubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1);
             y4 = tubeRadius * Mathf.Sin(1 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
 
+            //Debug.Log("x3: " + x3 + " y3: " + y3 + " z3: " + z3);
+
             // Find the current and next segments
 
             Vector3 cabletop, cablebot, cableleft;
@@ -134,6 +163,9 @@ public class ElevatorCables : MonoBehaviour
             cableleft.x = phi0 * Mathf.Cos(theta) - tetheredRingRadius;
             cableleft.z = phi0 * Mathf.Sin(theta);
             cableleft.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+
+            //Debug.Log("Cos test: " + Math.Round(Mathf.Cos(30 * Mathf.Deg2Rad), 7));
+            //Debug.Log("Tube " + i + " Bottom: " + cablebot + " Top: " + cabletop);
 
             DrawCylinder(cabletop, cablebot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
 
@@ -161,6 +193,7 @@ public class ElevatorCables : MonoBehaviour
                 acc_mid.transform.localScale = Vector3.one * 1e-6f;
                 // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
                 acc_mid.transform.LookAt(this.transform.TransformPoint(cablebot), this.transform.TransformVector(cabletop_old - cablebot_old));
+                acc_mid.name = "Elevator " + i;
 
                 // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
                 var acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
@@ -168,8 +201,14 @@ public class ElevatorCables : MonoBehaviour
                 //acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
                 acc_bot.transform.localScale = Vector3.one * 3e-7f;
                 acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
+                acc_bot.name = "Carrier " + i;
                 //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
 
+                Debug.Log(acc_bot.name + " position: " + acc_bot.transform.position);
+
+                ships.Add(acc_bot);
+
+                // Set both destinations for the elevator motion and start the motion
                 acc_mid.GetComponent<ElevatorMotion>().CableTop = cabletop;
                 acc_mid.GetComponent<ElevatorMotion>().CableBotton = cablebot;
                 acc_mid.GetComponent<ElevatorMotion>().UpdateTarget();
