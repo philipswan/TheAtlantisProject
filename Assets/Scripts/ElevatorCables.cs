@@ -42,15 +42,15 @@ public class ElevatorCables : MonoBehaviour
     private void Update()
     {
         //cube.transform.localPosition = sphere.transform.GetComponent<Renderer>().bounds.center;
-        Debug.Log(sphere.transform.GetComponent<Renderer>().bounds.center);
+        //Debug.Log("Sphere center: " + sphere.transform.GetComponent<Renderer>().bounds.center);
         if (ships.Count > 0)
         {
             for (int i = 0; i < ships.Count; i++)
             {
-                float distance = Vector3.Distance(ships[i].transform.localPosition, sphere.GetComponent<SphereCollider>().center);
+                float distance = Vector3.Distance(ships[i].transform.localPosition, sphere.GetComponent<Renderer>().bounds.center);
 
                 //if (distance < 0.5f)
-                    Debug.Log(ships[i].name + " distance from center: " + distance);
+                    //Debug.Log(ships[i].name + " distance from center: " + distance);
             }
         }
     }
@@ -192,7 +192,7 @@ public class ElevatorCables : MonoBehaviour
                 acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
                 acc_mid.transform.localScale = Vector3.one * 1e-6f;
                 // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
-                acc_mid.transform.LookAt(this.transform.TransformPoint(cablebot), this.transform.TransformVector(cabletop_old - cablebot_old));
+				acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
                 acc_mid.name = "Elevator " + i;
 
                 // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
@@ -202,7 +202,6 @@ public class ElevatorCables : MonoBehaviour
                 acc_bot.transform.localScale = Vector3.one * 3e-7f;
                 acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
                 acc_bot.name = "Carrier " + i;
-                //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
 
                 Debug.Log(acc_bot.name + " position: " + acc_bot.transform.position);
 

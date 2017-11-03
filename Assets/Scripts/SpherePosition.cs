@@ -17,6 +17,10 @@ public class SpherePosition : MonoBehaviour
         //EarthPosition.y = -Mathf.Sin(RingLatitude * Mathf.PI / 180) / 2 * (EarthRadius + RingAltitude) / EarthRadius;
         //y = 0.4478496f;
         //EarthPosition.z = 0;
+		Mesh mesh = GetComponent<MeshFilter>().mesh;
+		Vector3[] verticies = mesh.vertices;
+		float radius = Vector3.Distance(transform.position, transform.TransformPoint(verticies[0]));
+		GetComponent<SphereCollider>().radius = radius;
     }
 
     // Update is called once per frame
