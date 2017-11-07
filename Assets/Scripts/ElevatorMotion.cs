@@ -33,8 +33,6 @@ public class ElevatorMotion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		print(automatic);
-
         // If the targets have not been created and set yet, return. Otherwise we will get null errors
 		if (!targetSet || !automatic)
         {
@@ -98,6 +96,11 @@ public class ElevatorMotion : MonoBehaviour {
 		CableTop = _cableTop;
 		CableBotton = _cableBot;
 		automatic = _automatic;
+
+		if (!automatic)
+		{
+			transform.localPosition = CableBotton;
+		}
 
 		UpdateTarget();
 	}
