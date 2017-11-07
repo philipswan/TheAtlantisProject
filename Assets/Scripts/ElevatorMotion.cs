@@ -17,6 +17,7 @@ public class ElevatorMotion : MonoBehaviour {
     private Vector3 velocity;           // Velocity of the object when starting movement
     private Vector3 targetPos;          // Position of the destination of the elevator
     private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
+	private bool automatic;				// Should the elevator move automatically
     private enum target                 // Enum of target types
     {
         Top,
@@ -24,15 +25,18 @@ public class ElevatorMotion : MonoBehaviour {
     };
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         currentTarget = target.Bottom;
         velocity = Vector3.zero;
+		automatic = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
+		print(automatic);
+
         // If the targets have not been created and set yet, return. Otherwise we will get null errors
-        if (!targetSet)
+		if (!targetSet || !automatic)
         {
             return;
         }
@@ -88,10 +92,13 @@ public class ElevatorMotion : MonoBehaviour {
 	/// </summary>
 	/// <param name="_cableTop">Cable top.</param>
 	/// <param name="_cableBot">Cable bot.</param>
-	public void SetPositions(Vector3 _cableTop, Vector3 _cableBot)
+	/// <param name="_automatic">If set to <c>true</c> automatic.</param>
+	public void SetPositions(Vector3 _cableTop, Vector3 _cableBot, bool _automatic)
 	{
 		CableTop = _cableTop;
 		CableBotton = _cableBot;
+		automatic = _automatic;
+
 		UpdateTarget();
 	}
 }
