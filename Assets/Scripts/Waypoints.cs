@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,8 +8,7 @@ using UnityEngine;
 //    public Vector3 scale;
 //} 
 
-public class Waypoints : MonoBehaviour
-{
+public class Waypoints : MonoBehaviour {
 
     [System.NonSerialized]
     public Transform[] waypoints;
@@ -18,8 +17,7 @@ public class Waypoints : MonoBehaviour
     void Start()
     {
         waypoints = new Transform[10];
-        for (int i = 0; i < waypoints.Length; i++)
-        {
+        for (int i = 0; i < waypoints.Length; i++) {
             GameObject obj = new GameObject("waypoint " + i);
             waypoints[i] = obj.transform;
             obj.transform.SetParent(transform);
@@ -33,8 +31,7 @@ public class Waypoints : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
+    void Update () {
+		
+	}
 }
