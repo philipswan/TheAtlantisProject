@@ -172,9 +172,9 @@ public class ElevatorCables : MonoBehaviour
                 //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
 
 				// Move the camera to the elevator
-				if (i == 0 && SceneManager.GetActiveScene().name == "Elevator Ride")
+				if (i == 0)
 				{
-					GameObject.FindGameObjectWithTag("Player").transform.position = acc_mid.transform.position;
+					//GameObject.FindGameObjectWithTag("Player").transform.position = acc_mid.transform.position;
 					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false);
 					continue;
 				}
