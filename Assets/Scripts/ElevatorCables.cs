@@ -176,6 +176,7 @@ public class ElevatorCables : MonoBehaviour
 				{
 					//GameObject.FindGameObjectWithTag("Player").transform.position = acc_mid.transform.position;
 					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false);
+					//Transition1b.Instance.SetElevator(acc_mid.transform);
 					continue;
 				}
 
