@@ -17,19 +17,16 @@ public class Transition1b : MonoBehaviour {
         float Blend = Mathf.Min (Time.unscaledTime / TotalTime - Scene, 1.0f);
         switch (Scene) {
         case 0:
-			print(Scene);
             transform.localPosition = Vector3.Lerp(Keys[0].position, Keys[0].position, Mathf.Pow(Blend, 1f));
             transform.localRotation = Quaternion.Lerp (Keys[0].localRotation, Keys[0].localRotation, Mathf.Pow (Blend, 1.05f));
             transform.localScale = Vector3.Lerp (Keys[0].localScale, Keys[0].localScale, Mathf.Pow (Blend, 1.75f));
             break;
         case 1:
-			print(Scene);
             transform.localPosition = Vector3.Lerp(Keys[0].position, Keys[1].position, Mathf.Pow(Blend, 1f));
             transform.localRotation = Quaternion.Lerp (Keys[0].localRotation, Keys[1].localRotation, Mathf.Pow (Blend, 1.05f));
             transform.localScale = Vector3.Lerp (Keys[0].localScale, Keys[1].localScale, Mathf.Pow (Blend, 1.75f));
             break;
         case 2:
-			print(Scene);
             transform.localPosition = Vector3.Lerp(Keys[1].position, Keys[1].position, Mathf.Pow(Blend, 1f));
             transform.localRotation = Quaternion.Lerp (Keys[1].localRotation, Keys[1].localRotation, Mathf.Pow (Blend, 1.05f));
             transform.localScale = Vector3.Lerp (Keys[1].localScale, Keys[1].localScale, Mathf.Pow (Blend, 1.75f));
@@ -40,23 +37,25 @@ public class Transition1b : MonoBehaviour {
             transform.localScale = Vector3.Lerp (Keys[1].localScale, Keys[2].localScale, Mathf.Pow (Blend, 1.75f));
             break;
         case 4:
-			print(Scene);
             transform.localPosition = Vector3.Lerp(Keys[2].position, Keys[2].position, Mathf.Pow(Blend, 1f));
             transform.localRotation = Quaternion.Lerp (Keys[2].localRotation, Keys[2].localRotation, Mathf.Pow (Blend, 1.05f));
             transform.localScale = Vector3.Lerp (Keys[2].localScale, Keys[2].localScale, Mathf.Pow (Blend, 1.75f));
             break;
         case 5:
-			print(Scene);
             transform.localPosition = Vector3.Lerp(Keys[2].position, Keys[3].position, Mathf.Pow(Blend, 1f));
             transform.localRotation = Quaternion.Lerp(Keys[2].localRotation, Keys[3].localRotation, Mathf.Pow(Blend, 1.05f));
             transform.localScale = Vector3.Lerp(Keys[2].localScale, Keys[3].localScale, Mathf.Pow(Blend, 1.75f));
             break;
         case 6:
-			print(Scene);
             transform.localPosition = Vector3.Lerp(Keys[3].position, Keys[3].position, Mathf.Pow(Blend, 1f));
             transform.localRotation = Quaternion.Lerp(Keys[3].localRotation, Keys[3].localRotation, Mathf.Pow(Blend, 1.05f));
             transform.localScale = Vector3.Lerp(Keys[3].localScale, Keys[3].localScale, Mathf.Pow(Blend, 1.75f));
             break;
+		default:
+			transform.localPosition = Vector3.Lerp(Keys[Keys.Count-1].position, Keys[Keys.Count-1].position, Mathf.Pow(Blend, 1f));
+			transform.localRotation = Quaternion.Lerp(Keys[Keys.Count-1].localRotation, Keys[Keys.Count-1].localRotation, Mathf.Pow(Blend, 1.05f));
+			transform.localScale = Vector3.Lerp(Keys[Keys.Count-1].localScale, Keys[Keys.Count-1].localScale, Mathf.Pow(Blend, 1.75f));
+			break;
         }
     }
 }
