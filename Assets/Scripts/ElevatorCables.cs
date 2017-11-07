@@ -177,14 +177,14 @@ public class ElevatorCables : MonoBehaviour
                 //acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
                 //acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
 
-                if (i == 0)
-                {
-                    // We're going to set a waypoint so that we can navigate to here later using animation scripts
-                    //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
-                    Keymanager.waypoints[1].position = -acc_bot.transform.position;
-                    Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
-                    Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
-                }
+//                if (i == 0)
+//                {
+//                    // We're going to set a waypoint so that we can navigate to here later using animation scripts
+//                    //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
+//                    Keymanager.waypoints[1].position = -acc_bot.transform.position;
+//                    Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
+//                    Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
+//                }
             }
 
 
