@@ -19,7 +19,7 @@ public class ElevatorCables : MonoBehaviour
     public int numTubeSides = 8;
     public int numElevatorCables = 90;
     public float ringAltitude = .0003f;
-    public Waypoints Keymanager;
+    //public Waypoints Keymanager;
     private float tetheredRingRadius;
 
     void Start()
@@ -170,21 +170,26 @@ public class ElevatorCables : MonoBehaviour
                 acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
                 //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
 
-                acc_mid.GetComponent<ElevatorMotion>().CableTop = cabletop;
-                acc_mid.GetComponent<ElevatorMotion>().CableBotton = cablebot;
-                acc_mid.GetComponent<ElevatorMotion>().UpdateTarget();
+				acc_mid.AddComponent<ElevatorMotion>();
+				acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot);
+
+				// Move the camera to the elevator
+				if (i == 0)
+				{
+					GameObject.FindGameObjectWithTag("Player").transform.position = acc_mid.transform.position;
+				}
 
                 //acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
                 //acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
 
-                if (i == 0)
-                {
-                    // We're going to set a waypoint so that we can navigate to here later using animation scripts
-                    //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
-                    Keymanager.waypoints[1].position = -acc_bot.transform.position;
-                    Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
-                    Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
-                }
+//                if (i == 0)
+//                {
+//                    // We're going to set a waypoint so that we can navigate to here later using animation scripts
+//                    //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
+//                    Keymanager.waypoints[1].position = -acc_bot.transform.position;
+//                    Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
+//                    Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
+//                }
             }
 
 

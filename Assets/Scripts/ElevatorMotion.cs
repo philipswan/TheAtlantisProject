@@ -82,4 +82,16 @@ public class ElevatorMotion : MonoBehaviour {
                 break;
         }
     }
+
+	/// <summary>
+	/// Set destinations for the elevators and start them
+	/// </summary>
+	/// <param name="_cableTop">Cable top.</param>
+	/// <param name="_cableBot">Cable bot.</param>
+	public void SetPositions(Vector3 _cableTop, Vector3 _cableBot)
+	{
+		CableTop = _cableTop;
+		CableBotton = _cableBot;
+		UpdateTarget();
+	}
 }
