@@ -6,20 +6,25 @@ public class Transition1b : MonoBehaviour {
 	[Tooltip("The transforms that the system will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds all transforms
     public float TotalTime = 10.0f;								// Total transition time for each case
-	public static Transition1b Instance;						// Access script from other objects in the scene
+
 
     // Use this for initialization
     void Awake () {
-		Instance = this;
-    }
+	}
 
     void Update() {
+
         int Scene = (int)Mathf.Floor(Time.unscaledTime / TotalTime);
         float Blend = Mathf.Min (Time.unscaledTime / TotalTime - Scene, 1.0f);
 
 		if (Scene < Keys.Count * 2)
 		{
 			UpdateSystem(Scene, Blend);
+		}
+		else if (Scene == Keys.Count * 2)
+		{
+			Transition1.Instance.BeginTransition();
+			enabled = false;
 		}
     }
 
