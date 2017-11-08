@@ -26,7 +26,7 @@ public class HabitatSwitchBehavior : MonoBehaviour
 		if (nvrSwitch.CurrentState != lastState)
 		{
 			lastState = !lastState;
-			EventsManagerBehavior.instance.ToggleTrigger("habitat_switch", lastState);
+			//EventsManagerBehavior.instance.ToggleTrigger("habitat_switch", lastState);
 		}
 	}
 }

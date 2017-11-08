@@ -104,6 +104,9 @@ public class OVRDisplay
 		{
 			RecenteredPose();
 		}
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+		OVRMixedReality.RecenterPose();
+#endif
 	}
 
 	/// <summary>

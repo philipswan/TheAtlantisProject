@@ -13,7 +13,7 @@ public class HabitatLightBehavior : MonoBehaviour {
 
 	private void Start()
 	{
-		EventsManagerBehavior.instance.ToggleListen("habitat_switch", Toggle);
+		//EventsManagerBehavior.instance.ToggleListen("habitat_switch", Toggle);
 	}
 
 	void Toggle(bool data, EventArgs args)

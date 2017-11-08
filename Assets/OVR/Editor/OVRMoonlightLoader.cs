@@ -28,11 +28,28 @@ using System.IO;
 [InitializeOnLoad]
 class OVRMoonlightLoader
 {
+	private const string prefName = "OVRMoonlightLoader_Enabled";
+	private const string menuItemName = "Tools/Oculus/Use Required Project Settings";
+	static bool setPrefsForUtilities;
+
+	[MenuItem(menuItemName)]
+	static void ToggleUtilities()
+	{
+		setPrefsForUtilities = !setPrefsForUtilities;
+	}
+
     static OVRMoonlightLoader()
 	{
-		EnforceInputManagerBindings();
+		EditorApplication.delayCall += EnforceInputManagerBindings;
+#if UNITY_ANDROID
+		EditorApplication.delayCall += EnforceOSIG;
+#endif
 		EditorApplication.update += EnforceBundleId;
 		EditorApplication.update += EnforceVRSupport;
+		EditorApplication.update += EnforceInstallLocation;
+		EditorApplication.update += EnforcePlayerPrefs;
+
+		setPrefsForUtilities = PlayerPrefs.GetInt(prefName, 1) != 0;
 
 		if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
 			return;
@@ -71,6 +88,9 @@ class OVRMoonlightLoader
 
 	static void EnforceVRSupport()
 	{
+		if (!setPrefsForUtilities)
+			return;
+		
 		if (PlayerSettings.virtualRealitySupported)
 			return;
 		
@@ -81,6 +101,15 @@ class OVRMoonlightLoader
 			{
 				Debug.Log ("Enabling Unity VR support");
 				PlayerSettings.virtualRealitySupported = true;
+
+#if UNITY_5_6_OR_NEWER
+				bool oculusFound = false;
+				foreach (var device in UnityEngine.VR.VRSettings.supportedDevices)
+					oculusFound |= (device == "Oculus");
+
+				if (!oculusFound)
+					Debug.LogError("Please add Oculus to the list of supported devices to use the Utilities.");
+#endif
 				return;
 			}
 		}
@@ -88,6 +117,9 @@ class OVRMoonlightLoader
 
 	private static void EnforceBundleId()
 	{
+		if (!setPrefsForUtilities)
+			return;
+		
 		if (!PlayerSettings.virtualRealitySupported)
 			return;
 
@@ -108,8 +140,19 @@ class OVRMoonlightLoader
 #endif
 	}
 
+	private static void EnforceInstallLocation()
+	{
+		if (!setPrefsForUtilities)
+			return;
+		
+		PlayerSettings.Android.preferredInstallLocation = AndroidPreferredInstallLocation.Auto;
+	}
+
 	private static void EnforceInputManagerBindings()
 	{
+		if (!setPrefsForUtilities)
+			return;
+		
 		try
 		{
 			BindAxis(new Axis() { name = "Oculus_GearVR_LThumbstickX",  axis =  0,               });
@@ -125,6 +168,48 @@ class OVRMoonlightLoader
 		{
 			Debug.LogError("Failed to apply Oculus GearVR input manager bindings.");
 		}
+	}
+
+	private static void EnforceOSIG()
+	{
+		if (!setPrefsForUtilities)
+			return;
+		
+		// Don't bug the user in play mode.
+		if (Application.isPlaying)
+			return;
+		
+		// Don't warn if the project may be set up for submission or global signing.
+		if (File.Exists("Assets/Plugins/Android/AndroidManifest.xml"))
+			return;
+		
+		var files = Directory.GetFiles("Assets/Plugins/Android/assets");
+		bool foundPossibleOsig = false;
+		for (int i = 0; i < files.Length; ++i)
+		{
+			if (!files[i].Contains(".txt"))
+			{
+				foundPossibleOsig = true;
+				break;
+			}
+		}
+
+		if (!foundPossibleOsig)
+			Debug.LogWarning("Missing Gear VR OSIG at Assets/Plugins/Android/assets. Please see https://dashboard.oculus.com/tools/osig-generator");
+	}
+
+	private static void EnforcePlayerPrefs()
+	{
+		int newValue = (setPrefsForUtilities) ? 1 : 0;
+		int oldValue = PlayerPrefs.GetInt(prefName);
+
+		if (newValue != oldValue)
+		{
+			PlayerPrefs.SetInt (prefName, newValue);
+			PlayerPrefs.Save ();
+		}
+
+		Menu.SetChecked(menuItemName, setPrefsForUtilities);
 	}
 
 	private class Axis

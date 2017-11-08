@@ -44,6 +44,24 @@ public static class OVRExtensions
 	}
 
 	/// <summary>
+	/// Converts the given pose from tracking-space to world-space.
+	/// </summary>
+	public static OVRPose ToWorldSpacePose(OVRPose trackingSpacePose)
+	{
+		OVRPose headPose;
+		headPose.position = UnityEngine.VR.InputTracking.GetLocalPosition(UnityEngine.VR.VRNode.Head);
+		headPose.orientation = UnityEngine.VR.InputTracking.GetLocalRotation(UnityEngine.VR.VRNode.Head);
+
+		// Transform from tracking-Space to head-Space
+		OVRPose poseInHeadSpace = headPose.Inverse() * trackingSpacePose;
+
+		// Transform from head space to world space
+		OVRPose ret = Camera.main.transform.ToOVRPose() * poseInHeadSpace;
+
+		return ret;
+	}
+
+	/// <summary>
 	/// Converts the given world-space transform to an OVRPose in head space.
 	/// </summary>
 	public static OVRPose ToHeadSpacePose(this Transform transform)
