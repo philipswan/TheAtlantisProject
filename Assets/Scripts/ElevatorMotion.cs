@@ -8,7 +8,7 @@ public class ElevatorMotion : MonoBehaviour {
     public float TravelTime = 10f;
 
     [HideInInspector]
-    public Vector3 CableTop;          // Position at the top the of the cable that the elevator should travel to (the ring)
+    public Vector3 CableTop;            // Position at the top the of the cable that the elevator should travel to (the ring)
 
     [HideInInspector]
     public Vector3 CableBotton;         // Position at the bottom of the cable that the elevator should travel to (the ship)

@@ -33,41 +33,49 @@ namespace Valve.VR.InteractionSystem
 				{
 					if ( hand.controller.GetPressDown( Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger ) )
 					{
+						print("Trigger Down");
 						onTriggerDown.Invoke();
 					}
 
 					if ( hand.controller.GetPressUp( Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger ) )
 					{
+						print("Trigger Up");
 						onTriggerUp.Invoke();
 					}
 
 					if ( hand.controller.GetPressDown( Valve.VR.EVRButtonId.k_EButton_Grip ) )
 					{
+						print("Grip Down");
 						onGripDown.Invoke();
 					}
 
 					if ( hand.controller.GetPressUp( Valve.VR.EVRButtonId.k_EButton_Grip ) )
 					{
+						print("Grip Up");
 						onGripUp.Invoke();
 					}
 
 					if ( hand.controller.GetPressDown( Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad ) )
 					{
+						print("Touch Pad Down");
 						onTouchpadDown.Invoke();
 					}
 
 					if ( hand.controller.GetPressUp( Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad ) )
 					{
+						print("Touch Pad Up");
 						onTouchpadUp.Invoke();
 					}
 
 					if ( hand.controller.GetTouchDown( Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad ) )
 					{
+						print("Touchpad Touch");
 						onTouchpadTouch.Invoke();
 					}
 
 					if ( hand.controller.GetTouchUp( Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad ) )
 					{
+						print("Touchpad Release");
 						onTouchpadRelease.Invoke();
 					}
 				}
