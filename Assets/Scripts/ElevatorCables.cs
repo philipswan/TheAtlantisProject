@@ -161,7 +161,7 @@ public class ElevatorCables : MonoBehaviour
                 acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
                 acc_mid.transform.localScale = Vector3.one * 1e-5f;
                 // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
-				acc_mid.transform.LookAt(this.transform.TransformPoint(cablebot), this.transform.TransformVector(cabletop_old - cablebot_old));
+				acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
 //				Vector3 rot = acc_mid.transform.localRotation.eulerAngles;
 //				rot = new Vector3(rot.x, rot.y + 180, rot.z);
 //				acc_mid.transform.localRotation = Quaternion.Euler(rot);
