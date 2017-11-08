@@ -7,6 +7,8 @@ public class ElevatorMotion : MonoBehaviour {
     [Tooltip("Time in seconds the elevator will take to travel from the ring to the ship or vice versa.")]
     public float TravelTime = 10f;
 
+	public bool automatic;				// Should the elevator move automatically
+
     [HideInInspector]
     public Vector3 CableTop;            // Position at the top the of the cable that the elevator should travel to (the ring)
 
@@ -17,7 +19,6 @@ public class ElevatorMotion : MonoBehaviour {
     private Vector3 velocity;           // Velocity of the object when starting movement
     private Vector3 targetPos;          // Position of the destination of the elevator
     private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
-	private bool automatic;				// Should the elevator move automatically
     private enum target                 // Enum of target types
     {
         Top,

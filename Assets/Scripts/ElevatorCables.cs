@@ -158,21 +158,16 @@ public class ElevatorCables : MonoBehaviour
 
                 // Add an capsule somewher along the length of each stay 
 				GameObject acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+				acc_mid.transform.localScale = Vector3.one * 1e-5f;
                 acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
-                acc_mid.transform.localScale = Vector3.one * 1e-5f;
-                // acc_mid.transform.localRotation = new Quaternion(0, 0, 0, 0);
-				acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
-//				Vector3 rot = acc_mid.transform.localRotation.eulerAngles;
-//				rot = new Vector3(rot.x, rot.y + 180, rot.z);
-//				acc_mid.transform.localRotation = Quaternion.Euler(rot);
+				acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop_old - cablebot_old));
 
                 // Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
 				GameObject acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+				acc_bot.transform.localScale = Vector3.one * 3e-6f;
                 acc_bot.transform.localPosition = new Vector3(x3, y3, z3);
                 //acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
-                acc_bot.transform.localScale = Vector3.one * 3e-6f;
-				acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
-                //acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop - cablebot));
+				acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop_old - cablebot_old));
 
 				// Set variables for user's elevator
 				if (i == 3)
