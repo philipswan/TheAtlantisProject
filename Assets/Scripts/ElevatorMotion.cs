@@ -5,7 +5,7 @@ using UnityEngine;
 public class ElevatorMotion : MonoBehaviour {
 
 	[Tooltip("Time in seconds the elevator will take to travel from the ring to the ship or vice versa.")]
-	public float TravelTime = 10f;
+	public float TravelTime = 10;
 
 	public bool automatic;				// Should the elevator move automatically
 
@@ -18,6 +18,7 @@ public class ElevatorMotion : MonoBehaviour {
 	private target currentTarget;       // Enum holding the current target (or destination) of the elevator
 	private Vector3 velocity;           // Velocity of the object when starting movement
 	private Vector3 targetPos;          // Position of the destination of the elevator
+	private bool userElevator;			// Is this the user's elevator?
 	private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
 	private enum target                 // Enum of target types
 	{
@@ -30,6 +31,7 @@ public class ElevatorMotion : MonoBehaviour {
 		currentTarget = target.Bottom;
 		velocity = Vector3.zero;
 		automatic = false;
+		userElevator = false;
 	}
 
 	// Update is called once per frame
@@ -58,8 +60,13 @@ public class ElevatorMotion : MonoBehaviour {
 		}
 
 		// If we are close enough to the current target, switch to the other one
-		if (Vector3.Distance(transform.localPosition, targetPos) < 0.00003f)
+		if (Vector3.Distance(transform.localPosition, targetPos) < 0.0003f)
 		{
+			if (userElevator)
+			{
+				Transition1.Instance.moveCamera = false;
+				automatic = false;
+			}
 			UpdateTarget();
 		}
 	}
@@ -92,11 +99,12 @@ public class ElevatorMotion : MonoBehaviour {
 	/// <param name="_cableTop">Cable top.</param>
 	/// <param name="_cableBot">Cable bot.</param>
 	/// <param name="_automatic">If set to <c>true</c> automatic.</param>
-	public void SetPositions(Vector3 _cableTop, Vector3 _cableBot, bool _automatic)
+	public void SetPositions(Vector3 _cableTop, Vector3 _cableBot, bool _automatic, bool _userElevator = false)
 	{
 		CableTop = _cableTop;
 		CableBotton = _cableBot;
 		automatic = _automatic;
+		userElevator = _userElevator;
 
 		if (!automatic)
 		{

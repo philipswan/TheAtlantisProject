@@ -8,11 +8,12 @@ public class Transition1 : MonoBehaviour {
 	public List<Transform> Keys = new List<Transform>();		// Holds list of all transforms for transitions
 	public float TotalTime = 10.0f;								// Time for each transition
 	public static Transition1 Instance;							// Holds reference to this script
+	[HideInInspector]
+	public bool moveCamera;									// Flag controlling vector3 damp movement
 
 	private Vector3 velocity;									// Velocity for vector3 damp movement
 	private Transform target;									// Custom target for the camera to move to
 	private bool ready;											// Flag controlling if the transition should begin. Only start after the system transition is over
-	private bool moveCamera;									// Flag controlling vector3 damp movement
 	private float startTime;									// Time the transition began
 
 	// Use this for initialization
@@ -36,11 +37,12 @@ public class Transition1 : MonoBehaviour {
 		}
 		else if (moveCamera)
 		{
-			transform.localPosition = Vector3.SmoothDamp(transform.position, target.position, ref velocity, 10);
-			if (Vector3.Distance(transform.position, target.position) < 1)
-			{
-				moveCamera = false;
-			}
+			transform.localPosition = target.position;
+			//transform.localPosition = Vector3.SmoothDamp(transform.position, target.position, ref velocity, 5);
+			//if (Vector3.Distance(transform.localPosition, target.localPosition) < 0.00003f)
+			//{
+			//	moveCamera = false;
+			//}
 		}
 	}
 

@@ -177,9 +177,10 @@ public class ElevatorCables : MonoBehaviour
 					topOfRing.transform.parent = transform;
 					topOfRing.transform.localPosition = cabletop;
 
-					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false);
+					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false, true);
 					Transition1.Instance.UpdateKeys(acc_mid.transform);
-					Transition1.Instance.MoveCamera(topOfRing.transform);
+					Transition1.Instance.MoveCamera(acc_mid.transform);
+					acc_mid.GetComponent<ElevatorMotion>().automatic = true;
 					//Transition1.Instance.MoveCamera(topOfRing.transform.position);
 					continue;
 				}
