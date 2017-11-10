@@ -10,7 +10,22 @@ namespace Constants{
 		Bottom
 	};
 
-	public class Configuration {
+	public class Configuration : MonoBehaviour {
 
+		[Tooltip("Lerp time for camera movment")]
+		public int CameraTravelTime = 5;
+
+		[Tooltip("Lerp time for system movement")]
+		public int SystemTravelTime = 10;
+
+		[Tooltip("Latitude of the ring")]
+		public float RingLatitude = -34f;
+
+		public static Configuration Instance;
+
+		void Awake()
+		{
+			Instance = this;
+		}
 	}
 }

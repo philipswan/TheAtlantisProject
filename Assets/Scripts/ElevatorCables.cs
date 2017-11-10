@@ -13,19 +13,20 @@ public class ElevatorCables : MonoBehaviour
 
 	public GameObject carrier_prefab;
 	public GameObject climber_prefab;
-	//public GameObject top_terminal_prefab;
 	public Transform ring_edge_transform;
-	public float ringLatitude = -40;
 	public float tubeRadius = 0.00001f;
 	public int numTubeSides = 8;
 	public int numElevatorCables = 90;
 	public float ringAltitude = .0003f;
-	//public Waypoints Keymanager;
+
 	private float tetheredRingRadius;
+	private Constants.Configuration config;			// Holds reference to config file
 
 	void Start()
 	{
-		tetheredRingRadius = Mathf.Cos(ringLatitude * Mathf.PI / 180) / 2;
+		config = Constants.Configuration.Instance;
+
+		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		RefreshElevatorCables();
 	}
 
@@ -107,7 +108,7 @@ public class ElevatorCables : MonoBehaviour
 		{
 			theta = i * elevatorCableSpacing;
 			phi0 = tetheredRingRadius;
-			phi1 = tetheredRingRadius - ringAltitude * Mathf.Cos(ringLatitude * Mathf.Deg2Rad);
+			phi1 = tetheredRingRadius - ringAltitude * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
 
 			// Find the current and next segments
 			int tubePrimitiveBaseOffset = i * numTubeSides * 2;
@@ -118,10 +119,10 @@ public class ElevatorCables : MonoBehaviour
 			y2 = tubeRadius * Mathf.Sin(0 * tubeSideSize);
 			x3 = phi1 * Mathf.Cos(theta + tubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1) - tetheredRingRadius;
 			z3 = phi1 * Mathf.Sin(theta + tubeRadius * Mathf.Cos(0 * tubeSideSize) / phi1);
-			y3 = tubeRadius * Mathf.Sin(0 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+			y3 = tubeRadius * Mathf.Sin(0 * tubeSideSize) - ringAltitude * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 			x4 = phi1 * Mathf.Cos(theta + tubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1) - tetheredRingRadius;
 			z4 = phi1 * Mathf.Sin(theta + tubeRadius * Mathf.Cos(1 * tubeSideSize) / phi1);
-			y4 = tubeRadius * Mathf.Sin(1 * tubeSideSize) - ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+			y4 = tubeRadius * Mathf.Sin(1 * tubeSideSize) - ringAltitude * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
 			// Find the current and next segments
 
@@ -131,10 +132,10 @@ public class ElevatorCables : MonoBehaviour
 			cabletop.y = -Mathf.Pow(tetheredRingRadius - phi0, 1.7f) * 10;
 			cablebot.x = phi1 * Mathf.Cos(theta) - tetheredRingRadius;
 			cablebot.z = phi1 * Mathf.Sin(theta);
-			cablebot.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+			cablebot.y = -ringAltitude * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 			cableleft.x = phi0 * Mathf.Cos(theta) - tetheredRingRadius;
 			cableleft.z = phi0 * Mathf.Sin(theta);
-			cableleft.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+			cableleft.y = -ringAltitude * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
 			DrawCylinder(cabletop, cablebot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
 

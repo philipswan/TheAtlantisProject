@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class Stays : MonoBehaviour
 {
 
-    public float RingLatitude = -40;
-    private float tetheredRingRadius;
     public float tubeRadius = 0.001f;
     public int numTubeSides = 12;
     public int numStayLevels = 4;
@@ -14,9 +12,14 @@ public class Stays : MonoBehaviour
     public int numStaysPerInstance = 60;
     public Material material;
 
+	private float tetheredRingRadius;
+	private Constants.Configuration config;		// Holds reference to config file
+
     void Start()
     {
-        tetheredRingRadius = Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2;
+		config = Constants.Configuration.Instance;
+
+		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshStays();
     }
 

@@ -5,17 +5,22 @@ using UnityEngine;
 public class Transition1b : MonoBehaviour {
 	[Tooltip("The transforms that the system will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds all transforms
-    public float TotalTime = 10.0f;								// Total transition time for each case
 
+	private Constants.Configuration config;						// Holds reference to config script
 
     // Use this for initialization
     void Awake () {
 	}
 
+	void Start()
+	{
+		config = Constants.Configuration.Instance;
+	}
+
     void Update() {
 
-        int Scene = (int)Mathf.Floor(Time.unscaledTime / TotalTime);
-        float Blend = Mathf.Min (Time.unscaledTime / TotalTime - Scene, 1.0f);
+		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.SystemTravelTime);
+		float Blend = Mathf.Min (Time.unscaledTime / config.SystemTravelTime - Scene, 1.0f);
 
 		if (Scene < Keys.Count * 2)
 		{

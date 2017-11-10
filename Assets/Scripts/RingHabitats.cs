@@ -6,7 +6,6 @@ public class RingHabitats : MonoBehaviour {
 
     public int numInstances = 10;
     public int numRingHabitatsPerInstance = 10;
-    public float ringLatitude = -40;
     public int numTubeSides = 8;
     public float tubeRadius = .0001f;
     public float habitatHeight = .00001f;
@@ -14,12 +13,15 @@ public class RingHabitats : MonoBehaviour {
 	public GameObject habitat;
 
     private float torusRadius;
-    List<GameObject> ringHabitatObjects = new List<GameObject>();
+	private Constants.Configuration config;									// Holds reference to config file
+    private List<GameObject> ringHabitatObjects = new List<GameObject>();
 
     // Use this for initialization
     void Start()
     {
-        torusRadius = Mathf.Cos(ringLatitude * Mathf.PI / 180) / 2;
+		config = Constants.Configuration.Instance;
+
+		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshRingHabitats();
     }
 
@@ -105,7 +107,7 @@ public class RingHabitats : MonoBehaviour {
 
         theta = (instance * numRingHabitatsPerInstance + ringHabitatIndex) * ringHabitatSpacing;
         phi0 = torusRadius;
-        phi1 = torusRadius - habitatHeight * Mathf.Cos(ringLatitude * Mathf.Deg2Rad);
+		phi1 = torusRadius - habitatHeight * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
 
         // Find the current and next segments
         int tubePrimitiveBaseOffset = ringHabitatIndex * numTubeSides * 2;
@@ -120,11 +122,11 @@ public class RingHabitats : MonoBehaviour {
 
         habbot.x = phi1 * Mathf.Cos(theta) - torusRadius;
         habbot.z = phi1 * Mathf.Sin(theta);
-        habbot.y = -habitatHeight * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+		habbot.y = -habitatHeight * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
 		hableft.x = phi0 * Mathf.Cos(theta) - torusRadius;
 		hableft.z = phi0 * Mathf.Sin(theta);
-		hableft.y = -0.0075f * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
 		GameObject cylinder = Instantiate(habitat, transform);
 		cylinder.transform.localPosition = habbot;

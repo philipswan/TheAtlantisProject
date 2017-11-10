@@ -9,15 +9,17 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter),typeof(MeshRenderer))]
 public class Ring : MonoBehaviour {
 
-    public float RingLatitude = -40;
     public float TubeRadius = 0.001f;
     public int numSegments = 100;
     public int numTubes = 12;
+
     private float tetheredRingRadius;
-    //public var material : Material;
+	private Constants.Configuration config;		// Holds reference to config file
 
     void Start() {
-        tetheredRingRadius = Mathf.Cos(RingLatitude * Mathf.PI / 180) / 2;
+		config = Constants.Configuration.Instance;
+
+		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshRing();
     }
 

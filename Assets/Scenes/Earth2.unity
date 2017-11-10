@@ -156,7 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Keys: []
   TotalTime: 1
-  moveCamera: 0
+  MoveCamera: 0
 --- !u!4 &154204966
 Transform:
   m_ObjectHideFlags: 0
@@ -513,7 +513,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &559508755
 Prefab:
@@ -1008,7 +1008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numInstances: 300
   numRingHabitatsPerInstance: 100
-  ringLatitude: -34.25
+  ringLatitude: -34
   numTubeSides: 8
   tubeRadius: 0.00001
   habitatHeight: 0.00002
@@ -1242,34 +1242,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1347469580}
   m_Mesh: {fileID: 0}
---- !u!1 &1376255218
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1376255219}
-  m_Layer: 0
-  m_Name: BaseStation
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1376255219
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1376255218}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1377105041
 Prefab:
   m_ObjectHideFlags: 0
@@ -1703,7 +1675,6 @@ MonoBehaviour:
   - {fileID: 1223243138}
   - {fileID: 454502701}
   - {fileID: 159142380}
-  TotalTime: 1
 --- !u!1 &1769944136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1909,7 +1880,7 @@ Prefab:
     - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
         type: 2}
       propertyPath: ButtonAction.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: MoveCamera
+      value: MoveCameraToElevator
       objectReference: {fileID: 0}
     - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
         type: 2}
@@ -2113,7 +2084,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 154204965}
-        m_MethodName: MoveCamera
+        m_MethodName: MoveCameraToElevator
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

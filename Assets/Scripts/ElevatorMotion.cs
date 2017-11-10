@@ -66,7 +66,7 @@ public class ElevatorMotion : MonoBehaviour {
 			UpdateTarget();
 			if (UserElevator)
 			{
-				Transition1.Instance.moveCamera = false;
+				Transition1.Instance.MoveCamera = false;
 				automatic = false;
 			}
 		}
