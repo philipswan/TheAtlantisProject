@@ -161,6 +161,7 @@ public class ElevatorCables : MonoBehaviour
 				acc_mid.transform.localScale = Vector3.one * 1e-5f;
 				acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
 				acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop_old - cablebot_old));
+				acc_mid.SetActive(true);
 				acc_mid.AddComponent<ElevatorMotion>();
 
 				// Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
@@ -173,15 +174,8 @@ public class ElevatorCables : MonoBehaviour
 				// Set variables for user's elevator
 				if (i == 3)
 				{
-					GameObject topOfRing = new GameObject("Top of ring");
-					topOfRing.transform.parent = transform;
-					topOfRing.transform.localPosition = cabletop;
-
 					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false, true);
 					Transition1.Instance.UpdateKeys(acc_mid.transform);
-					Transition1.Instance.MoveCamera(acc_mid.transform);
-					acc_mid.GetComponent<ElevatorMotion>().automatic = true;
-					//Transition1.Instance.MoveCamera(topOfRing.transform.position);
 					continue;
 				}
 

@@ -11,6 +11,7 @@ TagManager:
   - Fader
   - dontmove
   - listlast
+  - Elevator
   layers:
   - Default
   - TransparentFX

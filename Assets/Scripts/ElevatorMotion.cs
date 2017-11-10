@@ -15,10 +15,12 @@ public class ElevatorMotion : MonoBehaviour {
 	[HideInInspector]
 	public Vector3 CableBotton;         // Position at the bottom of the cable that the elevator should travel to (the ship)
 
+	[HideInInspector]
+	public bool userElevator;			// Is this the user's elevator?
+
 	private target currentTarget;       // Enum holding the current target (or destination) of the elevator
 	private Vector3 velocity;           // Velocity of the object when starting movement
 	private Vector3 targetPos;          // Position of the destination of the elevator
-	private bool userElevator;			// Is this the user's elevator?
 	private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
 	private enum target                 // Enum of target types
 	{
@@ -112,5 +114,14 @@ public class ElevatorMotion : MonoBehaviour {
 		}
 
 		UpdateTarget();
+	}
+
+	/// <summary>
+	/// Start elevator movement
+	/// </summary>
+	public void StartElevator()
+	{
+		print("Start elevator called");
+		automatic = true;
 	}
 }

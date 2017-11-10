@@ -69,10 +69,22 @@ public class Transition1 : MonoBehaviour {
 	/// Move camera to specified target over time
 	/// </summary>
 	/// <param name="target">Target.</param>
-	public void MoveCamera(Transform _target)
+	public void MoveCamera()
 	{
-		target = _target;
-		moveCamera = true;
+		print("move camera called");
+		GameObject[] elevators = GameObject.FindGameObjectsWithTag("Elevator");
+		GameObject userElevator;
+
+		foreach (GameObject elevator in elevators)
+		{
+			if (elevator.GetComponent<ElevatorMotion>().automatic == true)
+			{
+				userElevator = elevator;
+				target = userElevator.transform;
+				moveCamera = true;
+				break;
+			}
+		}
 	}
 
 	/// <summary>

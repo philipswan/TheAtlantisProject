@@ -4,13 +4,28 @@ using UnityEngine;
 
 public class LeftHandController : MonoBehaviour {
 
+	private Collider collider;
+
 	// Use this for initialization
 	void Start () {
-		
+		collider = GetComponent<SphereCollider>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
+	}
+
+	void OnTriggerStay(Collider other)
+	{
+		if (OVRInput.Get(OVRInput.RawButton.LHandTrigger) && other.gameObject.name == "home_button_PLY")
+		{
+
+		}
+	}
+
+	private void CheckState()
+	{
 		// returns true if the “X” button was released this frame.
 		OVRInput.GetUp(OVRInput.RawButton.X); 
 
@@ -48,6 +63,6 @@ public class LeftHandController : MonoBehaviour {
 
 		// returns true if the left hand trigger has been pressed more than halfway.  
 		// (Interpret the trigger as a button).
-		print(OVRInput.Get(OVRInput.RawButton.LHandTrigger));
+		OVRInput.Get(OVRInput.RawButton.LHandTrigger);
 	}
 }
