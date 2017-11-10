@@ -128,7 +128,7 @@ public class RingHabitats : MonoBehaviour {
 
 		GameObject cylinder = Instantiate(habitat, transform);
 		cylinder.transform.localPosition = habbot;
-		cylinder.transform.LookAt(hableft);
+		cylinder.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));
 
 
         DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
