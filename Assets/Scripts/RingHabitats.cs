@@ -11,6 +11,7 @@ public class RingHabitats : MonoBehaviour {
     public float tubeRadius = .0001f;
     public float habitatHeight = .00001f;
     public Material material;
+	public GameObject habitat;
 
     private float torusRadius;
     List<GameObject> ringHabitatObjects = new List<GameObject>();
@@ -84,13 +85,13 @@ public class RingHabitats : MonoBehaviour {
                         vertices,
                         triangleIndices);
 
-                    mesh.vertices = vertices;
-                    mesh.triangles = triangleIndices;
-
-                    mesh.RecalculateBounds();
-                    mesh.RecalculateNormals();
+//                    mesh.vertices = vertices;
+//                    mesh.triangles = triangleIndices;
+//
+//                    mesh.RecalculateBounds();
+//                    mesh.RecalculateNormals();
                     MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
-                    mFilter.mesh = mesh;
+//                    mFilter.mesh = mesh;
                 }
             }
         }
@@ -112,16 +113,23 @@ public class RingHabitats : MonoBehaviour {
 
         // Find the current and next segments
 
-        Vector3 habtop, habbot;  //, hableft;
+        Vector3 habtop, habbot, hableft;
         habtop.x = phi0 * Mathf.Cos(theta) - torusRadius;
         habtop.z = phi0 * Mathf.Sin(theta);
         habtop.y = -Mathf.Pow(torusRadius - phi0, 1.7f) * 10;
+
         habbot.x = phi1 * Mathf.Cos(theta) - torusRadius;
         habbot.z = phi1 * Mathf.Sin(theta);
         habbot.y = -habitatHeight * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
-        //hableft.x = phi0 * Mathf.Cos(theta) - torusRadius;
-        //hableft.z = phi0 * Mathf.Sin(theta);
-        //hableft.y = -ringAltitude * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+
+		hableft.x = phi0 * Mathf.Cos(theta) - torusRadius;
+		hableft.z = phi0 * Mathf.Sin(theta);
+		hableft.y = -0.0075f * Mathf.Sin(ringLatitude * Mathf.Deg2Rad);
+
+		GameObject cylinder = Instantiate(habitat, transform);
+		cylinder.transform.localPosition = habbot;
+		cylinder.transform.LookAt(hableft);
+
 
         DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
     }
