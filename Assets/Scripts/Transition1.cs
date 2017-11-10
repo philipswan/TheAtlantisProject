@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Constants;
 
 public class Transition1 : MonoBehaviour {
 
@@ -9,12 +10,14 @@ public class Transition1 : MonoBehaviour {
 	public float TotalTime = 10.0f;								// Time for each transition
 	public static Transition1 Instance;							// Holds reference to this script
 	[HideInInspector]
-	public bool moveCamera;									// Flag controlling vector3 damp movement
+	public bool moveCamera;										// Flag controlling vector3 damp movement
 
 	private Vector3 velocity;									// Velocity for vector3 damp movement
-	private Transform target;									// Custom target for the camera to move to
+	private ElevatorMotion userElevatorMotion;					// The user's elevator
+	private Vector3 target;										// Custom target for the camera to move to
 	private bool ready;											// Flag controlling if the transition should begin. Only start after the system transition is over
 	private float startTime;									// Time the transition began
+	private float buffer;										// Multiplier to buffer the target position with target.up
 
 	// Use this for initialization
 	void Awake () {
@@ -22,6 +25,7 @@ public class Transition1 : MonoBehaviour {
 		ready = false;
 		moveCamera = false;
 		velocity = Vector3.zero;
+		buffer = 0.0f;
 	}
 
 	void Update() {
@@ -37,7 +41,9 @@ public class Transition1 : MonoBehaviour {
 		}
 		else if (moveCamera)
 		{
-			transform.localPosition = target.position;
+			//transform.localPosition = Vector3.Lerp(transform.localPosition, target.position + target.up * buffer, 0.5f);
+			transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, Time.deltaTime);
+			//transform.localPosition = Vector3.Lerp(transform.localPosition, target.position + target.up, 1);
 			//transform.localPosition = Vector3.SmoothDamp(transform.position, target.position, ref velocity, 5);
 			//if (Vector3.Distance(transform.localPosition, target.localPosition) < 0.00003f)
 			//{
@@ -50,8 +56,9 @@ public class Transition1 : MonoBehaviour {
 	/// Add transform to the Keys list
 	/// </summary>
 	/// <param name="_transform">Transform.</param>
-	public void UpdateKeys(Transform _transform)
+	public void UpdateKeys(Transform _transform, float _buffer = 0.0f)
 	{
+		buffer = _buffer;
 		Keys.Add(_transform);
 	}
 
@@ -71,16 +78,14 @@ public class Transition1 : MonoBehaviour {
 	/// <param name="target">Target.</param>
 	public void MoveCamera()
 	{
-		print("move camera called");
 		GameObject[] elevators = GameObject.FindGameObjectsWithTag("Elevator");
-		GameObject userElevator;
 
 		foreach (GameObject elevator in elevators)
 		{
-			if (elevator.GetComponent<ElevatorMotion>().automatic == true)
+			if (elevator.GetComponent<ElevatorMotion>().UserElevator == true)
 			{
-				userElevator = elevator;
-				target = userElevator.transform;
+				userElevatorMotion = elevator.GetComponent<ElevatorMotion>();
+				target = elevator.transform.TransformVector(elevator.transform.TransformVector(userElevatorMotion.CableTop));
 				moveCamera = true;
 				break;
 			}
@@ -96,13 +101,13 @@ public class Transition1 : MonoBehaviour {
 	{
 		int index = (int)Mathf.Floor(scene/2);
 
-		if (scene % 2 == 0 || index == Keys.Count-1)
+		if (scene % 2 == 0 || index == Keys.Count-2)
 		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index].position, Mathf.Pow(blend, 1f));
+			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index].position  + Keys[index].up * buffer, Mathf.Pow(blend, 1f));
 		}
 		else if (index < Keys.Count-1)
 		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position, Mathf.Pow(blend, 1f));
+			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position + Keys[index+1].up * buffer, Mathf.Pow(blend, 1f));
 		}
 	}
 }

@@ -26,7 +26,6 @@ public class ButtonActivity : MonoBehaviour {
 			if (OVRInput.Get(OVRInput.RawButton.LHandTrigger) 
 				|| OVRInput.Get(OVRInput.RawButton.RHandTrigger))
 			{
-				print("collided");
 				ButtonAction.Invoke();
 				eventCalled = true;
 			}

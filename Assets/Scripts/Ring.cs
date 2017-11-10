@@ -98,7 +98,6 @@ public class Ring : MonoBehaviour {
         Renderer renderer = GetComponent<MeshRenderer>();
         Material mat = Resources.Load("earthMat") as Material;
         renderer.material = mat;
-        print(mat);
     }
 
 }

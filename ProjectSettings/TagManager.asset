@@ -12,6 +12,7 @@ TagManager:
   - dontmove
   - listlast
   - Elevator
+  - Placeholder
   layers:
   - Default
   - TransparentFX

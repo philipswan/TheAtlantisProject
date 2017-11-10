@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Constants;
 
 public class ElevatorMotion : MonoBehaviour {
 
@@ -9,31 +10,29 @@ public class ElevatorMotion : MonoBehaviour {
 
 	public bool automatic;				// Should the elevator move automatically
 
-	[HideInInspector]
-	public Vector3 CableTop;            // Position at the top the of the cable that the elevator should travel to (the ring)
+	public Vector3 CableTop             // Position at the top the of the cable that the elevator should travel to (the ring)
+	{get; private set;}
 
-	[HideInInspector]
-	public Vector3 CableBotton;         // Position at the bottom of the cable that the elevator should travel to (the ship)
+	public Vector3 CableBotton          // Position at the bottom of the cable that the elevator should travel to (the ship)
+	{get; private set;}
 
-	[HideInInspector]
-	public bool userElevator;			// Is this the user's elevator?
+	public bool UserElevator			// Is this the user's elevator?
+	{get; private set;}
 
-	private target currentTarget;       // Enum holding the current target (or destination) of the elevator
+	public Target CurrentTarget			// Enum holding the current target (or destination) of the elevator
+	{get; private set;}    			  
+
 	private Vector3 velocity;           // Velocity of the object when starting movement
 	private Vector3 targetPos;          // Position of the destination of the elevator
 	private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
-	private enum target                 // Enum of target types
-	{
-		Top,
-		Bottom
-	};
+
 
 	// Use this for initialization
 	void Awake () {
-		currentTarget = target.Bottom;
+		CurrentTarget = Target.Bottom;
 		velocity = Vector3.zero;
 		automatic = false;
-		userElevator = false;
+		UserElevator = false;
 	}
 
 	// Update is called once per frame
@@ -45,31 +44,31 @@ public class ElevatorMotion : MonoBehaviour {
 		}
 
 		// Move towards the current target using SmoothDamp
-		switch (currentTarget)
+		switch (CurrentTarget)
 		{
-		case target.Top:
+		case Target.Top:
 			targetPos = CableTop;
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPos, ref velocity, TravelTime);
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableTop, ref velocity, TravelTime);
 			break;
-		case target.Bottom:
+		case Target.Bottom:
 			targetPos = CableBotton;
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPos, ref velocity, TravelTime);
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableBotton, ref velocity, TravelTime);
 			break;
 		default:
 			targetPos = CableTop;
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, targetPos, ref velocity, TravelTime);
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableTop, ref velocity, TravelTime);
 			break;
 		}
 
 		// If we are close enough to the current target, switch to the other one
 		if (Vector3.Distance(transform.localPosition, targetPos) < 0.0003f)
 		{
-			if (userElevator)
+			UpdateTarget();
+			if (UserElevator)
 			{
 				Transition1.Instance.moveCamera = false;
 				automatic = false;
 			}
-			UpdateTarget();
 		}
 	}
 
@@ -81,16 +80,16 @@ public class ElevatorMotion : MonoBehaviour {
 		targetSet = true;
 
 		// Switch the target position
-		switch (currentTarget)
+		switch (CurrentTarget)
 		{
-		case target.Top:
-			currentTarget = target.Bottom;
+		case Target.Top:
+			CurrentTarget = Target.Bottom;
 			break;
-		case target.Bottom:
-			currentTarget = target.Top;
+		case Target.Bottom:
+			CurrentTarget = Target.Top;
 			break;
 		default:
-			currentTarget = target.Bottom;
+			CurrentTarget = Target.Bottom;
 			break;
 		}
 	}
@@ -106,7 +105,7 @@ public class ElevatorMotion : MonoBehaviour {
 		CableTop = _cableTop;
 		CableBotton = _cableBot;
 		automatic = _automatic;
-		userElevator = _userElevator;
+		UserElevator = _userElevator;
 
 		if (!automatic)
 		{
@@ -121,7 +120,6 @@ public class ElevatorMotion : MonoBehaviour {
 	/// </summary>
 	public void StartElevator()
 	{
-		print("Start elevator called");
 		automatic = true;
 	}
 }

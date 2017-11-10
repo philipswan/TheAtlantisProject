@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 154204967}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Keys: []
-  TotalTime: 5
+  TotalTime: 1
   moveCamera: 0
 --- !u!4 &154204966
 Transform:
@@ -475,6 +475,46 @@ Transform:
   m_Father: {fileID: 1769944137}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 150}
+--- !u!1 &461670051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 461670053}
+  - component: {fileID: 461670052}
+  m_Layer: 0
+  m_Name: Config
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &461670052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 461670051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b74bb6f4d21719e45bc2872a988f3f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &461670053
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 461670051}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -53.239162, y: 6.6863437, z: 15.128467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &559508755
 Prefab:
   m_ObjectHideFlags: 0
@@ -888,7 +928,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1071379105}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.15
@@ -1154,8 +1194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   carrier_prefab: {fileID: 1927992920709346, guid: 457f649035efc534e9e1e7868860ccfb,
     type: 2}
-  climber_prefab: {fileID: 1761815904067516, guid: f16346cd9cdcf784b8d4037e0b4f9333,
-    type: 2}
+  climber_prefab: {fileID: 1958715333}
   ring_edge_transform: {fileID: 2003560873}
   ringLatitude: -34
   tubeRadius: 0.000001
@@ -1583,7 +1622,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1723008455}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.15
@@ -1889,12 +1928,12 @@ Prefab:
     - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
         type: 2}
       propertyPath: ButtonAction.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
         type: 2}
       propertyPath: ButtonAction.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Transform, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
         type: 2}
@@ -1910,7 +1949,21 @@ Prefab:
         type: 2}
       propertyPath: ButtonAction.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1958715333}
+      objectReference: {fileID: 1958715334}
+    - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
+        type: 2}
+      propertyPath: ButtonAction.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartElevator
+      objectReference: {fileID: 0}
+    - target: {fileID: 114766051109519536, guid: f16346cd9cdcf784b8d4037e0b4f9333,
+        type: 2}
+      propertyPath: ButtonAction.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1761815904067516, guid: f16346cd9cdcf784b8d4037e0b4f9333, type: 2}
+      propertyPath: m_TagString
+      value: Elevator
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f16346cd9cdcf784b8d4037e0b4f9333, type: 2}
   m_IsPrefabParent: 0
@@ -1937,8 +1990,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TravelTime: 10
   automatic: 0
-  CableTop: {x: 0, y: 0, z: 0}
-  CableBotton: {x: 0, y: 0, z: 0}
 --- !u!1 &1998201964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2056,6 +2107,49 @@ Transform:
   m_Father: {fileID: 1380999639}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 34.818, y: 437.018, z: -102.789}
+--- !u!1 &2006556471 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1335837077804090, guid: f16346cd9cdcf784b8d4037e0b4f9333,
+    type: 2}
+  m_PrefabInternal: {fileID: 1958715331}
+--- !u!114 &2006556477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2006556471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2083c89e1b38ee34b99b48c475e4ebdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ButtonAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 154204965}
+        m_MethodName: MoveCamera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1958715334}
+        m_MethodName: StartElevator
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!1001 &2141116281
 Prefab:
   m_ObjectHideFlags: 0
