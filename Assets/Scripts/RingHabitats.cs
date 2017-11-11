@@ -15,6 +15,7 @@ public class RingHabitats : MonoBehaviour {
     private float torusRadius;
 	private Constants.Configuration config;									// Holds reference to config file
     private List<GameObject> ringHabitatObjects = new List<GameObject>();
+	private List<GameObject> tramKeys = new List<GameObject>();
 
     // Use this for initialization
     void Start()
@@ -73,8 +74,8 @@ public class RingHabitats : MonoBehaviour {
         {
             if ((instance * 4 / numInstances == 0 ) || (instance * 4 / numInstances == numInstances-1))
             {
-                GameObject obj = createRingHabitatObject();
-                Mesh mesh = new Mesh();
+//                GameObject obj = createRingHabitatObject();
+//                Mesh mesh = new Mesh();
 
                 sectionIndex = 0;
                 for (int ringHabitatIndex = 0; ringHabitatIndex < numRingHabitatsPerInstance; ringHabitatIndex++)
@@ -92,7 +93,7 @@ public class RingHabitats : MonoBehaviour {
 //
 //                    mesh.RecalculateBounds();
 //                    mesh.RecalculateNormals();
-                    MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
+//                    MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
 //                    mFilter.mesh = mesh;
                 }
             }
@@ -129,9 +130,19 @@ public class RingHabitats : MonoBehaviour {
 		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
 		GameObject cylinder = Instantiate(habitat, transform);
+		cylinder.name = "Habitat " + ringHabitatObjects.Count;
 		cylinder.transform.localPosition = habbot;
 		cylinder.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));
+		cylinder.SetActive(true);
+		ringHabitatObjects.Add(cylinder);
 
+		GameObject tramKey = new GameObject("Tram " + tramKeys.Count);
+		tramKey.transform.parent = transform;
+		tramKey.transform.localPosition = habbot;
+		tramKey.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));
+		tramKey.transform.localPosition += tramKey.transform.up * 0.0001f;
+		tramKeys.Add(tramKey);
+		Transition1.Instance.UpdateKeys(tramKey.transform, 0);
 
         DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
     }

@@ -174,12 +174,6 @@ public class ElevatorCables : MonoBehaviour
 				// Set variables for user's elevator
 				if (i == 3)
 				{
-					GameObject p = new GameObject("p");
-					p.transform.parent = transform;
-					p.transform.localPosition = cabletop;
-					print(cabletop);
-					print(p.transform.position);
-
 					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false, true);
 					Transition1.Instance.UpdateKeys(acc_mid.transform, 2);
 					continue;

@@ -108,11 +108,11 @@ public class Transition1 : MonoBehaviour {
 
 		if (scene % 2 == 0 || index == Keys.Count-2)
 		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index].position  + Keys[index].up * buffer, Mathf.Pow(blend, 1f));
+			transform.localPosition = Vector3.SmoothDamp(transform.position, transform.position, ref velocity, config.CameraTravelTime);
 		}
 		else if (index < Keys.Count-1)
 		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position + Keys[index+1].up * buffer, Mathf.Pow(blend, 1f));
+			transform.localPosition = Vector3.SmoothDamp(transform.position, Keys[index+1].position, ref velocity, config.CameraTravelTime);
 		}
 	}
 }
