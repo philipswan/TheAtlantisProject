@@ -79,6 +79,8 @@ public class ElevatorMotion : MonoBehaviour {
 			{
 				Transition1.Instance.MoveCamera = false;
 				automatic = false;
+
+				GetComponent<AudioSource>().Stop();
 			}
 		}
 	}
@@ -103,8 +105,6 @@ public class ElevatorMotion : MonoBehaviour {
 			CurrentTarget = Target.Bottom;
 			break;
 		}
-		if (UserElevator)
-			print(CurrentTarget.ToString());
 	}
 
 	/// <summary>
@@ -134,7 +134,8 @@ public class ElevatorMotion : MonoBehaviour {
 	/// </summary>
 	public void StartElevator()
 	{
-		//print(CurrentTarget.ToString());
 		automatic = true;
+
+		GetComponent<AudioSource>().Play();
 	}
 }
