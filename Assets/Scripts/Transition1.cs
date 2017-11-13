@@ -5,9 +5,10 @@ using Constants;
 
 public class Transition1 : MonoBehaviour {
 
-	[Tooltip("The transforms that the system will move to in the order that they entered.")]
+	[Tooltip("The transforms that the camera will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds list of all transforms for transitions
 	public static Transition1 Instance;							// Holds reference to this script
+	public float ElevatorBuffer = 1.5f;							// Multiplier for how much the camera should lead the elevator
 	[HideInInspector]
 	public bool MoveCamera;										// Flag controlling vector3 damp movement
 
@@ -16,7 +17,7 @@ public class Transition1 : MonoBehaviour {
 	private Transform target;									// Custom target for the camera to move to
 	private bool ready;											// Flag controlling if the transition should begin. Only start after the system transition is over
 	private float startTime;									// Time the transition began
-	private float buffer;										// Multiplier to buffer the target position with target.up
+	private List<float> buffer = new List<float>();				// Multiplier to buffer the target position with target.up
 	private Constants.Configuration config;						// Holds referenct to the config file
 
 	// Use this for initialization
@@ -25,7 +26,6 @@ public class Transition1 : MonoBehaviour {
 		ready = false;
 		MoveCamera = false;
 		velocity = Vector3.zero;
-		buffer = 0.0f;
 	}
 
 	void Start()
@@ -46,7 +46,7 @@ public class Transition1 : MonoBehaviour {
 		}
 		else if (MoveCamera)
 		{
-			transform.position = Vector3.SmoothDamp(transform.position, target.position + target.forward * buffer, ref velocity, 0);
+			transform.position = Vector3.SmoothDamp(transform.position, target.position + target.forward * ElevatorBuffer, ref velocity, 0);
 		}
 	}
 
@@ -56,8 +56,8 @@ public class Transition1 : MonoBehaviour {
 	/// <param name="_transform">Transform.</param>
 	public void UpdateKeys(Transform _transform, float _buffer = 0.0f)
 	{
-		buffer = _buffer;
 		Keys.Add(_transform);
+		buffer.Add(_buffer);
 	}
 
 
@@ -101,15 +101,15 @@ public class Transition1 : MonoBehaviour {
 
 		if(index == 0)
 		{
-			transform.localPosition = Vector3.Lerp(transform.localPosition, Keys[index].position  + Keys[index].forward * buffer, Mathf.Pow(blend, 1f));
+			transform.localPosition = Vector3.Lerp(transform.localPosition, Keys[index].position  + Keys[index].forward * buffer[index], Mathf.Pow(blend, 1f));
 		}
-		else if (scene % 2 == 0 || index == Keys.Count-1)
+		else //if (scene % 2 == 0 || index == Keys.Count-1)
 		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index].position  + Keys[index].forward * buffer, Mathf.Pow(blend, 1f));
+			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position  + Keys[index+1].forward * buffer[index+1], Mathf.Pow(blend, 1f));
 		}
-		else if (index < Keys.Count-1)
-		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position + Keys[index+1].forward * buffer, Mathf.Pow(blend, 1f));
-		}
+//		else if (index < Keys.Count-1)
+//		{
+//			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position + Keys[index+1].forward * buffer[index], Mathf.Pow(blend, 1f));
+//		}
 	}
 }
