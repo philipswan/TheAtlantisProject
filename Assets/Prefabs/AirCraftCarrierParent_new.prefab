@@ -51,7 +51,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4922778750750676}
-  - component: {fileID: 114800416081067256}
   m_Layer: 0
   m_Name: AirCraftCarrierParent_new
   m_TagString: Untagged
@@ -139,16 +138,3 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1821577400472436}
   m_Mesh: {fileID: 4300000, guid: 13abfdfcb6814704fa4bd6bdf8ac7513, type: 3}
---- !u!114 &114800416081067256
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1927992920709346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ddab944424cec3419666e6dca69d1b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TravelTime: 10
-  automatic: 0
