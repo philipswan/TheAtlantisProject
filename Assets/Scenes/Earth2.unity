@@ -491,7 +491,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d9747de05e82cef4990ef91e0b60ea80, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.6
+  m_Volume: 0.1
   m_Pitch: 0.8
   Loop: 0
   Mute: 0
@@ -940,7 +940,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &859023772
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1081,6 +1081,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TravelTime: 10
   automatic: 0
+  ElevatorDing: {fileID: 0}
+  ElevatorMusic: {fileID: 0}
 --- !u!23 &923485626
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1858,6 +1860,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TravelTime: 10
   automatic: 0
+  ElevatorDing: {fileID: 8300000, guid: 272c70e964c33424f9d8ce0a4d93ffa4, type: 3}
+  ElevatorMusic: {fileID: 8300000, guid: fafce5e762503fc46bb349a8adc12c66, type: 3}
 --- !u!82 &1531191182
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1869,8 +1873,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fafce5e762503fc46bb349a8adc12c66, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
-  m_Pitch: 1
+  m_Volume: 0.1
+  m_Pitch: 0.95
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -2377,6 +2381,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TravelTime: 10
   automatic: 0
+  ElevatorDing: {fileID: 0}
+  ElevatorMusic: {fileID: 0}
 --- !u!108 &1958715335
 Light:
   m_ObjectHideFlags: 0
@@ -2761,7 +2767,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d9747de05e82cef4990ef91e0b60ea80, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.4
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
