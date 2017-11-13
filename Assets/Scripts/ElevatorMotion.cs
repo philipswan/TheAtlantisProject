@@ -103,6 +103,8 @@ public class ElevatorMotion : MonoBehaviour {
 			CurrentTarget = Target.Bottom;
 			break;
 		}
+		if (UserElevator)
+			print(CurrentTarget.ToString());
 	}
 
 	/// <summary>
@@ -132,6 +134,7 @@ public class ElevatorMotion : MonoBehaviour {
 	/// </summary>
 	public void StartElevator()
 	{
+		//print(CurrentTarget.ToString());
 		automatic = true;
 	}
 }
