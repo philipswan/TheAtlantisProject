@@ -13,7 +13,7 @@ public class Transition1 : MonoBehaviour {
 
 	private Vector3 velocity;									// Velocity for vector3 damp movement
 	private ElevatorMotion userElevatorMotion;					// The user's elevator
-	private Vector3 target;										// Custom target for the camera to move to
+	private Transform target;									// Custom target for the camera to move to
 	private bool ready;											// Flag controlling if the transition should begin. Only start after the system transition is over
 	private float startTime;									// Time the transition began
 	private float buffer;										// Multiplier to buffer the target position with target.up
@@ -46,14 +46,7 @@ public class Transition1 : MonoBehaviour {
 		}
 		else if (MoveCamera)
 		{
-			//transform.localPosition = Vector3.Lerp(transform.localPosition, target.position + target.up * buffer, 0.5f);
-			transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, Time.deltaTime);
-			//transform.localPosition = Vector3.Lerp(transform.localPosition, target.position + target.up, 1);
-			//transform.localPosition = Vector3.SmoothDamp(transform.position, target.position, ref velocity, 5);
-			//if (Vector3.Distance(transform.localPosition, target.localPosition) < 0.00003f)
-			//{
-			//	moveCamera = false;
-			//}
+			transform.position = Vector3.SmoothDamp(transform.position, target.position + target.forward * buffer, ref velocity, 0);
 		}
 	}
 
@@ -90,7 +83,7 @@ public class Transition1 : MonoBehaviour {
 			if (elevator.GetComponent<ElevatorMotion>().UserElevator == true)
 			{
 				userElevatorMotion = elevator.GetComponent<ElevatorMotion>();
-				target = elevator.transform.TransformVector(elevator.transform.TransformVector(userElevatorMotion.CableTop));
+				target = elevator.transform;
 				MoveCamera = true;
 				break;
 			}
@@ -106,13 +99,17 @@ public class Transition1 : MonoBehaviour {
 	{
 		int index = (int)Mathf.Floor(scene/2);
 
-		if (scene % 2 == 0 || index == Keys.Count-2)
+		if(index == 0)
 		{
-			transform.localPosition = Vector3.SmoothDamp(transform.position, transform.position, ref velocity, config.CameraTravelTime);
+			transform.localPosition = Vector3.Lerp(transform.localPosition, Keys[index].position  + Keys[index].forward * buffer, Mathf.Pow(blend, 1f));
+		}
+		else if (scene % 2 == 0 || index == Keys.Count-1)
+		{
+			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index].position  + Keys[index].forward * buffer, Mathf.Pow(blend, 1f));
 		}
 		else if (index < Keys.Count-1)
 		{
-			transform.localPosition = Vector3.SmoothDamp(transform.position, Keys[index+1].position, ref velocity, config.CameraTravelTime);
+			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position + Keys[index+1].forward * buffer, Mathf.Pow(blend, 1f));
 		}
 	}
 }

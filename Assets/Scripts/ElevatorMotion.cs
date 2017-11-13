@@ -25,6 +25,8 @@ public class ElevatorMotion : MonoBehaviour {
 	private Vector3 velocity;           // Velocity of the object when starting movement
 	private Vector3 targetPos;          // Position of the destination of the elevator
 	private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
+	private Vector3 button1Pos;			// Holds button1 position to prevent drifting when moving
+	private Vector3 button2Pos;			// Holds button2 position to prevent drifting when moving
 
 
 	// Use this for initialization
@@ -33,6 +35,12 @@ public class ElevatorMotion : MonoBehaviour {
 		velocity = Vector3.zero;
 		automatic = false;
 		UserElevator = false;
+	}
+
+	void Start()
+	{
+		button1Pos = transform.FindChild("Button 1").localPosition;
+		button2Pos = transform.FindChild("Button 2").localPosition;
 	}
 
 	// Update is called once per frame
@@ -59,6 +67,9 @@ public class ElevatorMotion : MonoBehaviour {
 			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableTop, ref velocity, TravelTime);
 			break;
 		}
+
+		transform.GetChild(1).transform.localPosition = button1Pos;
+		transform.GetChild(2).transform.localPosition = button2Pos;
 
 		// If we are close enough to the current target, switch to the other one
 		if (Vector3.Distance(transform.localPosition, targetPos) < 0.0003f)
@@ -109,7 +120,8 @@ public class ElevatorMotion : MonoBehaviour {
 
 		if (!automatic)
 		{
-			transform.localPosition = CableBotton;
+			//transform.localPosition = CableBotton;
+			//transform.localPosition -= transform.forward * 0.001f;
 		}
 
 		UpdateTarget();
