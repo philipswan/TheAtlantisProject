@@ -161,7 +161,8 @@ public class ElevatorCables : MonoBehaviour
 				GameObject acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
 				acc_mid.transform.localScale = Vector3.one * 1e-5f;
 				acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
-				acc_mid.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop_old - cablebot_old));
+				acc_mid.transform.LookAt(this.transform.TransformPoint(cabletop), this.transform.TransformVector(cabletop_old - cablebot_old));
+
 				acc_mid.SetActive(true);
 
 				// Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
@@ -169,7 +170,7 @@ public class ElevatorCables : MonoBehaviour
 				acc_bot.transform.localScale = Vector3.one * 3e-6f;
 				acc_bot.transform.localPosition = new Vector3(x3, y3, z3);
 				//acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
-				acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft), this.transform.TransformVector(cabletop_old - cablebot_old));
+				acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
 
 				// Set variables for user's elevator
 				if (i == 3)
@@ -177,11 +178,10 @@ public class ElevatorCables : MonoBehaviour
 					GameObject p = new GameObject("p");
 					p.transform.parent = transform;
 					p.transform.localPosition = cabletop;
-					print(cabletop);
-					print(p.transform.position);
 
+					acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.05f);
 					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false, true);
-					Transition1.Instance.UpdateKeys(acc_mid.transform, 2);
+					Transition1.Instance.UpdateKeys(acc_mid.transform, 1.5f);
 					continue;
 				}
 
