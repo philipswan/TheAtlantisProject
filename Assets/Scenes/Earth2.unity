@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 250671724}
   - component: {fileID: 250671723}
   m_Layer: 0
-  m_Name: home_button_PLY
+  m_Name: Button 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2428,7 +2428,7 @@ GameObject:
   - component: {fileID: 2006556473}
   - component: {fileID: 2006556477}
   m_Layer: 0
-  m_Name: home_button_PLY
+  m_Name: Button 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

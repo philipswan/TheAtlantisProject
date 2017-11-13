@@ -39,8 +39,8 @@ public class ElevatorMotion : MonoBehaviour {
 
 	void Start()
 	{
-		button1Pos = transform.GetChild(1).localPosition;
-		button2Pos = transform.GetChild(2).localPosition;
+		button1Pos = transform.FindChild("Button 1").localPosition;
+		button2Pos = transform.FindChild("Button 2").localPosition;
 	}
 
 	// Update is called once per frame
