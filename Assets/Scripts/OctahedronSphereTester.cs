@@ -9,6 +9,6 @@ public class OctahedronSphereTester : MonoBehaviour {
 	public float radius = 1f;
 
 	private void Awake () {
-		//GetComponent<MeshFilter>().mesh = OctahedronSphereCreator.Create(subdivisions, radius);
+		GetComponent<MeshFilter>().mesh = OctahedronSphereCreator.Create(subdivisions, radius);
 	}
 }
