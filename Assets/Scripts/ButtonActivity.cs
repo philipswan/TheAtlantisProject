@@ -23,8 +23,8 @@ public class ButtonActivity : MonoBehaviour {
 	{		
 		if (!eventCalled)
 		{
-			if (OVRInput.Get(OVRInput.RawButton.LHandTrigger) 
-				|| OVRInput.Get(OVRInput.RawButton.RHandTrigger))
+			if ((OVRInput.Get(OVRInput.RawButton.LHandTrigger) && other.name == "hand_left") 
+				|| (OVRInput.Get(OVRInput.RawButton.RHandTrigger) && other.name == "hand_right"))
 			{
 				GetComponent<AudioSource>().Play();
 

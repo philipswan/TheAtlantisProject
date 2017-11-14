@@ -148,8 +148,9 @@ public class ElevatorMotion : MonoBehaviour {
 			if (audioS.gameObject.name == "BackgroundMusic")
 			{
 				backgroundMusic = audioS.gameObject;
+				audioS.Stop();
+				break;
 			}
-			audioS.Stop();
 		}
 
 		GetComponent<AudioSource>().clip = ElevatorMusic;
