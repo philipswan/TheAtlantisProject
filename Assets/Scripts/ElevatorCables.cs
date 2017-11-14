@@ -170,7 +170,7 @@ public class ElevatorCables : MonoBehaviour
 				acc_bot.transform.localScale = Vector3.one * 3e-6f;
 				acc_bot.transform.localPosition = new Vector3(x3, y3, z3);
 				//acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
-				acc_bot.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
+				acc_bot.transform.LookAt(this.transform.TransformPoint(cabletop), this.transform.TransformVector(cableleft_old));
 
 				// Set variables for user's elevator
 				if (i == 3)

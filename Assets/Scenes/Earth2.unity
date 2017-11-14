@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Keys: []
+  ElevatorBuffer: 1.5
   MoveCamera: 0
 --- !u!4 &154204966
 Transform:
@@ -727,8 +728,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74bb6f4d21719e45bc2872a988f3f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CameraTravelTime: 40
-  SystemTravelTime: 10
+  CameraTravelTime: 2
+  SystemTravelTime: 1
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:
@@ -940,7 +941,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &859023772
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1592,7 +1593,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb1636b6d108e644ba8b44e1c683e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  carrier_prefab: {fileID: 1927992920709346, guid: ae1cd73d6c93f764e9dd556908b66705,
+  carrier_prefab: {fileID: 1122113844473088, guid: d6be5c4efb640ad4db56e688c8ebfdc1,
     type: 2}
   climber_prefab: {fileID: 1531191179}
   ring_edge_transform: {fileID: 2003560873}
@@ -2319,6 +2320,10 @@ Prefab:
     - target: {fileID: 400002, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 27.849
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
