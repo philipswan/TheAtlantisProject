@@ -132,12 +132,17 @@ public class RingHabitats : MonoBehaviour {
 
 		ringHabitatObjects.Add(cylinder);
 
-		if (instance == tramIndex)
+		if (instance == tramIndex && ringHabitatIndex > 0)
 		{
 			GameObject tram = Instantiate(train, transform);
 			tram.SetActive(true);
 			tram.name = "Bullet train " + trams.Count;
-			tram.transform.LookAt(this.transform.TransformPoint(habtop), this.transform.TransformVector(habtop - habbot));			
+			tram.transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-2].transform.position, this.transform.TransformVector(habtop - habbot));			
+
+			Vector3 rot = Vector3.zero;
+			rot.y -= 36.205f;
+			tram.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
+
 			tram.transform.localPosition = habtop + tram.transform.localScale.y * tram.transform.up * 2.5f;
 
 			trams.Add(tram);
