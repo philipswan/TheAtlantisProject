@@ -11,11 +11,18 @@ public class RingHabitats : MonoBehaviour {
     public float habitatHeight = .00001f;
     public Material material;
 	public GameObject habitat;
+	public GameObject train;
 
     private float torusRadius;
 	private Constants.Configuration config;									// Holds reference to config file
     private List<GameObject> ringHabitatObjects = new List<GameObject>();
-	private List<GameObject> tramKeys = new List<GameObject>();
+	private List<GameObject> trams = new List<GameObject>();
+	private int tramIndex;
+
+	void Awake()
+	{
+		tramIndex = 0;
+	}
 
     // Use this for initialization
     void Start()
@@ -74,8 +81,8 @@ public class RingHabitats : MonoBehaviour {
         {
             if ((instance * 4 / numInstances == 0 ) || (instance * 4 / numInstances == numInstances-1))
             {
-//                GameObject obj = createRingHabitatObject();
-//                Mesh mesh = new Mesh();
+                GameObject obj = createRingHabitatObject();
+                Mesh mesh = new Mesh();
 
                 sectionIndex = 0;
                 for (int ringHabitatIndex = 0; ringHabitatIndex < numRingHabitatsPerInstance; ringHabitatIndex++)
@@ -87,14 +94,6 @@ public class RingHabitats : MonoBehaviour {
                         ringHabitatSpacing,
                         vertices,
                         triangleIndices);
-
-//                    mesh.vertices = vertices;
-//                    mesh.triangles = triangleIndices;
-//
-//                    mesh.RecalculateBounds();
-//                    mesh.RecalculateNormals();
-//                    MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
-//                    mFilter.mesh = mesh;
                 }
             }
         }
@@ -109,14 +108,10 @@ public class RingHabitats : MonoBehaviour {
         theta = (instance * numRingHabitatsPerInstance + ringHabitatIndex) * ringHabitatSpacing;
         phi0 = torusRadius;
 		phi1 = torusRadius - habitatHeight * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
-
+			
         // Find the current and next segments
-        int tubePrimitiveBaseOffset = ringHabitatIndex * numTubeSides * 2;
-        int tubeIndexBaseOffset = ringHabitatIndex * numTubeSides * 6;
+		Vector3 habtop, habbot, hableft;
 
-        // Find the current and next segments
-
-        Vector3 habtop, habbot, hableft;
         habtop.x = phi0 * Mathf.Cos(theta) - torusRadius;
         habtop.z = phi0 * Mathf.Sin(theta);
         habtop.y = -Mathf.Pow(torusRadius - phi0, 1.7f) * 10;
@@ -130,21 +125,32 @@ public class RingHabitats : MonoBehaviour {
 		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
 		GameObject cylinder = Instantiate(habitat, transform);
-		cylinder.name = "Habitat " + ringHabitatObjects.Count;
+		cylinder.SetActive(true);
+		cylinder.name = "Cylinder " + ringHabitatObjects.Count;
 		cylinder.transform.localPosition = habbot;
 		cylinder.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));
-		cylinder.SetActive(true);
+
 		ringHabitatObjects.Add(cylinder);
 
-		GameObject tramKey = new GameObject("Tram " + tramKeys.Count);
-		tramKey.transform.parent = transform;
-		tramKey.transform.localPosition = habbot;
-		tramKey.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));
-		tramKey.transform.localPosition += tramKey.transform.up * 0.0001f;
-		tramKeys.Add(tramKey);
-		Transition1.Instance.UpdateKeys(tramKey.transform, 0);
+		if (instance == tramIndex && ringHabitatIndex > 0)
+		{
+			GameObject tram = Instantiate(train, transform);
+			tram.SetActive(true);
+			tram.name = "Bullet train " + trams.Count;
+			tram.transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-2].transform.position, this.transform.TransformVector(habtop - habbot));			
 
-        DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
+			Vector3 rot = Vector3.zero;
+			rot.y -= 36.205f;
+			tram.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
+
+			tram.transform.localPosition = habtop + tram.transform.localScale.y * tram.transform.up * 2.5f;
+
+			trams.Add(tram);
+
+			tramIndex++;
+		}
+
+        //DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
     }
 
     public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)

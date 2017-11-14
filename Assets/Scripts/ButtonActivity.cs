@@ -26,6 +26,8 @@ public class ButtonActivity : MonoBehaviour {
 			if (OVRInput.Get(OVRInput.RawButton.LHandTrigger) 
 				|| OVRInput.Get(OVRInput.RawButton.RHandTrigger))
 			{
+				GetComponent<AudioSource>().Play();
+
 				ButtonAction.Invoke();
 				eventCalled = true;
 			}

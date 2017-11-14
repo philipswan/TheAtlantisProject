@@ -8,26 +8,28 @@ public class ElevatorMotion : MonoBehaviour {
 	[Tooltip("Time in seconds the elevator will take to travel from the ring to the ship or vice versa.")]
 	public float TravelTime = 10;
 
-	public bool automatic;				// Should the elevator move automatically
+	public bool automatic;					// Should the elevator move automatically
+	public AudioClip ElevatorDing;			// Played when destination is reached
+	public AudioClip ElevatorMusic;			// Played during the ride
 
-	public Vector3 CableTop             // Position at the top the of the cable that the elevator should travel to (the ring)
+	public Vector3 CableTop             	// Position at the top the of the cable that the elevator should travel to (the ring)
 	{get; private set;}
 
-	public Vector3 CableBotton          // Position at the bottom of the cable that the elevator should travel to (the ship)
+	public Vector3 CableBotton          	// Position at the bottom of the cable that the elevator should travel to (the ship)
 	{get; private set;}
 
-	public bool UserElevator			// Is this the user's elevator?
+	public bool UserElevator				// Is this the user's elevator?
 	{get; private set;}
 
-	public Target CurrentTarget			// Enum holding the current target (or destination) of the elevator
+	public Target CurrentTarget				// Enum holding the current target (or destination) of the elevator
 	{get; private set;}    			  
 
-	private Vector3 velocity;           // Velocity of the object when starting movement
-	private Vector3 targetPos;          // Position of the destination of the elevator
-	private bool targetSet;             // Flag set when both targets have been set from ElevatorCables.cs
-	private Vector3 button1Pos;			// Holds button1 position to prevent drifting when moving
-	private Vector3 button2Pos;			// Holds button2 position to prevent drifting when moving
-
+	private Vector3 velocity;           	// Velocity of the object when starting movement
+	private Vector3 targetPos;          	// Position of the destination of the elevator
+	private bool targetSet;             	// Flag set when both targets have been set from ElevatorCables.cs
+	private Vector3 button1Pos;				// Holds button1 position to prevent drifting when moving
+	private Vector3 button2Pos;				// Holds button2 position to prevent drifting when moving
+	private GameObject backgroundMusic;		// Holds reference to background clip game object
 
 	// Use this for initialization
 	void Awake () {
@@ -79,6 +81,10 @@ public class ElevatorMotion : MonoBehaviour {
 			{
 				Transition1.Instance.MoveCamera = false;
 				automatic = false;
+
+				GetComponent<AudioSource>().clip = ElevatorDing;
+				GetComponent<AudioSource>().Play();
+				backgroundMusic.GetComponent<AudioSource>().Play();
 			}
 		}
 	}
@@ -132,6 +138,21 @@ public class ElevatorMotion : MonoBehaviour {
 	/// </summary>
 	public void StartElevator()
 	{
+		if (automatic)
+		{ return; }
+
 		automatic = true;
+
+		AudioSource[] sources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+		foreach( AudioSource audioS in sources) {
+			if (audioS.gameObject.name == "BackgroundMusic")
+			{
+				backgroundMusic = audioS.gameObject;
+			}
+			audioS.Stop();
+		}
+
+		GetComponent<AudioSource>().clip = ElevatorMusic;
+		GetComponent<AudioSource>().Play();
 	}
 }
