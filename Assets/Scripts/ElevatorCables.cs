@@ -37,11 +37,6 @@ public class ElevatorCables : MonoBehaviour
 		Vector3 v3 = Vector3.Cross(v1, v2).normalized * Radius;
 		float r;
 
-		//Debug.DrawRay(transform.TransformPoint(start), transform.TransformDirection(v2 * 1000), Color.red, 100);
-		//Debug.DrawRay(transform.TransformPoint(start), transform.TransformDirection(v3 * 1000), Color.green, 100);
-		//Debug.DrawRay(transform.TransformPoint(end), transform.TransformDirection(v2 * 1000), Color.yellow, 100);
-		//Debug.DrawRay(transform.TransformPoint(end), transform.TransformDirection(v3 * 1000), Color.blue, 100);
-
 		for (int j = 0; j < numTubeSides; j++)
 		{
 			// Find next (or first) vertex offset
@@ -143,20 +138,8 @@ public class ElevatorCables : MonoBehaviour
 			var cablebot_old = new Vector3(x3, y3, z3);
 			var cableleft_old = new Vector3(x4, y4, z4);
 
-			//var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			//go.transform.parent = this.transform; //ring_edge_transform;
-			//go.transform.localPosition = new Vector3(x2, y2, z2);
-			//go.transform.localScale = Vector3.one * 1e-3f;
-
 			if (i <= 4)
 			{
-				// Add an box to represent the ring terminal at the top of each stay 
-				//var acc_top = Instantiate(top_terminal_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
-				//acc_top.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.95f);
-				//acc_top.transform.localScale = Vector3.one * 4e-5f;
-				////acc_top.transform.localRotation = new Quaternion(0, -90, 0,  0); //This doesn't work
-				//acc_top.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop_old - cablebot_old));
-
 				// Add an capsule somewher along the length of each stay 
 				GameObject acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
 				acc_mid.transform.localScale = Vector3.one * 1e-5f;
@@ -186,18 +169,6 @@ public class ElevatorCables : MonoBehaviour
 				}
 
 				acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, true);
-
-				//acc.transform.rotation = Quaternion.LookRotation(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
-				//acc.transform.LookAt(this.transform.TransformVector(Vector3.Cross(cableleft - cablebot, cabletop - cablebot)), this.transform.TransformVector(cabletop - cablebot));
-
-				//                if (i == 0)
-				//                {
-				//                    // We're going to set a waypoint so that we can navigate to here later using animation scripts
-				//                    //Transform temp = Keymanager.GetComponent<Waypoints>().waypoints[1];
-				//                    Keymanager.waypoints[1].position = -acc_bot.transform.position;
-				//                    Keymanager.waypoints[1].rotation = acc_bot.transform.rotation;
-				//                    Keymanager.waypoints[1].localScale = Vector3.one * 10.0f;
-				//                }
 			}
 
 

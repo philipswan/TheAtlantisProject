@@ -30,17 +30,24 @@ public class ElevatorMotion : MonoBehaviour {
 	private Vector3 button1Pos;				// Holds button1 position to prevent drifting when moving
 	private Vector3 button2Pos;				// Holds button2 position to prevent drifting when moving
 	private GameObject backgroundMusic;		// Holds reference to background clip game object
+	private float botBuffer;				// Distance between carrier and elevator to stop motion
+	private float topBuffer;				// Distance between ring and elevator to stop motion
+	private float buffer;					// Holds current buffer
 
-	// Use this for initialization
+	// Use this for initialization on creation
 	void Awake () {
 		CurrentTarget = Target.Bottom;
 		velocity = Vector3.zero;
 		automatic = false;
 		UserElevator = false;
+		botBuffer = 0.00015f;
+		topBuffer = 0.0003f;
 	}
 
+	// Use this for initialization on first frame
 	void Start()
 	{
+		// Store button positions to prevent drift in update method
 		button1Pos = transform.FindChild("Button 1").localPosition;
 		button2Pos = transform.FindChild("Button 2").localPosition;
 	}
@@ -70,11 +77,12 @@ public class ElevatorMotion : MonoBehaviour {
 			break;
 		}
 
+		// Keep buttons in the same local position to prevent drift
 		transform.GetChild(1).transform.localPosition = button1Pos;
 		transform.GetChild(2).transform.localPosition = button2Pos;
 
 		// If we are close enough to the current target, switch to the other one
-		if (Vector3.Distance(transform.localPosition, targetPos) < 0.0003f)
+		if (Vector3.Distance(transform.localPosition, targetPos) < buffer)
 		{
 			UpdateTarget();
 			if (UserElevator)
@@ -84,7 +92,7 @@ public class ElevatorMotion : MonoBehaviour {
 
 				GetComponent<AudioSource>().clip = ElevatorDing;
 				GetComponent<AudioSource>().Play();
-				backgroundMusic.GetComponent<AudioSource>().Play();
+				backgroundMusic.GetComponent<AudioSource>().Play();	// Continue playing background music
 			}
 		}
 	}
@@ -101,12 +109,15 @@ public class ElevatorMotion : MonoBehaviour {
 		{
 		case Target.Top:
 			CurrentTarget = Target.Bottom;
+			buffer = botBuffer;
 			break;
 		case Target.Bottom:
 			CurrentTarget = Target.Top;
+			buffer = topBuffer;
 			break;
 		default:
 			CurrentTarget = Target.Bottom;
+			buffer = botBuffer;
 			break;
 		}
 	}
@@ -117,6 +128,7 @@ public class ElevatorMotion : MonoBehaviour {
 	/// <param name="_cableTop">Cable top.</param>
 	/// <param name="_cableBot">Cable bot.</param>
 	/// <param name="_automatic">If set to <c>true</c> automatic.</param>
+	/// <param name="_userElevator">If set to <c>true</c> user elevator.</param>
 	public void SetPositions(Vector3 _cableTop, Vector3 _cableBot, bool _automatic, bool _userElevator = false)
 	{
 		CableTop = _cableTop;
@@ -124,13 +136,7 @@ public class ElevatorMotion : MonoBehaviour {
 		automatic = _automatic;
 		UserElevator = _userElevator;
 
-		if (!automatic)
-		{
-			//transform.localPosition = CableBotton;
-			//transform.localPosition -= transform.forward * 0.001f;
-		}
-
-		UpdateTarget();
+		UpdateTarget();	// Set the target of the elevator. If it is not the user elevator, this also sets it in motion
 	}
 
 	/// <summary>
@@ -143,6 +149,7 @@ public class ElevatorMotion : MonoBehaviour {
 
 		automatic = true;
 
+		// Find the background music, stop it and store its reference to play it later
 		AudioSource[] sources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
 		foreach( AudioSource audioS in sources) {
 			if (audioS.gameObject.name == "BackgroundMusic")

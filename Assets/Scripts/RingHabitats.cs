@@ -152,6 +152,7 @@ public class RingHabitats : MonoBehaviour {
 			tramIndex++;
 		}
 
+		// No longer needed because we are using prefabs for habitats
         //DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
     }
 
