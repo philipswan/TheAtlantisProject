@@ -19,7 +19,7 @@ public class TramMotion : MonoBehaviour {
 
 		if (Scene < keys.Count * 2)
 		{
-			//UpdateSystem(Scene, Blend);
+			UpdateSystem(Scene, Blend);
 		}
 		else if (Scene == keys.Count * 2)
 		{
@@ -67,8 +67,7 @@ public class TramMotion : MonoBehaviour {
 		int index0 = max(0, min(keys.Count - 1, (int)Mathf.Floor(scene / 2)));
 		int index1 = max(0, min(keys.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
 
-		transform.localPosition = Vector3.Lerp(keys[index0].position, keys[index1].position, Mathf.Pow(blend, 1f));
+		transform.localPosition = Vector3.Lerp(keys[index0].localPosition, keys[index1].localPosition, Mathf.Pow(blend, 1f));
 		transform.localRotation = Quaternion.Lerp(keys[index0].localRotation, keys[index1].localRotation, Mathf.Pow(blend, 1.05f));
-		transform.localScale = Vector3.Lerp(keys[index0].localScale, keys[index1].localScale, Mathf.Pow(blend, 1.75f));
 	}
 }

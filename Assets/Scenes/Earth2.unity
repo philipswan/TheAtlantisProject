@@ -618,11 +618,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcec2271c979e74596e8968b60b916c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tram: {fileID: 0}
   TubeRadius: 0.000004
   NumSegments: 200
   NumTubes: 12
   TramRing: 0
+  Tram: {fileID: 0}
 --- !u!23 &330127975
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -732,6 +732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraTravelTime: 2
   SystemTravelTime: 1
+  TramTravelTime: 10
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:
@@ -789,11 +790,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcec2271c979e74596e8968b60b916c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tram: {fileID: 1452890902}
   TubeRadius: 0.000004
   NumSegments: 200
   NumTubes: 12
   TramRing: 1
+  Tram: {fileID: 1452890902}
 --- !u!23 &466295306
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1853,6 +1854,17 @@ GameObject:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 8cdd1d5e6f940914e9d7400d547dd674, type: 3}
   m_PrefabInternal: {fileID: 1015838822}
+--- !u!114 &1452890904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1452890902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e28e8f248486f148add14736bd5f8c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1460637433
 GameObject:
   m_ObjectHideFlags: 0
