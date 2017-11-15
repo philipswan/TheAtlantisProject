@@ -20,6 +20,7 @@ public class Ring : MonoBehaviour {
 	public GameObject Tram;
 
 	private List<GameObject> trams = new List<GameObject>();	// Holds all trams in the scene
+	private List<GameObject> keys = new List<GameObject>();		// Holds all reference points for tram motion
     private float tetheredRingRadius;							// Calculated radius of ring
 	private Constants.Configuration config;						// Holds reference to config file
 
@@ -112,13 +113,9 @@ public class Ring : MonoBehaviour {
 
 				if (TramRing && j == 0 && prevx != 0.0f)
 				{
-					GameObject g = new GameObject("point");
-					g.transform.SetParent(transform);
-					g.transform.localPosition = new Vector3(prevx,prevy,prevz);
-
 					GameObject tram = Instantiate(Tram, transform);
 					tram.transform.localPosition = new Vector3(x,y,z);
-					tram.name = "Tram: " + trams.Count.ToString();
+					tram.name = "Tram " + trams.Count.ToString();
 					tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
 					tram.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
 
@@ -128,6 +125,12 @@ public class Ring : MonoBehaviour {
 
 					tram.SetActive(true);
 					trams.Add(tram);
+
+					GameObject key = new GameObject("key " + keys.Count);
+					key.transform.SetParent(transform);
+					key.transform.localPosition = tram.transform.localPosition;
+					key.transform.localRotation = tram.transform.localRotation;
+					keys.Add(key);
 				}
             }
         }
@@ -147,6 +150,39 @@ public class Ring : MonoBehaviour {
         Renderer renderer = GetComponent<MeshRenderer>();
         Material mat = Resources.Load("earthMat") as Material;
         renderer.material = mat;
-    }
+    
+		UpdateTramKeys();
+	}
+
+	/// <summary>
+	/// Updates the tram keys.
+	/// </summary>
+	private void UpdateTramKeys()
+	{
+		for (int i=0; i<trams.Count; i++)
+		{
+			List<GameObject> sortedKeys = SortKeys(i);
+			foreach(GameObject k in sortedKeys)
+			{
+				trams[i].GetComponent<TramMotion>().AddKey(k.transform);
+			}
+		}
+	}
+
+	private List<GameObject> SortKeys(int index)
+	{
+		List<GameObject> sortedKeys = new List<GameObject>();
+
+		for (int i=index; i<keys.Count; i++)
+		{
+			sortedKeys.Add(keys[i]);
+		}
+		for (int i=0; i<index; i++)
+		{
+			sortedKeys.Add(keys[i]);
+		}
+
+		return sortedKeys;
+	}
 
 }

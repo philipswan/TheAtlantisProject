@@ -18,6 +18,9 @@ namespace Constants{
 		[Tooltip("Lerp time for system movement")]
 		public int SystemTravelTime = 10;
 
+		[Tooltip("Lerp time for tram movement")]
+		public int TramTravelTime = 10;
+
 		[Tooltip("Latitude of the ring")]
 		public float RingLatitude = -34f;
 
