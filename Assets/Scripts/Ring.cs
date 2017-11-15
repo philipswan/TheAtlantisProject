@@ -27,13 +27,11 @@ public class Ring : MonoBehaviour {
 		if (!TramRing)
 		{
 			tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
-			print("ring1 radius: " + tetheredRingRadius);
 			RefreshRing();
 		}
 		else
 		{
 			tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
-			print("ring2 radius: " + tetheredRingRadius);
 			RefreshRing();
 		}
     }
@@ -93,13 +91,29 @@ public class Ring : MonoBehaviour {
                 int iv4 = nextTubeOffset + j;
 
                 // Calculate X, Y, Z coordinates.
-
                 x = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Cos(angle) - tetheredRingRadius;
                 z = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Sin(angle);
                 y = TubeRadius * Mathf.Sin(j * tubeSize);
 
-				if (TramRing && i >= trams.Count)
+                // Add the vertex to the vertex array
+                vertices[iv1] = new Vector3(x, y, z);
+
+                // "Draw" the first triangle involving this vertex
+                triangleIndices[iv1 * 6] = iv1;
+                triangleIndices[iv1 * 6 + 1] = iv2;
+                triangleIndices[iv1 * 6 + 2] = iv3;
+
+                // Finish the quad
+                triangleIndices[iv1 * 6 + 3] = iv3;
+                triangleIndices[iv1 * 6 + 4] = iv4;
+                triangleIndices[iv1 * 6 + 5] = iv1;
+
+				if (TramRing && j == 0 && prevx != 0.0f)
 				{
+					GameObject g = new GameObject("point");
+					g.transform.SetParent(transform);
+					g.transform.localPosition = new Vector3(prevx,prevy,prevz);
+
 					GameObject tram = Instantiate(Tram, transform);
 					tram.transform.localPosition = new Vector3(x,y,z);
 					tram.name = "Tram: " + trams.Count.ToString();
@@ -112,20 +126,7 @@ public class Ring : MonoBehaviour {
 
 					tram.SetActive(true);
 					trams.Add(tram);
-
 				}
-
-                // Add the vertex to the vertex array
-                vertices[iv1] = new Vector3(x, y, z);
-
-                // "Draw" the first triangle involving this vertex
-                triangleIndices[iv1 * 6] = iv1;
-                triangleIndices[iv1 * 6 + 1] = iv2;
-                triangleIndices[iv1 * 6 + 2] = iv3;
-                // Finish the quad
-                triangleIndices[iv1 * 6 + 3] = iv3;
-                triangleIndices[iv1 * 6 + 4] = iv4;
-                triangleIndices[iv1 * 6 + 5] = iv1;
             }
         }
 
@@ -134,9 +135,13 @@ public class Ring : MonoBehaviour {
 
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
-		GameObject ring = new GameObject("ringx");
+
+		GameObject ring = new GameObject(TramRing ? "Tram Ring" : "Ring");
+		ring.transform.SetParent(transform);
+
 		MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
         mFilter.mesh = mesh;
+
         Renderer renderer = GetComponent<MeshRenderer>();
         Material mat = Resources.Load("earthMat") as Material;
         renderer.material = mat;
