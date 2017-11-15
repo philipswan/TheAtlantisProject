@@ -60,8 +60,9 @@ public class Ring : MonoBehaviour {
         float tubeSize = 2 * Mathf.PI / (float)NumTubes;
 
         // Create floats for our xyz coordinates
-        float x = 0, y = 0, z = 0;
+		float x = 0, y = 0, z = 0;
 		float prevx = 0, prevy = 0, prevz = 0;
+		float upx = 0, upy = 0, upz = 0;
 
         // Begin loop that fills in both arrays
         for (int i = 0; i < NumSegments; i++)
@@ -111,6 +112,7 @@ public class Ring : MonoBehaviour {
 
 					tram.SetActive(true);
 					trams.Add(tram);
+
 				}
 
                 // Add the vertex to the vertex array
