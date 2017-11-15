@@ -12,6 +12,8 @@ public class Ring : MonoBehaviour {
     public float TubeRadius = 0.001f;
     public int numSegments = 100;
     public int numTubes = 12;
+	[Tooltip("Set true if this script is attached to the tram ring object. This will place the ring lower.")]
+	public bool TramRing;
 
     private float tetheredRingRadius;
 	private Constants.Configuration config;		// Holds reference to config file
@@ -19,8 +21,18 @@ public class Ring : MonoBehaviour {
     void Start() {
 		config = Constants.Configuration.Instance;
 
-		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
-        RefreshRing();
+		if (!TramRing)
+		{
+			tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
+			print("ring1 radius: " + tetheredRingRadius);
+			RefreshRing();
+		}
+		else
+		{
+			tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+			print("ring2 radius: " + tetheredRingRadius);
+			RefreshRing();
+		}
     }
 
     public void RefreshRing() {
@@ -77,6 +89,10 @@ public class Ring : MonoBehaviour {
                 z = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Sin(angle);
                 y = TubeRadius * Mathf.Sin(j * tubeSize);
 
+				GameObject g = new GameObject("Ring position");
+				g.transform.parent = transform;
+				g.transform.localPosition = new Vector3 (x,y,z);
+
                 // Add the vertex to the vertex array
                 vertices[iv1] = new Vector3(x, y, z);
 
@@ -95,7 +111,8 @@ public class Ring : MonoBehaviour {
 
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
-        MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
+		GameObject ring = new GameObject("ringx");
+		MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
         mFilter.mesh = mesh;
         Renderer renderer = GetComponent<MeshRenderer>();
         Material mat = Resources.Load("earthMat") as Material;

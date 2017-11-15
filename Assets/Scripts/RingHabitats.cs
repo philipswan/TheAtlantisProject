@@ -137,7 +137,7 @@ public class RingHabitats : MonoBehaviour {
 			GameObject tram = Instantiate(train, transform);
 			tram.SetActive(true);
 			tram.name = "Bullet train " + trams.Count;
-			tram.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));			
+			tram.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));	
 
 			Vector3 rot = Vector3.zero;
 			rot.x = -5.432f;
