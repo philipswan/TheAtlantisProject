@@ -114,13 +114,15 @@ public class Ring : MonoBehaviour {
 				if (TramRing && j == 0 && prevx != 0.0f)
 				{
 					GameObject tram = Instantiate(Tram, transform);
-					tram.transform.localPosition = new Vector3(x,y,z);
+					tram.transform.localPosition = new Vector3(x,y,z) - Vector3.right * 2e-6f;// + Vector3.up * 5e-6f;
 					tram.name = "Tram " + trams.Count.ToString();
 					tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
 					tram.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
 
 					Vector3 rot = Vector3.zero;
-					rot.z = -125;
+					rot.x = -2.716f;
+					rot.y = 178.277f;
+					rot.z = -233.825f;
 					tram.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
 
 					tram.SetActive(true);
