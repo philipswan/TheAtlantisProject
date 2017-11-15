@@ -26,7 +26,7 @@ public class ElevatorCables : MonoBehaviour
 	{
 		config = Constants.Configuration.Instance;
 
-		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
+		tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
 		RefreshElevatorCables();
 	}
 
