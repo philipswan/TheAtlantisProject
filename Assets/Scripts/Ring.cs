@@ -10,12 +10,14 @@ using System.Collections.Generic;
 [RequireComponent(typeof(MeshFilter),typeof(MeshRenderer))]
 public class Ring : MonoBehaviour {
 
-	public GameObject Tram;
+	[Header("Ring Properties")]
     public float TubeRadius = 0.001f;
     public int NumSegments = 100;
     public int NumTubes = 12;
-	[Tooltip("Set true if this script is attached to the tram ring object. This will place the ring lower.")]
+	[Header("Tram Options")]
+	[Tooltip("Set true if this script is attached to the tram ring object. This will place the ring at a lower position.")]
 	public bool TramRing;
+	public GameObject Tram;
 
 	private List<GameObject> trams = new List<GameObject>();	// Holds all trams in the scene
     private float tetheredRingRadius;							// Calculated radius of ring
