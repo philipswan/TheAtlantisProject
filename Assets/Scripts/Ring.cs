@@ -65,7 +65,6 @@ public class Ring : MonoBehaviour {
         // Create floats for our xyz coordinates
 		float x = 0, y = 0, z = 0;
 		float prevx = 0, prevy = 0, prevz = 0;
-		float upx = 0, upy = 0, upz = 0;
 
         // Begin loop that fills in both arrays
         for (int i = 0; i < NumSegments; i++)
@@ -96,7 +95,7 @@ public class Ring : MonoBehaviour {
                 int iv4 = nextTubeOffset + j;
 
                 // Calculate X, Y, Z coordinates.
-                x = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Cos(angle) - tetheredRingRadius;
+                x = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Cos(angle);
                 z = (tetheredRingRadius + TubeRadius * Mathf.Cos(j * tubeSize)) * Mathf.Sin(angle);
                 y = TubeRadius * Mathf.Sin(j * tubeSize);
 
@@ -197,7 +196,8 @@ public class Ring : MonoBehaviour {
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysTop);
 			foreach(Vector3 k in sortedPositions)
 			{
-				tramsTop[i].GetComponent<TramMotion>().AddPosition(k);
+				bool lastItem = sortedPositions.IndexOf(k) == sortedPositions.Count-1 ? true : false;
+				tramsTop[i].GetComponent<TramMotion>().AddPosition(k, lastItem);
 			}
 		}
 
@@ -213,7 +213,8 @@ public class Ring : MonoBehaviour {
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysBot);
 			foreach(Vector3 k in sortedPositions)
 			{
-				tramsBot[i].GetComponent<TramMotion>().AddPosition(k);
+				bool lastItem = sortedPositions.IndexOf(k) == sortedPositions.Count-1 ? true : false;
+				tramsBot[i].GetComponent<TramMotion>().AddPosition(k, lastItem);
 			}
 		}
 	}

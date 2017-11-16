@@ -6,7 +6,14 @@ public class TramMotion : MonoBehaviour {
 
 	private List<Quaternion> rotations = new List<Quaternion>();
 	private List<Vector3> positions = new List<Vector3>();
-	private Constants.Configuration config;						// Holds reference to config script
+	private Constants.Configuration config;							// Holds reference to config script
+	private float startTime;										// Starting time of the movement. Reset when a cycle is completed
+	private bool keysSet;											// Flag controlling activation of tram motion
+
+	void Awake()
+	{
+		keysSet = false;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -15,8 +22,11 @@ public class TramMotion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.TramTravelTime);
-		float Blend = Mathf.Min (Time.unscaledTime / config.TramTravelTime - Scene, 1.0f);
+		if (!keysSet)
+		{ return; }
+
+		int Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.TramTravelTime);
+		float Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.TramTravelTime - Scene, 1.0f);
 
 		if (Scene < positions.Count * 2)
 		{
@@ -24,7 +34,7 @@ public class TramMotion : MonoBehaviour {
 		}
 		else
 		{
-			// Restart cycle here	
+			startTime = Time.unscaledTime;
 		}
 	}
 
@@ -38,9 +48,15 @@ public class TramMotion : MonoBehaviour {
 	}
 
 	// Adds position to list
-	public void AddPosition(Vector3 pos)
+	public void AddPosition(Vector3 pos, bool _start = false)
 	{
 		positions.Add(pos);
+
+		if (_start)
+		{
+			startTime = Time.unscaledTime;
+			keysSet = true;
+		}
 	}
 
 	/// <summary>
