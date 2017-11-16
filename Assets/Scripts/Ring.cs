@@ -19,9 +19,11 @@ public class Ring : MonoBehaviour {
 	public bool TramRing;
 	public GameObject Tram;
 
-	private List<GameObject> trams = new List<GameObject>();	// Holds all trams in the scene
-	private List<GameObject> keys = new List<GameObject>();		// Holds all reference points for tram motion
-    private float tetheredRingRadius;							// Calculated radius of ring
+	private List<GameObject> tramsTop = new List<GameObject>();	// Holds all top trams in the scene
+	private List<GameObject> tramsBot = new List<GameObject>();	// Holds all bottom trams in the scene
+	private List<GameObject> keysTop = new List<GameObject>();	// Holds all reference points for top tram motion
+	private List<GameObject> keysBot = new List<GameObject>();	// Holds all reference points for bottom tram motion
+	private float tetheredRingRadius;							// Calculated radius of ring
 	private Constants.Configuration config;						// Holds reference to config file
 
     void Start() {
@@ -113,26 +115,47 @@ public class Ring : MonoBehaviour {
 
 				if (TramRing && j == 0 && prevx != 0.0f)
 				{
-					GameObject tram = Instantiate(Tram, transform);
-					tram.transform.localPosition = new Vector3(x,y,z) - Vector3.right * 2e-6f;// + Vector3.up * 5e-6f;
-					tram.name = "Tram " + trams.Count.ToString();
-					tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
-					tram.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
+					// Add tram for top track
+					GameObject tramTop = Instantiate(Tram, transform);
+					tramTop.transform.localPosition = new Vector3(x,y,z) - tramTop.transform.GetChild(0).transform.right * 5e-6f;
+					tramTop.name = "Top Tram " + tramsTop.Count.ToString();
+					tramTop.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
+					tramTop.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
 
 					Vector3 rot = Vector3.zero;
 					rot.x = -2.716f;
 					rot.y = 178.277f;
 					rot.z = -233.825f;
-					tram.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
+					tramTop.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
 
-					tram.SetActive(true);
-					trams.Add(tram);
+					tramTop.SetActive(true);
+					tramsTop.Add(tramTop);
 
-					GameObject key = new GameObject("key " + keys.Count);
-					key.transform.SetParent(transform);
-					key.transform.localPosition = tram.transform.localPosition;
-					key.transform.localRotation = tram.transform.localRotation;
-					keys.Add(key);
+					// Add key for top track
+					GameObject keyTop = new GameObject("key " + keysTop.Count);
+					keyTop.transform.SetParent(transform);
+					keyTop.transform.localPosition = tramTop.transform.localPosition;
+					keyTop.transform.localRotation = tramTop.transform.localRotation;
+					keysTop.Add(keyTop);
+
+					// Add tram for bottom track
+					GameObject tramBot = Instantiate(Tram, transform);
+					tramBot.transform.localPosition = new Vector3(x,y,z) - Vector3.right * 3e-6f;
+					tramBot.name = "Bottom Tram " + tramsBot.Count.ToString();
+					tramBot.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
+					tramBot.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
+
+					tramBot.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
+
+					tramBot.SetActive(true);
+					tramsBot.Add(tramBot);
+
+					// Add key for bottom tram
+					GameObject keyBot = new GameObject("key " + keysBot.Count);
+					keyBot.transform.SetParent(transform);
+					keyBot.transform.localPosition = tramBot.transform.localPosition;
+					keyBot.transform.localRotation = tramBot.transform.localRotation;
+					keysBot.Add(keyBot);
 				}
             }
         }
@@ -156,22 +179,40 @@ public class Ring : MonoBehaviour {
 		UpdateTramKeys();
 	}
 
+
 	/// <summary>
 	/// Updates the tram keys.
 	/// </summary>
 	private void UpdateTramKeys()
 	{
-		for (int i=0; i<trams.Count; i++)
+		// Set the keys for each tram in the top track
+		for (int i=0; i<tramsTop.Count; i++)
 		{
-			List<GameObject> sortedKeys = SortKeys(i);
+			List<GameObject> sortedKeys = SortKeys(i, keysTop);
 			foreach(GameObject k in sortedKeys)
 			{
-				trams[i].GetComponent<TramMotion>().AddKey(k.transform);
+				tramsTop[i].GetComponent<TramMotion>().AddKey(k.transform);
+			}
+		}
+
+		// Set the keys for each tram in the bottom track
+		for (int i=0; i<tramsBot.Count; i++)
+		{
+			List<GameObject> sortedKeys = SortKeys(i, keysBot);
+			foreach(GameObject k in sortedKeys)
+			{
+				tramsBot[i].GetComponent<TramMotion>().AddKey(k.transform);
 			}
 		}
 	}
 
-	private List<GameObject> SortKeys(int index)
+	/// <summary>
+	/// Sorts the keys.
+	/// </summary>
+	/// <returns>The keys.</returns>
+	/// <param name="index">Index.</param>
+	/// <param name="keys">Keys.</param>
+	private List<GameObject> SortKeys(int index, List<GameObject> keys)
 	{
 		List<GameObject> sortedKeys = new List<GameObject>();
 
