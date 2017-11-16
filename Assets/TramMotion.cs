@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TramMotion : MonoBehaviour {
 
-	private List<Transform> keys = new List<Transform>();
+	private List<Quaternion> rotations = new List<Quaternion>();
+	private List<Vector3> positions = new List<Vector3>();
 	private Constants.Configuration config;						// Holds reference to config script
 
 	// Use this for initialization
@@ -17,14 +18,13 @@ public class TramMotion : MonoBehaviour {
 		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.TramTravelTime);
 		float Blend = Mathf.Min (Time.unscaledTime / config.TramTravelTime - Scene, 1.0f);
 
-		if (Scene < keys.Count * 2)
+		if (Scene < positions.Count * 2)
 		{
 			UpdateSystem(Scene, Blend);
 		}
-		else if (Scene == keys.Count * 2)
+		else
 		{
-			//Transition1.Instance.BeginTransition();
-			enabled = false;
+			// Restart cycle here	
 		}
 	}
 
@@ -32,9 +32,15 @@ public class TramMotion : MonoBehaviour {
 	/// Adds key to list
 	/// </summary>
 	/// <param name="_key">Key.</param>
-	public void AddKey(Transform _key)
+	public void AddRotation(Quaternion rot)
 	{
-		keys.Add(_key);
+		rotations.Add(rot);
+	}
+
+	// Adds position to list
+	public void AddPosition(Vector3 pos)
+	{
+		positions.Add(pos);
 	}
 
 	/// <summary>
@@ -64,10 +70,10 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="blend">Blend.</param>
 	private void UpdateSystem(int scene, float blend)
 	{
-		int index0 = max(0, min(keys.Count - 1, (int)Mathf.Floor(scene / 2)));
-		int index1 = max(0, min(keys.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
+		int index0 = max(0, min(positions.Count - 1, (int)Mathf.Floor(scene / 2)));
+		int index1 = max(0, min(positions.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
 
-		transform.localPosition = Vector3.Lerp(keys[index0].localPosition, keys[index1].localPosition, Mathf.Pow(blend, 1f));
-		transform.localRotation = Quaternion.Lerp(keys[index0].localRotation, keys[index1].localRotation, Mathf.Pow(blend, 1.05f));
+		transform.localPosition = Vector3.Lerp(positions[index0], positions[index1], blend);
+		transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[index1], Mathf.Pow(blend, 1.05f));
 	}
 }

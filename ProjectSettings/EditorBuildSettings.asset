@@ -35,27 +35,30 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/SampleScenes/Input/Input Tester/Input Tester.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Input/Keyboard/Keyboard.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Rendering/Movie Player/Movie Player.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Rendering/Render Frame Rate/Render Frame Rate.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/Rendering/Surface Detail/Surface Detail.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/UI/Overlay/OverlayUIDemo.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/UI/Pointers/Pointers.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/SampleScenes/UI/Pointers - Gaze Click/Pointers - Gaze Click.unity
     guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/OVRHarness/Scenes/StartUp.unity
     guid: a899a6e5d1e3813459952712ee7aaac0
+  - enabled: 1
+    path: Assets/Scenes/Earth2.unity
+    guid: d3a0044145d21a8489facdf50d76776f

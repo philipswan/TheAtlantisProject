@@ -188,44 +188,77 @@ public class Ring : MonoBehaviour {
 		// Set the keys for each tram in the top track
 		for (int i=0; i<tramsTop.Count; i++)
 		{
-			List<GameObject> sortedKeys = SortKeys(i, keysTop);
-			foreach(GameObject k in sortedKeys)
+			List<Quaternion> sortedKeys = SortKeysRotations(i, keysTop);
+			foreach(Quaternion k in sortedKeys)
 			{
-				tramsTop[i].GetComponent<TramMotion>().AddKey(k.transform);
+				tramsTop[i].GetComponent<TramMotion>().AddRotation(k);
+			}
+
+			List<Vector3> sortedPositions = SortKeysPositions(i, keysTop);
+			foreach(Vector3 k in sortedPositions)
+			{
+				tramsTop[i].GetComponent<TramMotion>().AddPosition(k);
 			}
 		}
 
 		// Set the keys for each tram in the bottom track
 		for (int i=0; i<tramsBot.Count; i++)
 		{
-			List<GameObject> sortedKeys = SortKeys(i, keysBot);
-			foreach(GameObject k in sortedKeys)
+			List<Quaternion> sortedKeys = SortKeysRotations(i, keysBot);
+			foreach(Quaternion k in sortedKeys)
 			{
-				tramsBot[i].GetComponent<TramMotion>().AddKey(k.transform);
+				tramsBot[i].GetComponent<TramMotion>().AddRotation(k);
+			}
+
+			List<Vector3> sortedPositions = SortKeysPositions(i, keysBot);
+			foreach(Vector3 k in sortedPositions)
+			{
+				tramsBot[i].GetComponent<TramMotion>().AddPosition(k);
 			}
 		}
 	}
 
 	/// <summary>
-	/// Sorts the keys.
+	/// Sorts the Gameobject keys.
 	/// </summary>
-	/// <returns>The keys.</returns>
+	/// <returns>Gameobjects in order.</returns>
 	/// <param name="index">Index.</param>
 	/// <param name="keys">Keys.</param>
-	private List<GameObject> SortKeys(int index, List<GameObject> keys)
+	private List<Quaternion> SortKeysRotations(int index, List<GameObject> keys)
 	{
-		List<GameObject> sortedKeys = new List<GameObject>();
+		List<Quaternion> sortedKeys = new List<Quaternion>();
 
 		for (int i=index; i<keys.Count; i++)
 		{
-			sortedKeys.Add(keys[i]);
+			sortedKeys.Add(keys[i].transform.localRotation);
 		}
 		for (int i=0; i<index; i++)
 		{
-			sortedKeys.Add(keys[i]);
+			sortedKeys.Add(keys[i].transform.localRotation);
 		}
 
 		return sortedKeys;
 	}
 
+	/// <summary>
+	/// Sorts the keys.
+	/// </summary>
+	/// <returns>Vector3 local positions in order.</returns>
+	/// <param name="index">Index.</param>
+	/// <param name="keys">Keys.</param>
+	private List<Vector3> SortKeysPositions(int index, List<GameObject> keys)
+	{
+		List<Vector3> sortedKeys = new List<Vector3>();
+
+		for (int i=index; i<keys.Count; i++)
+		{
+			sortedKeys.Add(keys[i].transform.localPosition);
+		}
+		for (int i=0; i<index; i++)
+		{
+			sortedKeys.Add(keys[i].transform.localPosition);
+		}
+			
+		return sortedKeys;
+	}
 }
