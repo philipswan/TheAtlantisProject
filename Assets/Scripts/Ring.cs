@@ -117,9 +117,9 @@ public class Ring : MonoBehaviour {
 				{
 					// Add tram for top track
 					GameObject tramTop = Instantiate(Tram, transform);
-					tramTop.transform.localPosition = new Vector3(x,y,z) - tramTop.transform.GetChild(0).transform.right * 5e-6f;
+					tramTop.transform.localPosition = new Vector3(x,y,z) + transform.forward * 3e-6f + transform.up * 3e-6f;
 					tramTop.name = "Top Tram " + tramsTop.Count.ToString();
-					tramTop.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
+					tramTop.transform.localScale = new Vector3(4e-7f, 4e-7f, 4e-7f);
 					tramTop.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
 
 					Vector3 rot = Vector3.zero;
@@ -142,7 +142,7 @@ public class Ring : MonoBehaviour {
 					GameObject tramBot = Instantiate(Tram, transform);
 					tramBot.transform.localPosition = new Vector3(x,y,z) - Vector3.right * 3e-6f;
 					tramBot.name = "Bottom Tram " + tramsBot.Count.ToString();
-					tramBot.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
+					tramBot.transform.localScale = new Vector3(4e-7f, 4e-7f, 4e-7f);
 					tramBot.transform.LookAt(transform.TransformPoint(new Vector3(prevx, prevy, prevz)));
 
 					tramBot.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
