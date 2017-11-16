@@ -128,7 +128,7 @@ public class RingHabitats : MonoBehaviour {
 		cylinder.SetActive(true);
 		cylinder.name = "Cylinder " + ringHabitatObjects.Count;
 		cylinder.transform.localPosition = habbot;
-		cylinder.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));
+		cylinder.transform.up = this.transform.TransformVector(habtop - habbot);
 
 		ringHabitatObjects.Add(cylinder);
 
