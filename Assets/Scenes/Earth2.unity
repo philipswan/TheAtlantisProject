@@ -793,7 +793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TubeRadius: 0.000004
-  NumSegments: 200
+  NumSegments: 2000
   NumTubes: 24
   TramRing: 1
   Tram: {fileID: 1452890902}

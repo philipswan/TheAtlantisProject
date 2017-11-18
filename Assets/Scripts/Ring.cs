@@ -134,7 +134,8 @@ public class Ring : MonoBehaviour {
 				}
 				else if (TramRing && j == 9 
 					&& prevx != 0.0f
-					&& i != 0)
+					&& i != 0
+					&& i % 10 == 0)
 				{
 					upx = (tetheredRingRadius + TubeRadius * Mathf.Cos(20 * tubeSize)) * Mathf.Cos(angle) - tetheredRingRadius;
 					upz = (tetheredRingRadius + TubeRadius * Mathf.Cos(20 * tubeSize)) * Mathf.Sin(angle);
@@ -146,6 +147,23 @@ public class Ring : MonoBehaviour {
 
 					SetTop(position, previousPosition, upPosition);
 					SetBottom(position, previousPosition, upPosition);
+
+					prevx = x;
+					prevy = y;
+					prevz = z;
+				}
+				else if (TramRing && i != 0 && j == 9)
+				{
+					upx = (tetheredRingRadius + TubeRadius * Mathf.Cos(20 * tubeSize)) * Mathf.Cos(angle) - tetheredRingRadius;
+					upz = (tetheredRingRadius + TubeRadius * Mathf.Cos(20 * tubeSize)) * Mathf.Sin(angle);
+					upy = TubeRadius * Mathf.Sin(20 * tubeSize);
+
+					Vector3 position = new Vector3(x, y, z);
+					Vector3 previousPosition = new Vector3(prevx, prevy, prevz);
+					Vector3 upPosition = new Vector3(upx, upy, upz);
+
+					SetTop(position, previousPosition, upPosition, true);
+					SetBottom(position, previousPosition, upPosition, true);
 
 					prevx = x;
 					prevy = y;
@@ -176,8 +194,26 @@ public class Ring : MonoBehaviour {
 		}
 	}
 
-	private void SetTop(Vector3 pos, Vector3 prevPos, Vector3 upPos)
+	private void SetTop(Vector3 pos, Vector3 prevPos, Vector3 upPos, bool trackOnly = false)
 	{
+		// Add top tracks
+		GameObject trackTop = Instantiate(Track, transform);
+		trackTop.transform.localPosition = pos;
+		trackTop.transform.position -= trackTop.transform.up * 3e-6f;
+		trackTop.name = "Bottom Track" + tracksTop.Count.ToString();
+		trackTop.transform.localScale = new Vector3(1e-8f, 1e-8f, 4e-8f);
+		if (tracksTop.Count-1 > 0)
+		{
+			trackTop.transform.LookAt(tracksTop[tracksTop.Count-1].transform.position,
+				-transform.TransformPoint(upPos));
+		}
+
+		trackTop.SetActive(true);
+		tracksTop.Add(trackTop);
+
+		if (trackOnly)
+		{ return; }
+
 		// Add tram for top track
 		GameObject tramTop = Instantiate(Tram, transform);
 		tramTop.transform.localPosition = pos;
@@ -190,17 +226,6 @@ public class Ring : MonoBehaviour {
 		tramTop.SetActive(true);
 		tramsTop.Add(tramTop);
 
-		// Add top tracks
-		GameObject trackTop = Instantiate(Track, transform);
-		trackTop.transform.position = tramTop.transform.position;
-		trackTop.transform.position -= tramTop.transform.up * 3e-6f;
-		trackTop.name = "Top Track " + tramsTop.Count.ToString();
-		trackTop.transform.localScale = new Vector3(1e-8f, 1e-8f, 4e-7f);
-		trackTop.transform.localRotation = tramTop.transform.localRotation;
-
-		trackTop.SetActive(true);
-		tracksTop.Add(tramTop);
-
 		// Add key for top track
 		GameObject keyTop = new GameObject("key " + keysTop.Count);
 		keyTop.transform.SetParent(transform);
@@ -209,9 +234,24 @@ public class Ring : MonoBehaviour {
 		keysTop.Add(keyTop);
 	}
 
-	private void SetBottom(Vector3 pos, Vector3 prevPos, Vector3 upPos)
+	private void SetBottom(Vector3 pos, Vector3 prevPos, Vector3 upPos, bool trackOnly = false)
 	{
-		// Add tram for bottom track
+		// Add bottom track
+		GameObject trackBot = Instantiate(Track, transform);
+		trackBot.transform.localPosition = pos;
+		trackBot.transform.position -= trackBot.transform.up * 3e-6f;
+		trackBot.name = "Bottom Track" + tracksBot.Count.ToString();
+		trackBot.transform.localScale = new Vector3(1e-8f, 1e-8f, 4e-8f);
+		trackBot.transform.LookAt(transform.TransformPoint(prevPos),
+			-transform.TransformPoint(upPos));
+
+		trackBot.SetActive(true);
+		tracksBot.Add(trackBot);
+
+		if (trackOnly)
+		{ return; }
+
+		// Add bottom tram
 		GameObject tramBot = Instantiate(Tram, transform);
 		tramBot.transform.localPosition = pos;
 		tramBot.transform.position -= tramBot.transform.up * 3e-6f;
@@ -222,17 +262,6 @@ public class Ring : MonoBehaviour {
 
 		tramBot.SetActive(true);
 		tramsBot.Add(tramBot);
-
-		// Add bottom track
-		GameObject trackBot = Instantiate(Track, transform);
-		trackBot.transform.position = tramBot.transform.position;
-		trackBot.transform.position -= tramBot.transform.up * 3e-6f;
-		trackBot.name = "Bottom Track" + tramsTop.Count.ToString();
-		trackBot.transform.localScale = new Vector3(1e-8f, 1e-8f, 4e-7f);
-		trackBot.transform.localRotation = tramBot.transform.localRotation;
-
-		trackBot.SetActive(true);
-		tracksBot.Add(trackBot);
 
 		// Add key for bottom tram
 		GameObject keyBot = new GameObject("key " + keysBot.Count);
