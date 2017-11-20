@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TramMotion : MonoBehaviour {
 
-	private List<Quaternion> rotations = new List<Quaternion>();
-	private List<Vector3> positions = new List<Vector3>();
+	public List<Quaternion> rotations = new List<Quaternion>();
+	public List<Vector3> positions = new List<Vector3>();
 	private Constants.Configuration config;							// Holds reference to config script
 	private float startTime;										// Starting time of the movement. Reset when a cycle is completed
 	private bool keysSet;											// Flag controlling activation of tram motion
@@ -30,7 +30,7 @@ public class TramMotion : MonoBehaviour {
 
 		if (Scene < positions.Count * 2)
 		{
-			//UpdateSystem(Scene, Blend);
+			UpdateSystem(Scene, Blend);
 		}
 		else
 		{
@@ -47,10 +47,31 @@ public class TramMotion : MonoBehaviour {
 		rotations.Add(rot);
 	}
 
+	/// <summary>
+	/// Adds key to list
+	/// </summary>
+	/// <param name="_key">Key.</param>
+	public void AddRotation(List<Quaternion> rot)
+	{
+		rotations = new List<Quaternion>(rot);
+	}
+
 	// Adds position to list
 	public void AddPosition(Vector3 pos, bool _start = false)
 	{
 		positions.Add(pos);
+
+		if (_start)
+		{
+			startTime = Time.unscaledTime;
+			keysSet = true;
+		}
+	}
+
+	// Adds position to list
+	public void AddPosition(List<Vector3> pos, bool _start = false)
+	{
+		positions = new List<Vector3>(pos);
 
 		if (_start)
 		{

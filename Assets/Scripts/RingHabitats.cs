@@ -75,7 +75,6 @@ public class RingHabitats : MonoBehaviour {
         int totalIndices = totalPrimitives * 3;
         int[] triangleIndices = new int[totalIndices];
 
-
         //for (int instance = 0; instance < numInstances; instance++)
         for (int instance = 0; instance < numInstances; instance++)
         {
@@ -131,26 +130,6 @@ public class RingHabitats : MonoBehaviour {
 		cylinder.transform.up = this.transform.TransformVector(habtop - habbot);
 
 		ringHabitatObjects.Add(cylinder);
-
-//		if (instance == tramIndex && ringHabitatIndex > 0)
-//		{
-//			GameObject tram = Instantiate(train, transform);
-//			tram.SetActive(true);
-//			tram.name = "Bullet train " + trams.Count;
-//			tram.transform.LookAt(hableft, this.transform.TransformVector(habtop - habbot));	
-//
-//			Vector3 rot = Vector3.zero;
-//			rot.x = -5.432f;
-//			rot.y = -33.219f;
-//			rot.z = 2.725f;
-//			tram.transform.GetChild(0).localRotation = Quaternion.Euler(rot);
-//
-//			tram.transform.localPosition = habtop + tram.transform.localScale.y * tram.transform.up * 2.5f;
-//
-//			trams.Add(tram);
-//
-//			tramIndex++;
-//		}
 
 		// No longer needed because we are using prefabs for habitats
         //DrawCylinder(habtop, habbot, tubeRadius, vertices, triangleIndices, tubePrimitiveBaseOffset, tubeIndexBaseOffset);
