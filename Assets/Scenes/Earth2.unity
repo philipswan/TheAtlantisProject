@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
-  SystemTravelTime: 10
+  SystemTravelTime: 5
   TramTravelTime: 10
   RingLatitude: -34
 --- !u!4 &461670053
@@ -2486,6 +2486,49 @@ MonoBehaviour:
   - {fileID: 1223243138}
   - {fileID: 454502701}
   - {fileID: 159142380}
+  MovePlayer:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 154204965}
+        m_MethodName: BeginTransition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  CreateTrams:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 85185511}
+        m_MethodName: CreateTramSections
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1761398640}
+        m_MethodName: CreateTrackSections
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!1 &1769944136
 GameObject:
   m_ObjectHideFlags: 0

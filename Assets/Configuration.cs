@@ -12,6 +12,7 @@ namespace Constants{
 
 	public class Configuration : MonoBehaviour {
 
+		[Header("Movement")]
 		[Tooltip("Lerp time for camera movment")]
 		public int CameraTravelTime = 5;
 
@@ -21,6 +22,7 @@ namespace Constants{
 		[Tooltip("Lerp time for tram movement")]
 		public int TramTravelTime = 10;
 
+		[Header("Ring Constants")]
 		[Tooltip("Latitude of the ring")]
 		public float RingLatitude = -34f;
 

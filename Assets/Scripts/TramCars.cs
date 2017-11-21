@@ -24,7 +24,6 @@ public class TramCars : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
-		CreateTramSections();
 	}
 
 	/// <summary>
