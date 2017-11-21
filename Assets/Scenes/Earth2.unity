@@ -153,8 +153,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numKeys: 100
   numTrams: 50
-  numTubeSides: 8
-  tubeRadius: 0.0001
   habitatHeight: 0.00001
   train: {fileID: 1452890902}
 --- !u!23 &85185512
@@ -852,7 +850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
-  SystemTravelTime: 1
+  SystemTravelTime: 10
   TramTravelTime: 10
   RingLatitude: -34
 --- !u!4 &461670053
@@ -1150,7 +1148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &859023772
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2439,11 +2437,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3c09c06f6294d41b8f5b7a10cc7324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numKeys: 100
-  numTrams: 100
-  numTubeSides: 8
-  tubeRadius: 0.0001
-  habitatHeight: 0.00001
   trainTrack: {fileID: 88980524}
 --- !u!1 &1764438872
 GameObject:
