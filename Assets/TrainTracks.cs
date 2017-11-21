@@ -13,9 +13,12 @@ public class TrainTracks : MonoBehaviour {
 	public GameObject trainTrack;
 
 	private float torusRadius;
-	private Constants.Configuration config;									// Holds reference to config file
-	private List<GameObject> trackObjects = new List<GameObject>();			// List of all trams
-	private Vector3 prevUp;													// Holds up position for first tram
+	private Constants.Configuration config;										// Holds reference to config file
+	private List<GameObject> trackBottomLeftObjects = new List<GameObject>();	// List of trams for bottom left pos
+	private List<GameObject> trackTopLeftObjects = new List<GameObject>();		// List of trams for top left pos
+	private List<GameObject> trackBottomRightObjects = new List<GameObject>();	// List of trams for bottom right pos
+	private List<GameObject> trackTopRightObjects = new List<GameObject>();		// List of trams for top right pos
+	private Vector3 prevUp;														// Holds up position for first tram
 
 	// Use this for initialization
 	void Start()
@@ -42,10 +45,19 @@ public class TrainTracks : MonoBehaviour {
 			}
 		}
 
-		foreach (GameObject t in trackObjects)
+		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 3.5e-6f;
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-5f;
+			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-6f;
+			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 1e-5f;
+
+			trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 3.5e-6f;
+			trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 1e-5f;
+
+			trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 9e-6f;
+			trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 1e-5f;
+
+			trackTopRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  2e-6f;
+			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 1e-5f;
 		}
 	}
 
@@ -76,24 +88,34 @@ public class TrainTracks : MonoBehaviour {
 			
 		GameObject track = Instantiate(trainTrack, transform);
 		track.SetActive(true);
-		track.name = "Track " + trackObjects.Count;
+		track.name = "Track " + trackBottomLeftObjects.Count;
 		track.transform.localPosition = habtop;
 		track.transform.localScale = new Vector3(2.5e-8f, 2.5e-8f, 8.28e-7f);
 
-		if (trackObjects.Count == 0)
+		if (trackBottomLeftObjects.Count == 0)
 		{
 			prevUp = habtop - habbot;
 		}
-		else if (trackObjects.Count > 0)
+		else if (trackBottomLeftObjects.Count > 0)
 		{
-			track.transform.LookAt(trackObjects[trackObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+			track.transform.LookAt(trackBottomLeftObjects[trackBottomLeftObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 		}
 
-		trackObjects.Add(track);
+		GameObject track1 = Instantiate(track, transform);
+		GameObject track2 = Instantiate(track, transform);
+		GameObject track3 = Instantiate(track, transform);
 
-		if (trackObjects.Count == numKeys * numTrams)
+		trackBottomLeftObjects.Add(track);
+		trackTopLeftObjects.Add(track1);
+		trackBottomRightObjects.Add(track2);
+		trackTopRightObjects.Add(track3);
+
+		if (trackBottomLeftObjects.Count == numKeys * numTrams)
 		{
-			trackObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
+			trackBottomLeftObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
+			trackTopLeftObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
+			trackBottomRightObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
+			trackTopRightObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
 		}
 	}
 }
