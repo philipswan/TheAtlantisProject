@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TramCars : MonoBehaviour {
@@ -26,10 +27,15 @@ public class TramCars : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
 	}
 
+	public void CreateTrams()
+	{
+		StartCoroutine("CreateTramSections");
+	}
+
 	/// <summary>
 	/// Create a new tram section
 	/// </summary>
-	public void CreateTramSections()
+	private IEnumerator CreateTramSections()
 	{
 		bool createTram;
 		int tramSpacing = (int)numKeys / numTrams;
@@ -52,6 +58,8 @@ public class TramCars : MonoBehaviour {
 				{
 					createTram = false;	// Only 1 tram per section
 				}
+
+				yield return null;
 			}
 		}
 
@@ -65,7 +73,7 @@ public class TramCars : MonoBehaviour {
 	/// <param name="ringHabitatIndex">Ring habitat index.</param>
 	/// <param name="ringHabitatSpacing">Ring habitat spacing.</param>
 	/// <param name="createTram">If set to <c>true</c> create tram.</param>
-	public void CreateTramsInSection(int instance, int ringHabitatIndex, float ringHabitatSpacing, bool createTram)
+	private void CreateTramsInSection(int instance, int ringHabitatIndex, float ringHabitatSpacing, bool createTram)
 	{
 		float theta;
 		float phi0;

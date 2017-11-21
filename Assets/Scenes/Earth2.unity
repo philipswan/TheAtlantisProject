@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
-  SystemTravelTime: 5
+  SystemTravelTime: 3
   TramTravelTime: 10
   RingLatitude: -34
 --- !u!4 &461670053
@@ -2506,7 +2506,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 85185511}
-        m_MethodName: CreateTramSections
+        m_MethodName: CreateTrams
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2517,7 +2517,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1761398640}
-        m_MethodName: CreateTrackSections
+        m_MethodName: CreateTracks
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

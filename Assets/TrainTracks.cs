@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TrainTracks : MonoBehaviour {
@@ -25,10 +26,15 @@ public class TrainTracks : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
 	}
 
+	public void CreateTracks()
+	{
+		StartCoroutine("CreateTrackSections");
+	}
+
 	/// <summary>
 	/// Creates the track sections.
 	/// </summary>
-	public void CreateTrackSections()
+	private IEnumerator CreateTrackSections()
 	{
 		int numRingHabitats = numTracks * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numRingHabitats;
@@ -41,6 +47,8 @@ public class TrainTracks : MonoBehaviour {
 					instance,
 					ringHabitatIndex,
 					ringHabitatSpacing);
+
+				yield return null;
 			}
 		}
 
@@ -67,7 +75,7 @@ public class TrainTracks : MonoBehaviour {
 	/// <param name="instance">Instance.</param>
 	/// <param name="ringHabitatIndex">Ring habitat index.</param>
 	/// <param name="ringHabitatSpacing">Ring habitat spacing.</param>
-	public void CreateTracksInSection(int instance, int ringHabitatIndex, float ringHabitatSpacing)
+	private void CreateTracksInSection(int instance, int ringHabitatIndex, float ringHabitatSpacing)
 	{
 		float theta;
 		float phi0;
