@@ -45,6 +45,7 @@ public class TrainTracks : MonoBehaviour {
 			}
 		}
 
+		// Adjust positions of the tracks
 		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
 			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-6f;

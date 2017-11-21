@@ -14,8 +14,10 @@ public class TramCars : MonoBehaviour {
 
 	private float torusRadius;
 	private Constants.Configuration config;									// Holds reference to config file
-	private List<GameObject> tramBottomObjects = new List<GameObject>();			// List of all trams
-	private List<GameObject> keys = new List<GameObject>();					// List of all keys. Points for the trams to travel to
+	private List<GameObject> tramBottomObjects = new List<GameObject>();	// List of all bottom trams
+	private List<GameObject> tramTopObjects = new List<GameObject>();		// List of all top trams
+	private List<GameObject> keysBottom = new List<GameObject>();			// List of all top keys. Points for the top trams to travel to
+	private List<GameObject> keysTop = new List<GameObject>();				// List of all bottom keys. Points for the bottom trams to travel to
 	private Vector3 prevUp;													// Holds up position for first tram
 
 	// Use this for initialization
@@ -81,29 +83,42 @@ public class TramCars : MonoBehaviour {
 		hableft.z = phi0 * Mathf.Sin(theta);
 		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
-		GameObject key = new GameObject("Key " + keys.Count);
+		GameObject key = new GameObject("Key " + keysBottom.Count);
 		key.transform.SetParent(transform);
 		key.transform.localPosition = habtop;
 
-		if (keys.Count == 0)
+		if (keysBottom.Count == 0)
 		{
 			prevUp = habtop - habbot;
 		}
-		else if (keys.Count > 0)
+		else if (keysBottom.Count > 0)
 		{
-			key.transform.LookAt(keys[keys.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+			key.transform.LookAt(keysBottom[keysBottom.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 			key.transform.localPosition -= transform.InverseTransformPoint(key.transform.right) * 1e-5f;
 		}
 
-		keys.Add(key);
+		GameObject key1 = Instantiate(key, transform);
 
-		if (keys.Count == numKeys * numTrams)
+		keysBottom.Add(key);
+		keysTop.Add(key1);
+
+		if (keysBottom.Count == numKeys * numTrams)
 		{
-			keys[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
-			keys[0].transform.localPosition -= transform.InverseTransformPoint(keys[0].transform.right) * 1e-5f;
+			keysBottom[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
+			keysBottom[0].transform.localPosition -= transform.InverseTransformPoint(keysBottom[0].transform.right) * 1e-5f;
+			keysBottom[0].transform.localPosition -= transform.InverseTransformPoint(keysBottom[0].transform.up) * 1e-5f;
 
 			tramBottomObjects[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 			tramBottomObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramBottomObjects[0].transform.right) * 1e-5f;
+			tramBottomObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramBottomObjects[0].transform.up) * 1e-5f;
+
+			keysTop[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
+			keysTop[0].transform.localPosition -= transform.InverseTransformPoint(keysTop[0].transform.right) * 1e-5f;
+			keysTop[0].transform.localPosition += transform.InverseTransformPoint(keysTop[0].transform.up) * 1e-5f;
+
+			tramTopObjects[0].transform.LookAt(key1.transform.position, transform.TransformVector(prevUp));
+			tramTopObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramTopObjects[0].transform.right) * 1e-5f;
+			tramTopObjects[0].transform.localPosition += transform.InverseTransformPoint(tramTopObjects[0].transform.UP) * 1e-5f;
 		}
 
 		if (createTram)
@@ -116,7 +131,7 @@ public class TramCars : MonoBehaviour {
 
 			if (tramBottomObjects.Count > 0)
 			{
-				tram.transform.LookAt(keys[keys.Count-2].transform.position, transform.TransformVector(habtop - habbot));
+				tram.transform.LookAt(keysBottom[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
 				tram.transform.localPosition -= transform.InverseTransformPoint(tram.transform.right) * 1e-5f;
 			}
 
@@ -129,13 +144,13 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void UpdateTramKeys()
 	{
-		// Set the keys for each tram in the top track
+		// Set the keys for each tram in the bottom track
 		for (int i=0; i<tramBottomObjects.Count; i++)
 		{
-			List<Quaternion> sortedRotations = SortKeysRotations(i, keys);
+			List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottom);
 			tramBottomObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
-			List<Vector3> sortedPositions = SortKeysPositions(i, keys);
+			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottom);
 			tramBottomObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions, true);
 		}
 	}
@@ -160,7 +175,6 @@ public class TramCars : MonoBehaviour {
 			sortedKeys.Add(keys[i].transform.localRotation);
 		}
 
-
 		return sortedKeys;
 	}
 
@@ -183,7 +197,6 @@ public class TramCars : MonoBehaviour {
 		{
 			sortedKeys.Add(keys[i].transform.localPosition);
 		}
-
 
 		return sortedKeys;
 	}
