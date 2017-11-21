@@ -87,6 +87,8 @@ public class TramCars : MonoBehaviour {
 		key.transform.SetParent(transform);
 		key.transform.localPosition = habtop;
 
+		GameObject key1 = Instantiate(key, transform);
+
 		if (keysBottom.Count == 0)
 		{
 			prevUp = habtop - habbot;
@@ -95,10 +97,12 @@ public class TramCars : MonoBehaviour {
 		{
 			key.transform.LookAt(keysBottom[keysBottom.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 			key.transform.localPosition -= transform.InverseTransformPoint(key.transform.right) * 1e-5f;
+
+			key1.transform.LookAt(keysTop[keysTop.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+			key1.transform.localPosition -= transform.InverseTransformPoint(key1.transform.right) * 1e-5f;
+			key1.transform.localPosition += transform.InverseTransformPoint(key1.transform.up) * 7e-6f;
 		}
-
-		GameObject key1 = Instantiate(key, transform);
-
+			
 		keysBottom.Add(key);
 		keysTop.Add(key1);
 
@@ -106,19 +110,17 @@ public class TramCars : MonoBehaviour {
 		{
 			keysBottom[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 			keysBottom[0].transform.localPosition -= transform.InverseTransformPoint(keysBottom[0].transform.right) * 1e-5f;
-			keysBottom[0].transform.localPosition -= transform.InverseTransformPoint(keysBottom[0].transform.up) * 1e-5f;
 
 			tramBottomObjects[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 			tramBottomObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramBottomObjects[0].transform.right) * 1e-5f;
-			tramBottomObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramBottomObjects[0].transform.up) * 1e-5f;
 
 			keysTop[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 			keysTop[0].transform.localPosition -= transform.InverseTransformPoint(keysTop[0].transform.right) * 1e-5f;
-			keysTop[0].transform.localPosition += transform.InverseTransformPoint(keysTop[0].transform.up) * 1e-5f;
+			keysTop[0].transform.localPosition += transform.InverseTransformPoint(keysTop[0].transform.up) * 7e-6f;
 
 			tramTopObjects[0].transform.LookAt(key1.transform.position, transform.TransformVector(prevUp));
 			tramTopObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramTopObjects[0].transform.right) * 1e-5f;
-			tramTopObjects[0].transform.localPosition += transform.InverseTransformPoint(tramTopObjects[0].transform.UP) * 1e-5f;
+			tramTopObjects[0].transform.localPosition += transform.InverseTransformPoint(tramTopObjects[0].transform.up) * 7e-6f;
 		}
 
 		if (createTram)
@@ -129,13 +131,21 @@ public class TramCars : MonoBehaviour {
 			tram.transform.localPosition = habtop;
 			tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
 
+			GameObject tram1 = Instantiate(tram, transform);
+
 			if (tramBottomObjects.Count > 0)
 			{
 				tram.transform.LookAt(keysBottom[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
 				tram.transform.localPosition -= transform.InverseTransformPoint(tram.transform.right) * 1e-5f;
+
+				tram1.transform.LookAt(keysTop[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
+				tram1.transform.localPosition -= transform.InverseTransformPoint(tram1.transform.right) * 1e-5f;
+				tram1.transform.localPosition += transform.InverseTransformPoint(tram1.transform.up) * 7e-6f;
 			}
 
+
 			tramBottomObjects.Add(tram);
+			tramTopObjects.Add(tram1);
 		}
 	}
 
@@ -152,6 +162,15 @@ public class TramCars : MonoBehaviour {
 
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottom);
 			tramBottomObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions, true);
+		}
+		// Set the keys for each tram in the bottom track
+		for (int i=0; i<tramTopObjects.Count; i++)
+		{
+			List<Quaternion> sortedRotations = SortKeysRotations(i, keysTop);
+			tramTopObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
+
+			List<Vector3> sortedPositions = SortKeysPositions(i, keysTop);
+			tramTopObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions, true);
 		}
 	}
 

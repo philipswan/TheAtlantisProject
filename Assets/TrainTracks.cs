@@ -115,6 +115,7 @@ public class TrainTracks : MonoBehaviour {
 		{
 			trackBottomLeftObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
 			trackTopLeftObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
+
 			trackBottomRightObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
 			trackTopRightObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
 		}
