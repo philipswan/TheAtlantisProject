@@ -4,15 +4,12 @@ using System.Collections.Generic;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TrainTracks : MonoBehaviour {
 
-	[Tooltip("Totol keys is numKeys * numTrams")]
-	public int numKeys = 10;
-	public int numTrams = 10;
-	public int numTubeSides = 8;
-	public float tubeRadius = .0001f;
-	public float habitatHeight = .00001f;
-	public GameObject trainTrack;
+	public GameObject trainTrack;												// Train track prefab
 
-	private float torusRadius;
+	private int numSections = 100;												// Number of track sections
+	private int numTracks = 100;												// Number of tracks per sectoin
+	private float habitatHeight = 0.00001f;										// Offset
+	private float torusRadius;													// Radius of torus ring
 	private Constants.Configuration config;										// Holds reference to config file
 	private List<GameObject> trackBottomLeftObjects = new List<GameObject>();	// List of trams for bottom left pos
 	private List<GameObject> trackTopLeftObjects = new List<GameObject>();		// List of trams for top left pos
@@ -26,19 +23,22 @@ public class TrainTracks : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
-		RefreshRingHabitats();
+		CreateTrackSections();
 	}
 
-	public void RefreshRingHabitats()
+	/// <summary>
+	/// Creates the track sections.
+	/// </summary>
+	public void CreateTrackSections()
 	{
-		int numRingHabitats = numTrams * numKeys;
+		int numRingHabitats = numTracks * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numRingHabitats;
 
-		for (int instance = 0; instance < numKeys; instance++)
+		for (int instance = 0; instance < numSections; instance++)	// Iterate through the sections
 		{
-			for (int ringHabitatIndex = 0; ringHabitatIndex < numTrams; ringHabitatIndex++)
+			for (int ringHabitatIndex = 0; ringHabitatIndex < numTracks; ringHabitatIndex++)	// Iterate throug the tracks
 			{
-				NewRingHabitat(
+				CreateTracksInSection(
 					instance,
 					ringHabitatIndex,
 					ringHabitatSpacing);
@@ -62,18 +62,24 @@ public class TrainTracks : MonoBehaviour {
 		}
 	}
 
-	public void NewRingHabitat(int instance, int ringHabitatIndex, float ringHabitatSpacing)
+	/// <summary>
+	/// Creates the tracks in section.
+	/// </summary>
+	/// <param name="instance">Instance.</param>
+	/// <param name="ringHabitatIndex">Ring habitat index.</param>
+	/// <param name="ringHabitatSpacing">Ring habitat spacing.</param>
+	public void CreateTracksInSection(int instance, int ringHabitatIndex, float ringHabitatSpacing)
 	{
 		float theta;
 		float phi0;
 		float phi1;
 
-		theta = (instance * numTrams + ringHabitatIndex) * ringHabitatSpacing;
+		theta = (instance * numTracks + ringHabitatIndex) * ringHabitatSpacing;
 		phi0 = torusRadius;
 		phi1 = torusRadius - habitatHeight * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
 
 		// Find the current and next segments
-		Vector3 habtop, habbot, hableft;
+		Vector3 habtop, habbot;
 
 		habtop.x = phi0 * Mathf.Cos(theta) - torusRadius;
 		habtop.z = phi0 * Mathf.Sin(theta);
@@ -82,10 +88,6 @@ public class TrainTracks : MonoBehaviour {
 		habbot.x = phi1 * Mathf.Cos(theta) - torusRadius;
 		habbot.z = phi1 * Mathf.Sin(theta);
 		habbot.y = -habitatHeight * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
-
-		hableft.x = phi0 * Mathf.Cos(theta) - torusRadius;
-		hableft.z = phi0 * Mathf.Sin(theta);
-		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 			
 		GameObject track = Instantiate(trainTrack, transform);
 		track.SetActive(true);
@@ -93,25 +95,29 @@ public class TrainTracks : MonoBehaviour {
 		track.transform.localPosition = habtop;
 		track.transform.localScale = new Vector3(2.5e-8f, 2.5e-8f, 8.28e-7f);
 
+		// If we have no reference track to look at, save the up vector for later
 		if (trackBottomLeftObjects.Count == 0)
 		{
 			prevUp = habtop - habbot;
 		}
+		// Orient all tracks other than the first
 		else if (trackBottomLeftObjects.Count > 0)
 		{
 			track.transform.LookAt(trackBottomLeftObjects[trackBottomLeftObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 		}
-
+			
 		GameObject track1 = Instantiate(track, transform);
 		GameObject track2 = Instantiate(track, transform);
 		GameObject track3 = Instantiate(track, transform);
 
+		// Add to list to fix position later
 		trackBottomLeftObjects.Add(track);
 		trackTopLeftObjects.Add(track1);
 		trackBottomRightObjects.Add(track2);
 		trackTopRightObjects.Add(track3);
 
-		if (trackBottomLeftObjects.Count == numKeys * numTrams)
+		// Orient first track to last track
+		if (trackBottomLeftObjects.Count == numSections * numTracks)
 		{
 			trackBottomLeftObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));
 			trackTopLeftObjects[0].transform.LookAt(track.transform.position, transform.TransformVector(prevUp));

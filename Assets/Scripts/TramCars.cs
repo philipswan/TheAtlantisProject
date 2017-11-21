@@ -5,14 +5,12 @@ using System.Collections.Generic;
 public class TramCars : MonoBehaviour {
 
 	[Tooltip("Totol keys is numKeys * numTrams")]
-	public int numKeys = 10;
-	public int numTrams = 10;
-	public int numTubeSides = 8;
-	public float tubeRadius = .0001f;
-	public float habitatHeight = .00001f;
-	public GameObject train;
+	public int numKeys = 10;												// Number of sections
+	public int numTrams = 10;												// Number of trams per section
+	public float habitatHeight = 0.00001f;									// Offset
+	public GameObject train;												// Train car prefab
 
-	private float torusRadius;
+	private float torusRadius;												// Radius of torus ring
 	private Constants.Configuration config;									// Holds reference to config file
 	private List<GameObject> tramBottomObjects = new List<GameObject>();	// List of all bottom trams
 	private List<GameObject> tramTopObjects = new List<GameObject>();		// List of all top trams
@@ -26,23 +24,26 @@ public class TramCars : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
-		RefreshRingHabitats();
+		CreateTramSections();
 	}
 
-	public void RefreshRingHabitats()
+	/// <summary>
+	/// Create a new tram section
+	/// </summary>
+	public void CreateTramSections()
 	{
 		bool createTram;
 		int tramSpacing = (int)numKeys / numTrams;
 		int numRingHabitats = numTrams * numKeys;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numRingHabitats;
 
-		for (int instance = 0; instance < numKeys; instance++)
+		for (int instance = 0; instance < numKeys; instance++)	// Iterate through the sections
 		{
-			createTram = instance % tramSpacing == 0 ? true : false;
+			createTram = instance % tramSpacing == 0 ? true : false;	// Should we create a tram in this section?
 
-			for (int ringHabitatIndex = 0; ringHabitatIndex < numTrams; ringHabitatIndex++)
+			for (int ringHabitatIndex = 0; ringHabitatIndex < numTrams; ringHabitatIndex++)	// Iterate through the keys and tram if there is one
 			{
-				NewRingHabitat(
+				CreateTramsInSection(
 					instance,
 					ringHabitatIndex,
 					ringHabitatSpacing,
@@ -50,15 +51,22 @@ public class TramCars : MonoBehaviour {
 
 				if (createTram)
 				{
-					createTram = false;
+					createTram = false;	// Only 1 tram per section
 				}
 			}
 		}
 
-		UpdateTramKeys();
+		UpdateTramKeys();	// Now that all trams and sections are created, set all the tram keys for their movement
 	}
 
-	public void NewRingHabitat(int instance, int ringHabitatIndex, float ringHabitatSpacing, bool createTram)
+	/// <summary>
+	/// Creates the trams in section.
+	/// </summary>
+	/// <param name="instance">Instance.</param>
+	/// <param name="ringHabitatIndex">Ring habitat index.</param>
+	/// <param name="ringHabitatSpacing">Ring habitat spacing.</param>
+	/// <param name="createTram">If set to <c>true</c> create tram.</param>
+	public void CreateTramsInSection(int instance, int ringHabitatIndex, float ringHabitatSpacing, bool createTram)
 	{
 		float theta;
 		float phi0;
@@ -69,7 +77,7 @@ public class TramCars : MonoBehaviour {
 		phi1 = torusRadius - habitatHeight * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
 
 		// Find the current and next segments
-		Vector3 habtop, habbot, hableft;
+		Vector3 habtop, habbot;
 
 		habtop.x = phi0 * Mathf.Cos(theta) - torusRadius;
 		habtop.z = phi0 * Mathf.Sin(theta);
@@ -79,20 +87,18 @@ public class TramCars : MonoBehaviour {
 		habbot.z = phi1 * Mathf.Sin(theta);
 		habbot.y = -habitatHeight * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
-		hableft.x = phi0 * Mathf.Cos(theta) - torusRadius;
-		hableft.z = phi0 * Mathf.Sin(theta);
-		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
-
 		GameObject key = new GameObject("Key " + keysBottom.Count);
 		key.transform.SetParent(transform);
 		key.transform.localPosition = habtop;
 
 		GameObject key1 = Instantiate(key, transform);
 
+		// If we have no other reference object to look at, save the up vector for later
 		if (keysBottom.Count == 0)
 		{
 			prevUp = habtop - habbot;
 		}
+		// Set orientation of all keys other than the first
 		else if (keysBottom.Count > 0)
 		{
 			key.transform.LookAt(keysBottom[keysBottom.Count-1].transform.position, transform.TransformVector(habtop - habbot));
@@ -103,9 +109,11 @@ public class TramCars : MonoBehaviour {
 			key1.transform.localPosition += transform.InverseTransformPoint(key1.transform.up) * 7e-6f;
 		}
 			
+		// Add keys to list to assign them to trams later
 		keysBottom.Add(key);
 		keysTop.Add(key1);
 
+		// Set the last key and tram position and orientation
 		if (keysBottom.Count == numKeys * numTrams)
 		{
 			keysBottom[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
@@ -123,6 +131,7 @@ public class TramCars : MonoBehaviour {
 			tramTopObjects[0].transform.localPosition += transform.InverseTransformPoint(tramTopObjects[0].transform.up) * 7e-6f;
 		}
 
+		// Create a tram at an interval set by the user
 		if (createTram)
 		{
 			GameObject tram = Instantiate(train, transform);
@@ -133,6 +142,7 @@ public class TramCars : MonoBehaviour {
 
 			GameObject tram1 = Instantiate(tram, transform);
 
+			// Set orientation of trams other than the first
 			if (tramBottomObjects.Count > 0)
 			{
 				tram.transform.LookAt(keysBottom[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
@@ -142,8 +152,8 @@ public class TramCars : MonoBehaviour {
 				tram1.transform.localPosition -= transform.InverseTransformPoint(tram1.transform.right) * 1e-5f;
 				tram1.transform.localPosition += transform.InverseTransformPoint(tram1.transform.up) * 7e-6f;
 			}
-
-
+				
+			// Add trams to list to assign their keys later
 			tramBottomObjects.Add(tram);
 			tramTopObjects.Add(tram1);
 		}
