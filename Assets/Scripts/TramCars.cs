@@ -53,6 +53,11 @@ public class TramCars : MonoBehaviour {
 			}
 		}
 
+		foreach (GameObject t in tramObjects)
+		{
+			//t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-5f;
+		}
+
 		UpdateTramKeys();
 	}
 
@@ -92,6 +97,7 @@ public class TramCars : MonoBehaviour {
 		else if (keys.Count > 0)
 		{
 			key.transform.LookAt(keys[keys.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+			key.transform.localPosition -= transform.InverseTransformPoint(key.transform.right) * 1e-5f;
 		}
 
 		keys.Add(key);
@@ -99,6 +105,10 @@ public class TramCars : MonoBehaviour {
 		if (keys.Count == numKeys * numTrams)
 		{
 			keys[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
+			keys[0].transform.localPosition -= transform.InverseTransformPoint(keys[0].transform.right) * 1e-5f;
+
+			tramObjects[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
+			tramObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramObjects[0].transform.right) * 1e-5f;
 		}
 
 		if (createTram)
@@ -109,9 +119,10 @@ public class TramCars : MonoBehaviour {
 			tram.transform.localPosition = habtop;
 			tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
 
-			if (tramObjects.Count > 1)
+			if (tramObjects.Count > 0)
 			{
 				tram.transform.LookAt(keys[keys.Count-2].transform.position, transform.TransformVector(habtop - habbot));
+				tram.transform.localPosition -= transform.InverseTransformPoint(tram.transform.right) * 1e-5f;
 			}
 
 			tramObjects.Add(tram);

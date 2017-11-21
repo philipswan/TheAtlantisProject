@@ -45,6 +45,7 @@ public class TrainTracks : MonoBehaviour {
 		foreach (GameObject t in trackObjects)
 		{
 			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 3.5e-6f;
+			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-5f;
 		}
 	}
 
