@@ -6,44 +6,29 @@ using UnityEngine.Events;
 public class Transition1b : MonoBehaviour {
 	[Tooltip("The transforms that the system will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds all transforms
-	public UnityEvent MovePlayer;
-	public UnityEvent CreateTrams;
 
 	private Constants.Configuration config;						// Holds reference to config script
-	private Vector3 velocity;
-	private float i;
-	private int lastScene=0;
 
     // Use this for initialization
     void Awake () {
-		velocity = Vector3.zero;
 	}
 
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
-		i=0;
 	}
 
     void Update() {
 
 		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.SystemTravelTime);
 		float Blend = Mathf.Min (Time.unscaledTime / config.SystemTravelTime - Scene, 1.0f);
-		//i += Blend * Time.deltaTime;
-		//print(i);
-		if(lastScene != Scene)
-		{
-			lastScene = Scene;
-			i=0;
-		}
+
 		if (Scene < Keys.Count * 2)
 		{
 			UpdateSystem(Scene, Blend);
 		}
 		else if (Scene == Keys.Count * 2)
 		{
-			//MovePlayer.Invoke();
-			//CreateTrams.Invoke();
 			enabled = false;
 		}
     }
@@ -77,11 +62,9 @@ public class Transition1b : MonoBehaviour {
     {
         int index0 = max(0, min(Keys.Count - 1, (int)Mathf.Floor(scene / 2)));
         int index1 = max(0, min(Keys.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
-		//print("index0: " + index0 + " index1: " + index1);
-//		transform.localPosition = Vector3.SmoothDamp(Keys[index0].position, Keys[index1].position, ref velocity, 0.1f);
-//		transform.localRotation = Quaternion.RotateTowards(Keys[index0].localRotation, Keys[index1].localRotation, 5 * Time.deltaTime);
-//		transform.localScale = Vector3.SmoothDamp(Keys[index0].localScale, Keys[index1].localScale, ref velocity, 0.1f);
-		transform.localPosition = Vector3.Lerp(Keys[index0].position, Keys[index1].position, blend);
+		print("index0: " + index0 + " index1: " + index1);
+
+		transform.localPosition = Vector3.Lerp(Keys[index0].localPosition, Keys[index1].localPosition, blend);
 		transform.localRotation = Quaternion.Lerp(Keys[index0].localRotation, Keys[index1].localRotation, Mathf.Pow(blend, 1.05f));
 		transform.localScale = Vector3.Lerp(Keys[index0].localScale, Keys[index1].localScale, Mathf.Pow(blend, 1.75f));
     }

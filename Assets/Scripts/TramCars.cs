@@ -22,22 +22,26 @@ public class TramCars : MonoBehaviour {
 	// Use this for initialization
 	void Start()
 	{
-//		LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
-//		lineRenderer.positionCount = numKeys * numTrams;
-//		lineRenderer.useWorldSpace = false;
-//		lineRenderer.widthMultiplier = 0.005f;
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
 		CreateTramSections();
 		SetTramsActive();
+		DeleteKeys();
 	}
 
+	/// <summary>
+	/// Call coroutine to set tram object active
+	/// </summary>
 	public void SetTramsActive()
 	{
 		StartCoroutine("ActivateTrams");
 	}
-
+		
+	/// <summary>
+	/// Set trams active over multiple frames
+	/// </summary>
+	/// <returns>The trams.</returns>
 	private IEnumerator ActivateTrams()
 	{
 		foreach(GameObject t in tramBottomObjects)
@@ -51,15 +55,24 @@ public class TramCars : MonoBehaviour {
 		{
 			t.SetActive(true);
 		}
+	}
 
-//		Vector3[] linePos = new Vector3[keysTop.Count];
-//		for(int i=0; i<keysTop.Count; i++)
-//		{
-//			linePos[i] = keysTop[i].transform.localPosition;
-//		}
-//		print(linePos.Length);
-//		LineRenderer lineRenderer = GetComponent<LineRenderer>();
-//		lineRenderer.SetPositions(linePos);
+	/// <summary>
+	/// Delete all keys
+	/// </summary>
+	private void DeleteKeys()
+	{
+		foreach (GameObject k in keysTop)
+		{
+			Destroy(k);
+		}
+		keysTop.Clear();
+
+		foreach (GameObject k in keysBottom)
+		{
+			Destroy(k);
+		}
+		keysBottom.Clear();
 	}
 
 	/// <summary>
