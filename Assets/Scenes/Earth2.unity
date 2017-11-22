@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
-  SystemTravelTime: 1
+  SystemTravelTime: 3
   TramTravelTime: 10
   RingLatitude: -34
 --- !u!4 &461670053

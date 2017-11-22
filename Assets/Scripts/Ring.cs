@@ -117,7 +117,8 @@ public class Ring : MonoBehaviour {
         mFilter.mesh = mesh;
 
         Renderer renderer = GetComponent<MeshRenderer>();
-        Material mat = Resources.Load("earthMat") as Material;
+		string matString = TramRing ? "TramRing" : "earthMat";
+        Material mat = Resources.Load(matString) as Material;
         renderer.material = mat;
 	}
 }

@@ -22,10 +22,15 @@ public class TramCars : MonoBehaviour {
 	// Use this for initialization
 	void Start()
 	{
+//		LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
+//		lineRenderer.positionCount = numKeys * numTrams;
+//		lineRenderer.useWorldSpace = false;
+//		lineRenderer.widthMultiplier = 0.005f;
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
 		CreateTramSections();
+		SetTramsActive();
 	}
 
 	public void SetTramsActive()
@@ -46,6 +51,15 @@ public class TramCars : MonoBehaviour {
 		{
 			t.SetActive(true);
 		}
+
+//		Vector3[] linePos = new Vector3[keysTop.Count];
+//		for(int i=0; i<keysTop.Count; i++)
+//		{
+//			linePos[i] = keysTop[i].transform.localPosition;
+//		}
+//		print(linePos.Length);
+//		LineRenderer lineRenderer = GetComponent<LineRenderer>();
+//		lineRenderer.SetPositions(linePos);
 	}
 
 	/// <summary>

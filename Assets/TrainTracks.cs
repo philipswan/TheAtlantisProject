@@ -18,13 +18,43 @@ public class TrainTracks : MonoBehaviour {
 	private List<GameObject> trackTopRightObjects = new List<GameObject>();		// List of trams for top right pos
 	private Vector3 prevUp;														// Holds up position for first tram
 
+	private GameObject bottomLeft;
+	private GameObject bottomRight;
+	private GameObject topLeft;
+	private GameObject topRight;
+
 	// Use this for initialization
 	void Start()
 	{
+		bottomLeft = new GameObject("Bottom Left Keys");
+		bottomLeft.transform.SetParent(transform);
+		bottomLeft.transform.localPosition = transform.localPosition;
+		bottomLeft.transform.localRotation = transform.localRotation;
+		bottomLeft.transform.localScale = transform.localScale;
+
+		bottomRight = new GameObject("Bottom Right Keys");
+		bottomRight.transform.SetParent(transform);
+		bottomRight.transform.localPosition = transform.localPosition;
+		bottomRight.transform.localRotation = transform.localRotation;
+		bottomRight.transform.localScale = transform.localScale;
+
+		topLeft = new GameObject("Top Left Keys"); 
+		topLeft.transform.SetParent(transform);
+		topLeft.transform.localPosition = transform.localPosition;
+		topLeft.transform.localRotation = transform.localRotation;
+		topLeft.transform.localScale = transform.localScale;
+
+		topRight = new GameObject("Top Right Keys"); 
+		topRight.transform.SetParent(transform);
+		topRight.transform.localPosition = transform.localPosition;
+		topRight.transform.localRotation = transform.localRotation;
+		topRight.transform.localScale = transform.localScale;
+
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
 		CreateTrackSections();
+		SetTracksActive();
 	}
 
 	public void SetTracksActive()
@@ -34,31 +64,73 @@ public class TrainTracks : MonoBehaviour {
 
 	private IEnumerator ActivateTracks()
 	{
-		foreach(GameObject t in trackBottomLeftObjects)
+		bottomLeft.AddComponent<LineRenderer>();
+		LineRenderer lineRenderer = bottomLeft.GetComponent<LineRenderer>();
+		lineRenderer.useWorldSpace = false;
+		lineRenderer.positionCount = trackBottomLeftObjects.Count;
+		lineRenderer.widthMultiplier = 0.001f;
+		lineRenderer.material = Resources.Load("TramRail") as Material;
+
+		Vector3[] linePos = new Vector3[trackBottomLeftObjects.Count];
+		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
-			t.SetActive(true);
+			linePos[i] = trackBottomLeftObjects[i].transform.localPosition;
 		}
+			
+		lineRenderer.SetPositions(linePos);
 
 		yield return null;
 
-		foreach(GameObject t in trackTopLeftObjects)
+		bottomRight.AddComponent<LineRenderer>();
+		LineRenderer lineRenderer1 = bottomRight.GetComponent<LineRenderer>();
+		lineRenderer1.useWorldSpace = false;
+		lineRenderer1.positionCount = trackBottomRightObjects.Count;
+		lineRenderer1.widthMultiplier = 0.001f;
+		lineRenderer1.material = Resources.Load("TramRail") as Material;
+
+		Vector3[] linePos1 = new Vector3[trackBottomRightObjects.Count];
+		for (int i=0; i<trackBottomRightObjects.Count; i++)
 		{
-			t.SetActive(true);
+			linePos1[i] = trackBottomRightObjects[i].transform.localPosition;
 		}
+			
+		lineRenderer1.SetPositions(linePos1);
 
 		yield return null;
 
-		foreach(GameObject t in trackBottomRightObjects)
+		topLeft.AddComponent<LineRenderer>();
+		LineRenderer lineRenderer2 = topLeft.GetComponent<LineRenderer>();
+		lineRenderer2.useWorldSpace = false;
+		lineRenderer2.positionCount = trackTopLeftObjects.Count;
+		lineRenderer2.widthMultiplier = 0.001f;
+		lineRenderer2.material = Resources.Load("TramRail") as Material;
+
+		Vector3[] linePos2 = new Vector3[trackTopLeftObjects.Count];
+		for (int i=0; i<trackTopLeftObjects.Count; i++)
 		{
-			t.SetActive(true);
+			linePos2[i] = trackTopLeftObjects[i].transform.localPosition;
 		}
+			
+		lineRenderer2.SetPositions(linePos2);
 
 		yield return null;
 
-		foreach(GameObject t in trackTopRightObjects)
+		topRight.AddComponent<LineRenderer>();
+		LineRenderer lineRenderer3 = topRight.GetComponent<LineRenderer>();
+		lineRenderer3.useWorldSpace = false;
+		lineRenderer3.positionCount = trackTopRightObjects.Count;
+		lineRenderer3.widthMultiplier = 0.001f;
+		lineRenderer3.material = Resources.Load("TramRail") as Material;
+
+		Vector3[] linePos3 = new Vector3[trackTopRightObjects.Count];
+		for (int i=0; i<trackTopRightObjects.Count; i++)
 		{
-			t.SetActive(true);
+			linePos3[i] = trackTopRightObjects[i].transform.localPosition;
 		}
+			
+		lineRenderer3.SetPositions(linePos3);
+
+		yield return null;
 	}
 
 	/// <summary>
@@ -126,8 +198,8 @@ public class TrainTracks : MonoBehaviour {
 		habbot.z = phi1 * Mathf.Sin(theta);
 		habbot.y = -habitatHeight * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 			
-		GameObject track = Instantiate(trainTrack, transform);
-		//track.SetActive(true);
+		GameObject track = new GameObject();
+		track.transform.SetParent(bottomLeft.transform);
 		track.name = "Track " + trackBottomLeftObjects.Count;
 		track.transform.localPosition = habtop;
 		track.transform.localScale = new Vector3(2.5e-8f, 2.5e-8f, 8.28e-7f);
@@ -143,9 +215,9 @@ public class TrainTracks : MonoBehaviour {
 			track.transform.LookAt(trackBottomLeftObjects[trackBottomLeftObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 		}
 			
-		GameObject track1 = Instantiate(track, transform);
-		GameObject track2 = Instantiate(track, transform);
-		GameObject track3 = Instantiate(track, transform);
+		GameObject track1 = Instantiate(track, topLeft.transform);
+		GameObject track2 = Instantiate(track, bottomRight.transform);
+		GameObject track3 = Instantiate(track, topRight.transform);
 
 		// Add to list to fix position later
 		trackBottomLeftObjects.Add(track);
