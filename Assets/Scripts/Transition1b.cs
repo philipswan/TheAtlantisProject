@@ -31,7 +31,7 @@ public class Transition1b : MonoBehaviour {
 		}
 		else if (Scene == Keys.Count * 2)
 		{
-			MovePlayer.Invoke();
+			//MovePlayer.Invoke();
 			CreateTrams.Invoke();
 			enabled = false;
 		}

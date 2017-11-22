@@ -25,17 +25,33 @@ public class TramCars : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+		CreateTramSections();
 	}
 
-	public void CreateTrams()
+	public void SetTramsActive()
 	{
-		StartCoroutine("CreateTramSections");
+		StartCoroutine("ActivateTrams");
+	}
+
+	private IEnumerator ActivateTrams()
+	{
+		foreach(GameObject t in tramBottomObjects)
+		{
+			t.SetActive(true);
+		}
+
+		yield return null;
+
+		foreach(GameObject t in tramTopObjects)
+		{
+			t.SetActive(true);
+		}
 	}
 
 	/// <summary>
 	/// Create a new tram section
 	/// </summary>
-	private IEnumerator CreateTramSections()
+	private void CreateTramSections()
 	{
 		bool createTram;
 		int tramSpacing = (int)numKeys / numTrams;
@@ -59,8 +75,8 @@ public class TramCars : MonoBehaviour {
 					createTram = false;	// Only 1 tram per section
 				}
 
-				yield return null;
 			}
+
 		}
 
 		UpdateTramKeys();	// Now that all trams and sections are created, set all the tram keys for their movement
@@ -142,7 +158,7 @@ public class TramCars : MonoBehaviour {
 		if (createTram)
 		{
 			GameObject tram = Instantiate(train, transform);
-			tram.SetActive(true);
+			//tram.SetActive(true);
 			tram.name = "Tram " + tramBottomObjects.Count;
 			tram.transform.localPosition = habtop;
 			tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
@@ -178,7 +194,7 @@ public class TramCars : MonoBehaviour {
 			tramBottomObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottom);
-			tramBottomObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions, true);
+			tramBottomObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
 		}
 		// Set the keys for each tram in the bottom track
 		for (int i=0; i<tramTopObjects.Count; i++)
@@ -187,7 +203,7 @@ public class TramCars : MonoBehaviour {
 			tramTopObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysTop);
-			tramTopObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions, true);
+			tramTopObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
 		}
 	}
 

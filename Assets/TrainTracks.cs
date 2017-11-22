@@ -24,17 +24,47 @@ public class TrainTracks : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+		CreateTrackSections();
 	}
 
-	public void CreateTracks()
+	public void SetTracksActive()
 	{
-		StartCoroutine("CreateTrackSections");
+		StartCoroutine("ActivateTracks");
+	}
+
+	private IEnumerator ActivateTracks()
+	{
+		foreach(GameObject t in trackBottomLeftObjects)
+		{
+			t.SetActive(true);
+		}
+
+		yield return null;
+
+		foreach(GameObject t in trackTopLeftObjects)
+		{
+			t.SetActive(true);
+		}
+
+		yield return null;
+
+		foreach(GameObject t in trackBottomRightObjects)
+		{
+			t.SetActive(true);
+		}
+
+		yield return null;
+
+		foreach(GameObject t in trackTopRightObjects)
+		{
+			t.SetActive(true);
+		}
 	}
 
 	/// <summary>
 	/// Creates the track sections.
 	/// </summary>
-	private IEnumerator CreateTrackSections()
+	private void CreateTrackSections()
 	{
 		int numRingHabitats = numTracks * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numRingHabitats;
@@ -47,9 +77,9 @@ public class TrainTracks : MonoBehaviour {
 					instance,
 					ringHabitatIndex,
 					ringHabitatSpacing);
-
-				yield return null;
 			}
+
+			//yield return null;
 		}
 
 		// Adjust positions of the tracks
@@ -97,7 +127,7 @@ public class TrainTracks : MonoBehaviour {
 		habbot.y = -habitatHeight * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 			
 		GameObject track = Instantiate(trainTrack, transform);
-		track.SetActive(true);
+		//track.SetActive(true);
 		track.name = "Track " + trackBottomLeftObjects.Count;
 		track.transform.localPosition = habtop;
 		track.transform.localScale = new Vector3(2.5e-8f, 2.5e-8f, 8.28e-7f);

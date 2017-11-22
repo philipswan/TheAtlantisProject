@@ -38,6 +38,12 @@ public class TramMotion : MonoBehaviour {
 		}
 	}
 
+	void OnEnable()
+	{
+		startTime = Time.unscaledTime;
+		keysSet = true;
+	}
+
 	/// <summary>
 	/// Adds key to list
 	/// </summary>
@@ -57,27 +63,15 @@ public class TramMotion : MonoBehaviour {
 	}
 
 	// Adds position to list
-	public void AddPosition(Vector3 pos, bool _start = false)
+	public void AddPosition(Vector3 pos)
 	{
 		positions.Add(pos);
-
-		if (_start)
-		{
-			startTime = Time.unscaledTime;
-			keysSet = true;
-		}
 	}
 
 	// Adds position to list
-	public void AddPosition(List<Vector3> pos, bool _start = false)
+	public void AddPosition(List<Vector3> pos)
 	{
 		positions = new List<Vector3>(pos);
-
-		if (_start)
-		{
-			startTime = Time.unscaledTime;
-			keysSet = true;
-		}
 	}
 
 	/// <summary>
