@@ -35,22 +35,21 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	public void SetTramsActive()
 	{
-		StartCoroutine("ActivateTrams");
+		ActivateTrams();
+		//StartCoroutine("ActivateTrams");
 	}
 		
 	/// <summary>
 	/// Set trams active over multiple frames
 	/// </summary>
 	/// <returns>The trams.</returns>
-	private IEnumerator ActivateTrams()
+	private void ActivateTrams()
 	{
 		foreach(GameObject t in tramBottomObjects)
 		{
 			t.SetActive(true);
 		}
-
-		yield return null;
-
+			
 		foreach(GameObject t in tramTopObjects)
 		{
 			t.SetActive(true);

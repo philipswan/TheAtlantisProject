@@ -155,19 +155,6 @@ public class ElevatorCables : MonoBehaviour
 				//acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
 				acc_bot.transform.LookAt(this.transform.TransformPoint(cabletop), this.transform.TransformVector(cableleft_old));
 
-				// Set variables for user's elevator
-				if (i == 3)
-				{
-					GameObject p = new GameObject("p");
-					p.transform.parent = transform;
-					p.transform.localPosition = cabletop;
-
-					acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.05f);
-					acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, false, true);
-					Transition1.Instance.UpdateKeys(acc_mid.transform, 1.5f);
-					continue;
-				}
-
 				acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, true);
 			}
 
