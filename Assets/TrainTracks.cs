@@ -75,13 +75,14 @@ public class TrainTracks : MonoBehaviour {
 	private void ActivateTracks()
 	{
 		// Create line renderer and set properties
+		// Add bottom left line
 		bottomLeft.AddComponent<LineRenderer>();
 		LineRenderer lineRenderer = bottomLeft.GetComponent<LineRenderer>();
 		lineRenderer.useWorldSpace = false;
 		lineRenderer.positionCount = trackBottomLeftObjects.Count;
 		lineRenderer.widthMultiplier = 0.001f;
 		lineRenderer.loop = false;
-		//lineRenderer.material = Resources.Load("TramRail") as Material;
+		lineRenderer.material = Resources.Load("TramRail") as Material;
 
 		// Get all positions for line
 		Vector3[] linePos = new Vector3[trackBottomLeftObjects.Count];
@@ -96,8 +97,7 @@ public class TrainTracks : MonoBehaviour {
 		// Set positions
 		lineRenderer.SetPositions(linePos);
 
-		//yield return null;
-
+		// Add bottom right line
 		bottomRight.AddComponent<LineRenderer>();
 		LineRenderer lineRenderer1 = bottomRight.GetComponent<LineRenderer>();
 		lineRenderer1.useWorldSpace = false;
@@ -114,8 +114,7 @@ public class TrainTracks : MonoBehaviour {
 			
 		lineRenderer1.SetPositions(linePos1);
 
-		//yield return null;
-
+		// Add top left line
 		topLeft.AddComponent<LineRenderer>();
 		LineRenderer lineRenderer2 = topLeft.GetComponent<LineRenderer>();
 		lineRenderer2.useWorldSpace = false;
@@ -132,8 +131,7 @@ public class TrainTracks : MonoBehaviour {
 			
 		lineRenderer2.SetPositions(linePos2);
 
-		//yield return null;
-
+		// Add top right line
 		topRight.AddComponent<LineRenderer>();
 		LineRenderer lineRenderer3 = topRight.GetComponent<LineRenderer>();
 		lineRenderer3.useWorldSpace = false;
@@ -149,8 +147,6 @@ public class TrainTracks : MonoBehaviour {
 		}
 			
 		lineRenderer3.SetPositions(linePos3);
-
-		//yield return null;
 	}
 
 	/// <summary>
@@ -205,17 +201,17 @@ public class TrainTracks : MonoBehaviour {
 		// Adjust positions of the tracks
 		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
-			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-6f;
-			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 1e-5f;
+			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-5f;
+			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 1e-4f;
 
-			trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 3.5e-6f;
-			trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 1e-5f;
+			trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 2e-5f;
+			trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 1e-4f;
 
-			trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 9e-6f;
-			trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 1e-5f;
+			trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 9e-5f;
+			trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 1e-4f;
 
-			trackTopRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  2e-6f;
-			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 1e-5f;
+			trackTopRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  1e-5f;
+			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 8e-5f;
 		}
 	}
 

@@ -9,14 +9,12 @@ public class RingContainer : MonoBehaviour {
 		Vector3 childPos0 = Vector3.zero;
 		Vector3 childPos1 = Vector3.zero;
 
-		print(transform.childCount);
-
 		if (transform.childCount > 0)
 			childPos0 = transform.GetChild(0).position;
 		if (transform.childCount > 1)
 			childPos1 = transform.GetChild(1).position;
 		
-		transform.position = GameObject.FindGameObjectWithTag("Sphere").transform.position;
+		transform.position = GameObject.FindGameObjectWithTag("Positioner").transform.position;
 
 		if (transform.childCount > 0)
 			transform.GetChild(0).position = childPos0;
