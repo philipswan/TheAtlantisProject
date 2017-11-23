@@ -31,7 +31,7 @@ public class Ring : MonoBehaviour {
 		}
 		else
 		{
-			tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+			tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.005f * Mathf.PI / 180) / 2;
 			RefreshRing();
 		}
     }
@@ -66,7 +66,7 @@ public class Ring : MonoBehaviour {
             // Find next (or first) segment offset
             int n = (i + 1) % NumSegments; // changed segmentList.Count to numSegments
 
-            // Find the current and next segments
+			// Find the current and next segments
             int currentTubeOffset = i * NumTubes;
             int nextTubeOffset = n * NumTubes;
             float normi = (float)i / NumSegments * Mathf.PI;

@@ -24,7 +24,7 @@ public class TramCars : MonoBehaviour {
 	{
 		config = Constants.Configuration.Instance;
 
-		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		CreateTramSections();
 		SetTramsActive();
 		DeleteKeys();
@@ -36,7 +36,6 @@ public class TramCars : MonoBehaviour {
 	public void SetTramsActive()
 	{
 		ActivateTrams();
-		//StartCoroutine("ActivateTrams");
 	}
 		
 	/// <summary>
@@ -187,7 +186,7 @@ public class TramCars : MonoBehaviour {
 			//tram.SetActive(true);
 			tram.name = "Tram " + tramBottomObjects.Count;
 			tram.transform.localPosition = habtop;
-			tram.transform.localScale = new Vector3(6e-7f, 6e-7f, 6e-7f);
+			tram.transform.localScale = new Vector3(6e-6f, 6e-6f, 6e-6f);
 
 			GameObject tram1 = Instantiate(tram, transform);
 

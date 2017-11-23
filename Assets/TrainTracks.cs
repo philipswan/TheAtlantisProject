@@ -29,31 +29,31 @@ public class TrainTracks : MonoBehaviour {
 		// Create containers for the four tracks
 		bottomLeft = new GameObject("Bottom Left Keys");
 		bottomLeft.transform.SetParent(transform);
-		bottomLeft.transform.localPosition = transform.localPosition;
+		bottomLeft.transform.localPosition = Vector3.zero;
 		bottomLeft.transform.localRotation = transform.localRotation;
 		bottomLeft.transform.localScale = transform.localScale;
 
 		bottomRight = new GameObject("Bottom Right Keys");
 		bottomRight.transform.SetParent(transform);
-		bottomRight.transform.localPosition = transform.localPosition;
+		bottomRight.transform.localPosition = Vector3.zero;
 		bottomRight.transform.localRotation = transform.localRotation;
 		bottomRight.transform.localScale = transform.localScale;
 
 		topLeft = new GameObject("Top Left Keys"); 
 		topLeft.transform.SetParent(transform);
-		topLeft.transform.localPosition = transform.localPosition;
+		topLeft.transform.localPosition = Vector3.zero;
 		topLeft.transform.localRotation = transform.localRotation;
 		topLeft.transform.localScale = transform.localScale;
 
 		topRight = new GameObject("Top Right Keys"); 
 		topRight.transform.SetParent(transform);
-		topRight.transform.localPosition = transform.localPosition;
+		topRight.transform.localPosition = Vector3.zero;
 		topRight.transform.localRotation = transform.localRotation;
 		topRight.transform.localScale = transform.localScale;
 
 		config = Constants.Configuration.Instance;
 
-		torusRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		CreateTrackSections();
 		SetTracksActive();
 		DeleteKeys();
@@ -81,13 +81,16 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer.positionCount = trackBottomLeftObjects.Count;
 		lineRenderer.widthMultiplier = 0.001f;
 		lineRenderer.loop = false;
-		lineRenderer.material = Resources.Load("TramRail") as Material;
+		//lineRenderer.material = Resources.Load("TramRail") as Material;
 
 		// Get all positions for line
 		Vector3[] linePos = new Vector3[trackBottomLeftObjects.Count];
 		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
 			linePos[i] = trackBottomLeftObjects[i].transform.localPosition;
+			GameObject p = new GameObject();
+			p.transform.SetParent(bottomLeft.transform);
+			p.transform.localPosition = linePos[i];
 		}
 			
 		// Set positions

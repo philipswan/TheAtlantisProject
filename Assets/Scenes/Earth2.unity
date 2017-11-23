@@ -206,6 +206,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 95683307}
+  - component: {fileID: 95683308}
   m_Layer: 0
   m_Name: Trams
   m_TagString: Untagged
@@ -228,6 +229,17 @@ Transform:
   m_Father: {fileID: 1879430682}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &95683308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 95683306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7590ddc1be629784197e55b8a102e414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &129125183 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1551786871279306, guid: 07e2fbb6eb98b484f9706250514b0404,
@@ -739,7 +751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TubeRadius: 0.000004
-  NumSegments: 200
+  NumSegments: 2000
   NumTubes: 12
   TramRing: 0
 --- !u!23 &330127975
@@ -890,13 +902,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 466295303}
-  m_LocalRotation: {x: -0, y: -0, z: 0.000000014901161, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000002, y: 1.0000002, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1879430682}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
+  m_Father: {fileID: 727307575}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &466295305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,9 +920,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcec2271c979e74596e8968b60b916c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TubeRadius: 0.000004
+  TubeRadius: 0.00004
   NumSegments: 2000
-  NumTubes: 24
+  NumTubes: 12
   TramRing: 1
 --- !u!23 &466295306
 MeshRenderer:
@@ -1042,6 +1054,10 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 1551786871279306, guid: 07e2fbb6eb98b484f9706250514b0404, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 07e2fbb6eb98b484f9706250514b0404, type: 2}
   m_IsPrefabParent: 0
@@ -1073,6 +1089,47 @@ Transform:
   m_Father: {fileID: 1769944137}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &727307574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 727307575}
+  - component: {fileID: 727307576}
+  m_Layer: 0
+  m_Name: Ring Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &727307575
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 727307574}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 466295304}
+  m_Father: {fileID: 1879430682}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &727307576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 727307574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7590ddc1be629784197e55b8a102e414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &739401199
 GameObject:
   m_ObjectHideFlags: 0
@@ -2623,7 +2680,7 @@ Transform:
   - {fileID: 176968771}
   - {fileID: 1096711846}
   - {fileID: 330127977}
-  - {fileID: 466295304}
+  - {fileID: 727307575}
   - {fileID: 1347469581}
   - {fileID: 1132047106}
   - {fileID: 95683307}
@@ -2897,7 +2954,7 @@ GameObject:
   - component: {fileID: 2003560873}
   m_Layer: 0
   m_Name: RingPositioner
-  m_TagString: Untagged
+  m_TagString: Sphere
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
