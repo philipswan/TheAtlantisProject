@@ -150,12 +150,20 @@ public class TramCars : MonoBehaviour {
 		else if (keysBottom.Count > 0)
 		{
 			key.transform.LookAt(keysBottom[keysBottom.Count-1].transform.position, transform.TransformVector(habtop - habbot));
-			key.transform.localPosition -= transform.InverseTransformPoint(key.transform.right) * 1e-5f;
+			key.transform.localPosition += transform.InverseTransformPoint(key.transform.right) * 9.5e-5f;
+			key.transform.localPosition -= transform.InverseTransformPoint(key.transform.up) * 6e-5f;
+			key.transform.LookAt(keysBottom[keysBottom.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 
 			key1.transform.LookAt(keysTop[keysTop.Count-1].transform.position, transform.TransformVector(habtop - habbot));
-			key1.transform.localPosition -= transform.InverseTransformPoint(key1.transform.right) * 1e-5f;
-			key1.transform.localPosition += transform.InverseTransformPoint(key1.transform.up) * 7e-6f;
+			key1.transform.localPosition -= transform.InverseTransformPoint(key1.transform.right) * 1.2e-4f;
+			key1.transform.localPosition += transform.InverseTransformPoint(key1.transform.up) * 5e-5f;
+			key1.transform.LookAt(keysTop[keysTop.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+
 		}
+
+//		GameObject p = new GameObject();
+//		p.transform.SetParent(transform);
+//		p.transform.localPosition = key.transform.localPosition;
 			
 		// Add keys to list to assign them to trams later
 		keysBottom.Add(key);
@@ -165,18 +173,25 @@ public class TramCars : MonoBehaviour {
 		if (keysBottom.Count == numKeys * numTrams)
 		{
 			keysBottom[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
-			keysBottom[0].transform.localPosition -= transform.InverseTransformPoint(keysBottom[0].transform.right) * 1e-5f;
+			keysBottom[0].transform.localPosition += transform.InverseTransformPoint(keysBottom[0].transform.right) * 9.5e-5f;
+			keysBottom[0].transform.localPosition -= transform.InverseTransformPoint(keysBottom[0].transform.up) * 6e-5f;
+			keysBottom[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 
 			tramBottomObjects[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
-			tramBottomObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramBottomObjects[0].transform.right) * 1e-5f;
+			tramBottomObjects[0].transform.localPosition += transform.InverseTransformPoint(tramBottomObjects[0].transform.right) * 9.5e-5f;
+			tramBottomObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramBottomObjects[0].transform.up) * 6e-5f;
+			tramBottomObjects[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 
-			keysTop[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
-			keysTop[0].transform.localPosition -= transform.InverseTransformPoint(keysTop[0].transform.right) * 1e-5f;
-			keysTop[0].transform.localPosition += transform.InverseTransformPoint(keysTop[0].transform.up) * 7e-6f;
+			keysTop[0].transform.LookAt(key1.transform.position, transform.TransformVector(prevUp));
+			keysTop[0].transform.localPosition -= transform.InverseTransformPoint(keysTop[0].transform.right) * 1.2e-4f;
+			keysTop[0].transform.localPosition += transform.InverseTransformPoint(keysTop[0].transform.up) * 5e-5f;
+			keysTop[0].transform.LookAt(key1.transform.position, transform.TransformVector(prevUp));
 
 			tramTopObjects[0].transform.LookAt(key1.transform.position, transform.TransformVector(prevUp));
-			tramTopObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramTopObjects[0].transform.right) * 1e-5f;
-			tramTopObjects[0].transform.localPosition += transform.InverseTransformPoint(tramTopObjects[0].transform.up) * 7e-6f;
+			tramTopObjects[0].transform.localPosition -= transform.InverseTransformPoint(tramTopObjects[0].transform.right) * 1.2e-4f;
+			tramTopObjects[0].transform.localPosition += transform.InverseTransformPoint(tramTopObjects[0].transform.up) * 5e-5f;
+			tramTopObjects[0].transform.LookAt(key1.transform.position, transform.TransformVector(prevUp));
+
 		}
 
 		// Create a tram at an interval set by the user
@@ -194,11 +209,15 @@ public class TramCars : MonoBehaviour {
 			if (tramBottomObjects.Count > 0)
 			{
 				tram.transform.LookAt(keysBottom[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
-				tram.transform.localPosition -= transform.InverseTransformPoint(tram.transform.right) * 1e-5f;
+				tram.transform.localPosition += transform.InverseTransformPoint(tram.transform.right) * 9.5e-5f;
+				tram.transform.localPosition -= transform.InverseTransformPoint(tram.transform.up) * 6e-5f;
+				tram.transform.LookAt(keysBottom[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
 
 				tram1.transform.LookAt(keysTop[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
-				tram1.transform.localPosition -= transform.InverseTransformPoint(tram1.transform.right) * 1e-5f;
-				tram1.transform.localPosition += transform.InverseTransformPoint(tram1.transform.up) * 7e-6f;
+				tram1.transform.localPosition -= transform.InverseTransformPoint(tram1.transform.right) * 1.2e-4f;
+				tram1.transform.localPosition += transform.InverseTransformPoint(tram1.transform.up) * 5e-5f;
+				tram1.transform.LookAt(keysTop[keysBottom.Count-2].transform.position, transform.TransformVector(habtop - habbot));
+
 			}
 				
 			// Add trams to list to assign their keys later

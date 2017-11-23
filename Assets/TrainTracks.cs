@@ -81,7 +81,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer.useWorldSpace = false;
 		lineRenderer.positionCount = trackBottomLeftObjects.Count;
 		lineRenderer.widthMultiplier = 0.001f;
-		lineRenderer.loop = false;
+		lineRenderer.loop = true;
 		lineRenderer.material = Resources.Load("TramRail") as Material;
 
 		// Get all positions for line
@@ -89,9 +89,6 @@ public class TrainTracks : MonoBehaviour {
 		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
 			linePos[i] = trackBottomLeftObjects[i].transform.localPosition;
-			GameObject p = new GameObject();
-			p.transform.SetParent(bottomLeft.transform);
-			p.transform.localPosition = linePos[i];
 		}
 			
 		// Set positions
@@ -103,7 +100,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer1.useWorldSpace = false;
 		lineRenderer1.positionCount = trackBottomRightObjects.Count;
 		lineRenderer1.widthMultiplier = 0.001f;
-		lineRenderer1.loop = false;
+		lineRenderer1.loop = true;
 		lineRenderer1.material = Resources.Load("TramRail") as Material;
 
 		Vector3[] linePos1 = new Vector3[trackBottomRightObjects.Count];
@@ -120,7 +117,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer2.useWorldSpace = false;
 		lineRenderer2.positionCount = trackTopLeftObjects.Count;
 		lineRenderer2.widthMultiplier = 0.001f;
-		lineRenderer2.loop = false;
+		lineRenderer2.loop = true;
 		lineRenderer2.material = Resources.Load("TramRail") as Material;
 
 		Vector3[] linePos2 = new Vector3[trackTopLeftObjects.Count];
@@ -137,7 +134,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer3.useWorldSpace = false;
 		lineRenderer3.positionCount = trackTopRightObjects.Count;
 		lineRenderer3.widthMultiplier = 0.001f;
-		lineRenderer3.loop = false;
+		lineRenderer3.loop = true;
 		lineRenderer3.material = Resources.Load("TramRail") as Material;
 
 		Vector3[] linePos3 = new Vector3[trackTopRightObjects.Count];

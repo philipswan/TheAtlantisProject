@@ -24,16 +24,8 @@ public class Ring : MonoBehaviour {
     void Start() {
 		config = Constants.Configuration.Instance;
 
-		if (!TramRing)
-		{
-			tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
-			RefreshRing();
-		}
-		else
-		{
-			tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.005f * Mathf.PI / 180) / 2;
-			RefreshRing();
-		}
+		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
+		RefreshRing();
     }
 
     public void RefreshRing() {
