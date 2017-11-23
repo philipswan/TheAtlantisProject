@@ -19,7 +19,10 @@ namespace Constants{
 		[Tooltip("Lerp time for system movement")]
 		public int SystemTravelTime = 10;
 
-		[Tooltip("Lerp time for tram movement")]
+		[Tooltip("Lerp time for tram movement with stops")]
+		public int TramTravelTimeStops = 10;
+
+		[Tooltip("Lerp time for tram movement without stops")]
 		public int TramTravelTime = 10;
 
 		[Header("Ring Constants")]

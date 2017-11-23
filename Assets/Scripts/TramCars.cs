@@ -52,6 +52,7 @@ public class TramCars : MonoBehaviour {
 		foreach(GameObject t in tramTopObjects)
 		{
 			t.SetActive(true);
+			t.GetComponent<TramMotion>().SetTravelTram();
 		}
 	}
 

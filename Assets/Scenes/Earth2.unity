@@ -863,7 +863,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
   SystemTravelTime: 1
-  TramTravelTime: 10
+  TramTravelTimeStops: 5
+  TramTravelTime: 1
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:
@@ -2954,7 +2955,7 @@ GameObject:
   - component: {fileID: 2003560873}
   m_Layer: 0
   m_Name: RingPositioner
-  m_TagString: Untagged
+  m_TagString: Positioner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
