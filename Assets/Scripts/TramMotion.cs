@@ -144,7 +144,7 @@ public class TramMotion : MonoBehaviour {
 		{
 			int index0 = (scene > 0) ? (scene - 1) : 0;
 
-			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], blend);
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTime);
 			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
 		}
 	}

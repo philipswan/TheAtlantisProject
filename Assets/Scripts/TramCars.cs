@@ -7,7 +7,7 @@ public class TramCars : MonoBehaviour {
 
 	[Tooltip("Totol keys is numKeys * numTrams")]
 	public int numKeys = 10;												// Number of sections
-	public int numTrams = 10;												// Number of trams per section
+	public int numTrams = 10;												// Total number of trams
 	public float habitatHeight = 0.00001f;									// Offset
 	public GameObject train;												// Train car prefab
 
