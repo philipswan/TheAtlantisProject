@@ -22,11 +22,11 @@ public class Transition1b : MonoBehaviour {
 		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.SystemTravelTime);
 		float Blend = Mathf.Min (Time.unscaledTime / config.SystemTravelTime - Scene, 1.0f);
 
-		if (Scene < Keys.Count * 2)
+		if (Scene < Keys.Count * 2 - 1)
 		{
 			UpdateSystem(Scene, Blend);
 		}
-		else if (Scene == Keys.Count * 2)
+		else if (Scene == Keys.Count * 2 - 1)
 		{
 			Rotation.Instance.enabled = true;
 			enabled = false;

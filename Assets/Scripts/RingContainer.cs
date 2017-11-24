@@ -21,7 +21,7 @@ public class RingContainer : MonoBehaviour {
 		if (transform.childCount > 1)
 			transform.GetChild(1).position = childPos1;		
 
-		transform.localScale = new Vector3(.9993f, .99985f, 1);
+		transform.localScale = new Vector3(.99965f, .99985f, 1);
 	}
 	
 	// Update is called once per frame

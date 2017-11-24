@@ -151,8 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce234d89ddec68f4aa30708488e88996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numKeys: 100
-  numTrams: 50
+  numSections: 100
+  numKeysPerSection: 50
+  numTramsPerSection: 5
   habitatHeight: 0.00001
   train: {fileID: 1452890902}
 --- !u!23 &85185512
@@ -264,7 +265,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 129125183}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21fa40ffdc5113642938149c383205f9, type: 3}
   m_Name: 
@@ -762,7 +763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TubeRadius: 0.000004
-  NumSegments: 200
+  NumSegments: 2000
   NumTubes: 12
   TramRing: 0
 --- !u!23 &330127975
@@ -933,7 +934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TubeRadius: 0.00004
-  NumSegments: 200
+  NumSegments: 2000
   NumTubes: 12
   TramRing: 1
 --- !u!23 &466295306

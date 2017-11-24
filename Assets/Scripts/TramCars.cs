@@ -19,12 +19,16 @@ public class TramCars : MonoBehaviour {
 	private List<GameObject> keysBottom = new List<GameObject>();			// List of all top keys. Points for the top trams to travel to
 	private List<GameObject> keysTop = new List<GameObject>();				// List of all bottom keys. Points for the bottom trams to travel to
 	private Vector3 prevUp;													// Holds up position for first tram
+	private int startIndex;													// What index the trams should start being created
+	private int endIndex;													// What index the trams should stop being created
 
 	// Use this for initialization
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
 
+		startIndex = 3;
+		endIndex = 8;
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		CreateTramSections();
 		SetTramsActive();
@@ -89,7 +93,15 @@ public class TramCars : MonoBehaviour {
 		{
 			for (int ringHabitatIndex = 0; ringHabitatIndex < numKeysPerSection; ringHabitatIndex++)	// Iterate through the keys and tram if there is one
 			{
-				createTram = ringHabitatIndex % tramSpacing == 0 ? true : false;	// Should we create a tram in this section?
+				if (ringHabitatIndex % tramSpacing == 0  && instance >= startIndex && instance <= endIndex)
+				{
+					createTram = true;
+				}
+				else
+				{
+					createTram = false;
+				}
+				//createTram = ringHabitatIndex % tramSpacing == 0 ? true : false;	// Should we create a tram in this section?
 
 				CreateTramsInSection(
 					instance,
@@ -100,8 +112,6 @@ public class TramCars : MonoBehaviour {
 
 		}
 
-		print(keysBottom.Count);
-		print(keysTop.Count);
 		UpdateTramKeys();	// Now that all trams and sections are created, set all the tram keys for their movement
 	}
 
@@ -254,6 +264,7 @@ public class TramCars : MonoBehaviour {
 	{
 		List<Quaternion> sortedKeys = new List<Quaternion>();
 		index *= (int)numKeysPerSection / numTramsPerSection;
+		index += startIndex * numKeysPerSection;
 
 		for (int i=index; i>=0; i--)
 		{
@@ -277,6 +288,7 @@ public class TramCars : MonoBehaviour {
 	{
 		List<Vector3> sortedKeys = new List<Vector3>();
 		index *= (int)numKeysPerSection / numTramsPerSection;
+		index += startIndex * numKeysPerSection;
 
 		for (int i=index; i>=0; i--)
 		{
