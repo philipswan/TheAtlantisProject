@@ -242,26 +242,26 @@ public class TramCars : MonoBehaviour {
 
 		foreach (GameObject t in tramTopLeftObjects)
 		{
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1.2e-4f;
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 8e-5f;
+			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
+			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 9e-5f;
 		}
 
 		foreach (GameObject k in keysTopLeft)
 		{
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1.2e-4f;
-			k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 8e-5f;
+			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
+			k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 9e-5f;
 		}
 
 		foreach (GameObject t in tramBottomLeftObjects)
 		{
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1.2e-4f;
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 2e-5f;
+			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
+			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 1e-5f;
 		}
 
 		foreach (GameObject k in keysBottomLeft)
 		{
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1.2e-4f;
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 2e-5f;
+			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
+			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 1e-5f;
 		}
 	}
 
