@@ -145,17 +145,14 @@ public class ElevatorCables : MonoBehaviour
 				acc_mid.transform.localScale = Vector3.one * 1e-6f;
 				acc_mid.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.85f);
 				acc_mid.transform.LookAt(this.transform.TransformPoint(cabletop), this.transform.TransformVector(cabletop_old - cablebot_old));
-
 				acc_mid.SetActive(true);
+				acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, true);
 
 				// Add an aircraft carrier to represent the surface terminal at the bottom of each stay 
 				GameObject acc_bot = Instantiate(carrier_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
 				acc_bot.transform.localScale = Vector3.one * 3e-7f;
 				acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.0025f);
-				//acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.2f); // Why doesn't this work???
 				acc_bot.transform.LookAt(this.transform.TransformPoint(cabletop), this.transform.TransformVector(cableleft_old));
-
-				acc_mid.GetComponent<ElevatorMotion>().SetPositions(cabletop, cablebot, true);
 			}
 
 
