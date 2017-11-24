@@ -128,6 +128,7 @@ public class RingHabitats : MonoBehaviour {
 		cylinder.name = "Cylinder " + ringHabitatObjects.Count;
 		cylinder.transform.localPosition = habbot;
 		cylinder.transform.up = this.transform.TransformVector(habtop - habbot);
+		cylinder.transform.localPosition -= cylinder.transform.up * 1e-4f;
 
 		ringHabitatObjects.Add(cylinder);
 
