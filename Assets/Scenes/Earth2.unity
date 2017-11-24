@@ -903,7 +903,7 @@ GameObject:
   - component: {fileID: 466295306}
   - component: {fileID: 466295305}
   m_Layer: 0
-  m_Name: Ring - Tram
+  m_Name: Ring - Transit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1681,9 +1681,7 @@ MonoBehaviour:
   numTubeSides: 8
   tubeRadius: 0.00001
   habitatHeight: 0.00002
-  material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 3}
   habitat: {fileID: 2108697189}
-  train: {fileID: 1452890902}
 --- !u!23 &1132047108
 MeshRenderer:
   m_ObjectHideFlags: 0

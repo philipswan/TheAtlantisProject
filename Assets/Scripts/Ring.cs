@@ -102,7 +102,7 @@ public class Ring : MonoBehaviour {
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
 
-		GameObject ring = new GameObject(TramRing ? "Tram Ring" : "Ring");
+		GameObject ring = new GameObject(TramRing ? "Transit Ring" : "Ring");
 		ring.transform.SetParent(transform);
 
 		MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
