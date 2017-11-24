@@ -7,22 +7,13 @@ public class RingHabitats : MonoBehaviour {
     public int numInstances = 10;
     public int numRingHabitatsPerInstance = 10;
     public int numTubeSides = 8;
-    public float tubeRadius = .0001f;
-    public float habitatHeight = .00001f;
-    public Material material;
+    public float tubeRadius = 0.0001f;
+    public float habitatHeight = 0.00001f;
 	public GameObject habitat;
-	public GameObject train;
 
     private float torusRadius;
 	private Constants.Configuration config;									// Holds reference to config file
     private List<GameObject> ringHabitatObjects = new List<GameObject>();
-	private List<GameObject> trams = new List<GameObject>();
-	private int tramIndex;
-
-	void Awake()
-	{
-		tramIndex = 0;
-	}
 
     // Use this for initialization
     void Start()
@@ -43,8 +34,6 @@ public class RingHabitats : MonoBehaviour {
         obj.transform.localPosition = new Vector3();
         obj.transform.localRotation = Quaternion.identity;
         obj.transform.localScale = new Vector3(1, 1, 1);
-
-        mr.sharedMaterial = material;
 
         ringHabitatObjects.Add(obj);
         return obj;
@@ -78,10 +67,10 @@ public class RingHabitats : MonoBehaviour {
         //for (int instance = 0; instance < numInstances; instance++)
         for (int instance = 0; instance < numInstances; instance++)
         {
-            if ((instance * 4 / numInstances == 0 ) || (instance * 4 / numInstances == numInstances-1))
+			if ((instance >= 0 && instance <= 74) || (instance >= 263 && instance <= numInstances))
             {
-                GameObject obj = createRingHabitatObject();
-                Mesh mesh = new Mesh();
+                //GameObject obj = createRingHabitatObject();
+                //Mesh mesh = new Mesh();
 
                 sectionIndex = 0;
                 for (int ringHabitatIndex = 0; ringHabitatIndex < numRingHabitatsPerInstance; ringHabitatIndex++)
@@ -125,10 +114,10 @@ public class RingHabitats : MonoBehaviour {
 
 		GameObject cylinder = Instantiate(habitat, transform);
 		cylinder.SetActive(true);
-		cylinder.name = "Cylinder " + ringHabitatObjects.Count;
+		cylinder.name = "Habitat " + ringHabitatObjects.Count;
 		cylinder.transform.localPosition = habbot;
 		cylinder.transform.up = this.transform.TransformVector(habtop - habbot);
-		cylinder.transform.localPosition -= cylinder.transform.up * 1e-4f;
+		//cylinder.transform.localPosition -= cylinder.transform.up * 1e-4f;
 
 		ringHabitatObjects.Add(cylinder);
 

@@ -30,6 +30,7 @@ public class TramCars : MonoBehaviour {
 		startIndex = 3;
 		endIndex = 8;
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
+
 		CreateTramSections();
 		SetTramsActive();
 		DeleteKeys();
