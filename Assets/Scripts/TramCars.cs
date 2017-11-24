@@ -5,9 +5,10 @@ using System.Collections;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TramCars : MonoBehaviour {
 
-	[Tooltip("Totol keys is numKeys * numTrams")]
-	public int numKeys = 10;												// Number of sections
-	public int numTrams = 10;												// Total number of trams
+	[Tooltip("Totol keys is numSections * numKeysPerSectoin")]
+	public int numSections = 10;											// Number of sections
+	public int numKeysPerSection = 10;										// Total number of trams
+	public int numTramsPerSection = 1;										// Number of trams per section
 	public float habitatHeight = 0.00001f;									// Offset
 	public GameObject train;												// Train car prefab
 
@@ -80,31 +81,27 @@ public class TramCars : MonoBehaviour {
 	private void CreateTramSections()
 	{
 		bool createTram;
-		int tramSpacing = (int)numKeys / numTrams;
-		int numRingHabitats = numTrams * numKeys;
+		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
+		int numRingHabitats = numKeysPerSection * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numRingHabitats;
 
-		for (int instance = 0; instance < numKeys; instance++)	// Iterate through the sections
+		for (int instance = 0; instance < numSections; instance++)	// Iterate through the sections
 		{
-			createTram = instance % tramSpacing == 0 ? true : false;	// Should we create a tram in this section?
-
-			for (int ringHabitatIndex = 0; ringHabitatIndex < numTrams; ringHabitatIndex++)	// Iterate through the keys and tram if there is one
+			for (int ringHabitatIndex = 0; ringHabitatIndex < numKeysPerSection; ringHabitatIndex++)	// Iterate through the keys and tram if there is one
 			{
+				createTram = ringHabitatIndex % tramSpacing == 0 ? true : false;	// Should we create a tram in this section?
+
 				CreateTramsInSection(
 					instance,
 					ringHabitatIndex,
 					ringHabitatSpacing,
 					createTram);
-
-				if (createTram)
-				{
-					createTram = false;	// Only 1 tram per section
-				}
-
 			}
 
 		}
 
+		print(keysBottom.Count);
+		print(keysTop.Count);
 		UpdateTramKeys();	// Now that all trams and sections are created, set all the tram keys for their movement
 	}
 
@@ -121,7 +118,7 @@ public class TramCars : MonoBehaviour {
 		float phi0;
 		float phi1;
 
-		theta = (instance * numTrams + ringHabitatIndex) * ringHabitatSpacing;
+		theta = (instance * numKeysPerSection + ringHabitatIndex) * ringHabitatSpacing;
 		phi0 = torusRadius;
 		phi1 = torusRadius - habitatHeight * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
 
@@ -161,17 +158,13 @@ public class TramCars : MonoBehaviour {
 			key1.transform.LookAt(keysTop[keysTop.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 
 		}
-
-//		GameObject p = new GameObject();
-//		p.transform.SetParent(transform);
-//		p.transform.localPosition = key.transform.localPosition;
 			
 		// Add keys to list to assign them to trams later
 		keysBottom.Add(key);
 		keysTop.Add(key1);
 
 		// Set the last key and tram position and orientation
-		if (keysBottom.Count == numKeys * numTrams)
+		if (keysBottom.Count == numSections * numKeysPerSection)
 		{
 			keysBottom[0].transform.LookAt(key.transform.position, transform.TransformVector(prevUp));
 			keysBottom[0].transform.localPosition += transform.InverseTransformPoint(keysBottom[0].transform.right) * 9.5e-5f;
@@ -199,7 +192,6 @@ public class TramCars : MonoBehaviour {
 		if (createTram)
 		{
 			GameObject tram = Instantiate(train, transform);
-			//tram.SetActive(true);
 			tram.name = "Tram " + tramBottomObjects.Count;
 			tram.transform.localPosition = habtop;
 			tram.transform.localScale = new Vector3(6e-6f, 6e-6f, 6e-6f);
@@ -261,7 +253,7 @@ public class TramCars : MonoBehaviour {
 	private List<Quaternion> SortKeysRotations(int index, List<GameObject> keys)
 	{
 		List<Quaternion> sortedKeys = new List<Quaternion>();
-		index *= numKeys;
+		index *= (int)numKeysPerSection / numTramsPerSection;
 
 		for (int i=index; i>=0; i--)
 		{
@@ -284,7 +276,7 @@ public class TramCars : MonoBehaviour {
 	private List<Vector3> SortKeysPositions(int index, List<GameObject> keys)
 	{
 		List<Vector3> sortedKeys = new List<Vector3>();
-		index *= numKeys;
+		index *= (int)numKeysPerSection / numTramsPerSection;
 
 		for (int i=index; i>=0; i--)
 		{

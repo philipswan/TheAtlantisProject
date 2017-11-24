@@ -133,12 +133,6 @@ public class TramMotion : MonoBehaviour {
 
 			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[index1], ref velocity, config.TramTravelTimeStops/2);
 			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[index1], Mathf.Pow(blend, 1.05f));
-
-			///print(Vector3.Distance(transform.localPosition, positions[index1]));
-
-//			transform.localPosition = Vector3.Lerp(positions[index0], positions[index1], blend);
-
-			return;
 		}
 		else
 		{
