@@ -44,7 +44,7 @@ public class TramMotion : MonoBehaviour {
 
 		if (Scene < positions.Count * 2)
 		{
-			UpdateSystem(Scene, Blend, travelTram);
+			//UpdateSystem(Scene, Blend, travelTram);
 		}
 		else
 		{
