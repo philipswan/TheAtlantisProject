@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Transition1b : MonoBehaviour {
 	[Tooltip("The transforms that the system will move to in the order that they entered.")]
@@ -29,6 +28,7 @@ public class Transition1b : MonoBehaviour {
 		}
 		else if (Scene == Keys.Count * 2)
 		{
+			Rotation.Instance.enabled = true;
 			enabled = false;
 		}
     }

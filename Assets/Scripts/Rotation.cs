@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Rotation : MonoBehaviour {
+	public static Rotation Instance;
 
 	// Use this for initialization
 	void Start () {
-		
+		Instance = this;
+		enabled = false;
 	}
 	
 	// Update is called once per frame
