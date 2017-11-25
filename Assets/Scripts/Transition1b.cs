@@ -28,7 +28,7 @@ public class Transition1b : MonoBehaviour {
 		}
 		else if (Scene == Keys.Count * 2 - 1)
 		{
-			//Rotation.Instance.enabled = true;
+			Rotation.Instance.enabled = true;
 			enabled = false;
 		}
     }
