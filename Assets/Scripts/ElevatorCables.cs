@@ -26,7 +26,7 @@ public class ElevatorCables : MonoBehaviour
 	{
 		config = Constants.Configuration.Instance;
 
-		tetheredRingRadius = Mathf.Cos(config.RingLatitude * 1.025f * Mathf.PI / 180) / 2;
+		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		RefreshElevatorCables();
 	}
 
@@ -90,6 +90,7 @@ public class ElevatorCables : MonoBehaviour
 		// Pre-Calculate the size in radians of TubeSide
 		float elevatorCableSpacing = 2.0f * Mathf.PI / (float)numElevatorCables;
 		float tubeSideSize = 2.0f * Mathf.PI / (float)numTubeSides;
+		print("Elevator spacing: " + elevatorCableSpacing);
 
 		// Create floats for our xyz coordinates, and angles
 		float x2 = 0, y2 = 0, z2 = 0;

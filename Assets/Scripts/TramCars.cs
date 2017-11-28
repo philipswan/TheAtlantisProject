@@ -8,6 +8,8 @@ public class TramCars : MonoBehaviour {
 	[Tooltip("Totol keys is numSections * numKeysPerSectoin")]
 	public int numSections = 10;												// Number of sections
 	public int numKeysPerSection = 10;											// Total number of trams
+	[Tooltip("Each tram per section includes 4 trams (1 for each track)." +
+		" Total trams does not equal Num Sections * Num Trams Per Section because we only need to render what the user will see.")]
 	public int numTramsPerSection = 1;											// Number of trams per section
 	public float habitatHeight = 0.00001f;										// Offset
 	public GameObject train;													// Train car prefab
@@ -84,11 +86,11 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void DeleteKeys()
 	{
-		foreach (GameObject k in keysTopLeft)
-		{
-			Destroy(k);
-		}
-		keysTopLeft.Clear();
+//		foreach (GameObject k in keysTopLeft)
+//		{
+//			Destroy(k);
+//		}
+//		keysTopLeft.Clear();
 
 		foreach (GameObject k in keysBottomRight)
 		{
@@ -116,8 +118,9 @@ public class TramCars : MonoBehaviour {
 	{
 		bool createTram;
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
-		int numRingHabitats = numKeysPerSection * numSections;
-		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numRingHabitats;
+		int numKeys = numKeysPerSection * numSections;
+		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numKeys;
+		print("Tram cars spacing: " + ringHabitatSpacing);
 
 		for (int instance = 0; instance < numSections; instance++)	// Iterate through the sections
 		{
