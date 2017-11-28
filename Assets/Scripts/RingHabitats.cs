@@ -15,17 +15,24 @@ public class RingHabitats : MonoBehaviour {
     private float torusRadius;
 	private Constants.Configuration config;									// Holds reference to config file
     private List<GameObject> ringHabitatObjects = new List<GameObject>();
+	private int startIndex;
+	private int endIndex;
 
     // Use this for initialization
     void Start()
     {
 		config = Constants.Configuration.Instance;
+		startIndex = 25;			// Set start/end index to only draw habitats visible to the user
+		endIndex = 88;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
-        RefreshRingHabitats();
-		UpdatePositions();
+        RefreshRingHabitats();		// Create habitats and their sections
+		UpdatePositions();			// Move habitats to be adjacent to transit ring
     }
 
+	/// <summary>
+	/// Iterate through habitat sections
+	/// </summary>
     public void RefreshRingHabitats()
     {
         int sectionIndex;
@@ -42,7 +49,7 @@ public class RingHabitats : MonoBehaviour {
 
         for (int instance = 0; instance < numInstances; instance++)
         {
-			if ((instance >= 0 && instance <= 74) || (instance >= 263 && instance <= numInstances))
+			if ((instance >= 0 && instance <= startIndex) || (instance >= endIndex && instance <= numInstances))
             {
                 sectionIndex = 0;
 
@@ -60,6 +67,15 @@ public class RingHabitats : MonoBehaviour {
         }
     }
 
+	/// <summary>
+	/// Create new habitat
+	/// </summary>
+	/// <param name="instance">Instance.</param>
+	/// <param name="ringHabitatIndex">Ring habitat index.</param>
+	/// <param name="sectionIndex">Section index.</param>
+	/// <param name="ringHabitatSpacing">Ring habitat spacing.</param>
+	/// <param name="vertices">Vertices.</param>
+	/// <param name="triangleIndices">Triangle indices.</param>
     public void NewRingHabitat(int instance, int ringHabitatIndex, ref int sectionIndex, float ringHabitatSpacing, Vector3[] vertices, int[] triangleIndices)
     {
         float theta;
@@ -103,9 +119,14 @@ public class RingHabitats : MonoBehaviour {
 
 		ringHabitatObjects.Add(cylinder);
 
-		if (ringHabitatObjects.Count == 1120)
+		// Fix end points
+		if (ringHabitatObjects.Count == startIndex * numRingHabitatsPerInstance + (numInstances - endIndex + 1) * numRingHabitatsPerInstance)
 		{
 			ringHabitatObjects[0].transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-1].transform.position, transform.TransformVector(prevUp));
+		}
+		else if (ringHabitatObjects.Count == (startIndex + 1) * numRingHabitatsPerInstance + 2)
+		{
+			ringHabitatObjects[ringHabitatObjects.Count-2].transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-1].transform.position, transform.TransformVector(prevUp));
 		}
 	}
 

@@ -90,7 +90,6 @@ public class ElevatorCables : MonoBehaviour
 		// Pre-Calculate the size in radians of TubeSide
 		float elevatorCableSpacing = 2.0f * Mathf.PI / (float)numElevatorCables;
 		float tubeSideSize = 2.0f * Mathf.PI / (float)numTubeSides;
-		print("Elevator spacing: " + elevatorCableSpacing);
 
 		// Create floats for our xyz coordinates, and angles
 		float x2 = 0, y2 = 0, z2 = 0;

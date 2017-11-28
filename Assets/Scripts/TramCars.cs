@@ -16,6 +16,10 @@ public class TramCars : MonoBehaviour {
 
 	private float torusRadius;													// Radius of torus ring
 	private Constants.Configuration config;										// Holds reference to config file
+	private Vector3 prevUp;														// Holds up position for first tram
+	private int startIndex;														// What index the trams should start being created
+	private int endIndex;														// What index the trams should stop being created
+
 	private List<GameObject> tramBottomRightObjects = new List<GameObject>();	// List of all bottom right trams
 	private List<GameObject> tramBottomLeftObjects = new List<GameObject>();	// List of all bottom left trams
 	private List<GameObject> tramTopLeftObjects = new List<GameObject>();		// List of all top left trams
@@ -24,32 +28,21 @@ public class TramCars : MonoBehaviour {
 	private List<GameObject> keysBottomLeft = new List<GameObject>();			// List of all bottom left keys. Points for the bottom left trams to travel to
 	private List<GameObject> keysTopLeft = new List<GameObject>();				// List of all top left keys. Points for the top left trams to travel to
 	private List<GameObject> keysTopRight = new List<GameObject>();				// List of all top right keys. Points for the top right trams to travel to
-	private Vector3 prevUp;														// Holds up position for first tram
-	private int startIndex;														// What index the trams should start being created
-	private int endIndex;														// What index the trams should stop being created
 
 	// Use this for initialization
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
 
-		startIndex = 3;	// Set start/end index to only draw cars that can be seen by the user
+		startIndex = 3;	// Set start/end section to only draw cars that can be seen by the user
 		endIndex = 8;
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 
 		CreateTramSections();	// Create all trams and keys
 		UpdatePositions();		// Move trams to proper positions
 		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
-		SetTramsActive();		// Activate all trams
+		ActivateTrams();		// Activate all trams
 		DeleteKeys();			// Delete keys as they are no longer needed
-	}
-
-	/// <summary>
-	/// Call coroutine to set tram object active
-	/// </summary>
-	public void SetTramsActive()
-	{
-		ActivateTrams();
 	}
 		
 	/// <summary>
@@ -120,7 +113,6 @@ public class TramCars : MonoBehaviour {
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
 		int numKeys = numKeysPerSection * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numKeys;
-		print("Tram cars spacing: " + ringHabitatSpacing);
 
 		for (int instance = 0; instance < numSections; instance++)	// Iterate through the sections
 		{
