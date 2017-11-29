@@ -265,7 +265,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 129125183}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21fa40ffdc5113642938149c383205f9, type: 3}
   m_Name: 
@@ -875,6 +875,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
   SystemTravelTime: 1
+  ElevatorTravelTime: 10
+  ElevatorWaitTime: 3
   TramTravelTimeStops: 5
   TramTravelTime: 1
   RingLatitude: -34
@@ -1357,7 +1359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddab944424cec3419666e6dca69d1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TravelTime: 10
   automatic: 0
   ElevatorDing: {fileID: 0}
   ElevatorMusic: {fileID: 0}
@@ -2017,7 +2018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddab944424cec3419666e6dca69d1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TravelTime: 10
   automatic: 0
   ElevatorDing: {fileID: 8300000, guid: 272c70e964c33424f9d8ce0a4d93ffa4, type: 3}
   ElevatorMusic: {fileID: 8300000, guid: fafce5e762503fc46bb349a8adc12c66, type: 3}
@@ -2569,7 +2569,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddab944424cec3419666e6dca69d1b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TravelTime: 3
   automatic: 0
   ElevatorDing: {fileID: 0}
   ElevatorMusic: {fileID: 0}

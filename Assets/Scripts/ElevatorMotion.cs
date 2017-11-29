@@ -104,10 +104,11 @@ public class ElevatorMotion : MonoBehaviour {
 		transform.GetChild(2).transform.localPosition = button2Pos;
 
 		// If we are close enough to the current target, switch to the other one
-		if (Vector3.Distance(transform.localPosition, targetPos) < buffer || update)
+		if (Vector3.Distance(transform.localPosition, targetPos) <= 1e-5f || update)
 		{
 			update = false;
 			UpdateTarget();
+
 			if (UserElevator)
 			{
 				Transition1.Instance.MoveCamera = false;
@@ -126,9 +127,8 @@ public class ElevatorMotion : MonoBehaviour {
 	public void UpdateTarget()
 	{
 		targetSet = true;
+		Target target = CurrentTarget == Target.Nothing ? PreviousTarget : CurrentTarget;
 		PreviousTarget = CurrentTarget;
-
-		print("current: " + CurrentTarget + " prev: " + PreviousTarget);
 
 		if (CurrentTarget != Target.Nothing)
 		{
@@ -136,9 +136,7 @@ public class ElevatorMotion : MonoBehaviour {
 			CurrentTarget = Target.Nothing;
 			return;
 		}
-
-		Target target = CurrentTarget == Target.Nothing ? PreviousTarget : CurrentTarget;
-
+			
 		// Switch the target position
 		switch (target)
 		{
@@ -175,7 +173,7 @@ public class ElevatorMotion : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Start elevator movement
+	/// Start elevator movement from button press
 	/// </summary>
 	public void StartElevator()
 	{
