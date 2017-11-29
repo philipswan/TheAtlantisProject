@@ -874,7 +874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
-  SystemTravelTime: 3
+  SystemTravelTime: 1
   TramTravelTimeStops: 5
   TramTravelTime: 1
   RingLatitude: -34
@@ -1594,8 +1594,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1f3b6e6372a6f4294707ad5c06ca19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numInstances: 300
-  numRingHabitatsPerInstance: 10
+  numInstances: 100
+  numRingHabitatsPerInstance: 50
   numTubeSides: 8
   tubeRadius: 0.00001
   habitatHeight: 0.00002
@@ -1791,7 +1791,7 @@ MonoBehaviour:
   ring_edge_transform: {fileID: 2003560873}
   tubeRadius: 0.000001
   numTubeSides: 8
-  numElevatorCables: 90
+  numElevatorCables: 100
   ringAltitude: 0.0075
 --- !u!23 &1347469583
 MeshRenderer:
@@ -3051,7 +3051,7 @@ Transform:
   m_GameObject: {fileID: 2108697189}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.000008, y: 0.000008, z: 0.000008}
+  m_LocalScale: {x: 0.000008, y: 0.000016, z: 0.000008}
   m_Children: []
   m_Father: {fileID: 1132047106}
   m_RootOrder: 0

@@ -138,7 +138,7 @@ public class ElevatorCables : MonoBehaviour
 			var cablebot_old = new Vector3(x3, y3, z3);
 			var cableleft_old = new Vector3(x4, y4, z4);
 
-			if (i <= 4)
+			if (i <= 0)
 			{
 				// Add an capsule somewher along the length of each stay 
 				GameObject acc_mid = Instantiate(climber_prefab, new Vector3(0, 0, 0), Quaternion.identity, this.transform);

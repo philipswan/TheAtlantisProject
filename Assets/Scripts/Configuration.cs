@@ -7,27 +7,34 @@ namespace Constants{
 	public enum Target                  // Enum of target types
 	{
 		Top,
-		Bottom
+		Bottom,
+		Nothing
 	};
 
 	public class Configuration : MonoBehaviour {
 
 		[Header("Movement")]
 		[Tooltip("Lerp time for camera movment")]
-		public int CameraTravelTime = 5;
+		public float CameraTravelTime = 5.0f;
 
 		[Tooltip("Lerp time for system movement")]
-		public int SystemTravelTime = 10;
+		public float SystemTravelTime = 10.0f;
+
+		[Tooltip("Time in seconds the elevator will take to travel from the ring to the ship or vice versa.")]
+		public float ElevatorTravelTime = 10.0f;
+
+		[Tooltip("Time the elevator waits at it's destination")]
+		public float ElevatorWaitTime = 0.0f;
 
 		[Tooltip("Lerp time for tram movement with stops")]
-		public int TramTravelTimeStops = 10;
+		public float TramTravelTimeStops = 10.0f;
 
 		[Tooltip("Lerp time for tram movement without stops")]
-		public int TramTravelTime = 10;
+		public float TramTravelTime = 10.0f;
 
 		[Header("Ring Constants")]
 		[Tooltip("Latitude of the ring")]
-		public float RingLatitude = -34f;
+		public float RingLatitude = -34.0f;
 
 		public static Configuration Instance;
 

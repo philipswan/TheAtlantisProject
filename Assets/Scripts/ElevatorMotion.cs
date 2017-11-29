@@ -4,10 +4,7 @@ using UnityEngine;
 using Constants;
 
 public class ElevatorMotion : MonoBehaviour {
-
-	[Tooltip("Time in seconds the elevator will take to travel from the ring to the ship or vice versa.")]
-	public float TravelTime = 10;
-
+	
 	public bool automatic;					// Should the elevator move automatically
 	public AudioClip ElevatorDing;			// Played when destination is reached
 	public AudioClip ElevatorMusic;			// Played during the ride
@@ -24,6 +21,9 @@ public class ElevatorMotion : MonoBehaviour {
 	public Target CurrentTarget				// Enum holding the current target (or destination) of the elevator
 	{get; private set;}    			  
 
+	public Target PreviousTarget			// Enum holding the current target (or destination) of the elevator
+	{get; private set;}    	
+
 	private Vector3 velocity;           	// Velocity of the object when starting movement
 	private Vector3 targetPos;          	// Position of the destination of the elevator
 	private bool targetSet;             	// Flag set when both targets have been set from ElevatorCables.cs
@@ -33,13 +33,18 @@ public class ElevatorMotion : MonoBehaviour {
 	private float botBuffer;				// Distance between carrier and elevator to stop motion
 	private float topBuffer;				// Distance between ring and elevator to stop motion
 	private float buffer;					// Holds current buffer
+	private float startWaitTime;			// When the elevator reached it's destination
+	private Constants.Configuration config;	// Holds reference to config script
 
 	// Use this for initialization on creation
 	void Awake () {
 		CurrentTarget = Target.Bottom;
-		velocity = Vector3.zero;
+		PreviousTarget = CurrentTarget;
+
 		automatic = false;
 		UserElevator = false;
+
+		velocity = Vector3.zero;
 		botBuffer = 0.00015f;
 		topBuffer = 0.0003f;
 	}
@@ -47,6 +52,8 @@ public class ElevatorMotion : MonoBehaviour {
 	// Use this for initialization on first frame
 	void Start()
 	{
+		config = Constants.Configuration.Instance;
+
 		// Store button positions to prevent drift in update method
 		button1Pos = transform.FindChild("Button 1").localPosition;
 		button2Pos = transform.FindChild("Button 2").localPosition;
@@ -60,20 +67,35 @@ public class ElevatorMotion : MonoBehaviour {
 			return;
 		}
 
+		bool update = false;
 		// Move towards the current target using SmoothDamp
 		switch (CurrentTarget)
 		{
 		case Target.Top:
 			targetPos = CableTop;
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableTop, ref velocity, TravelTime);
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableTop, ref velocity, config.ElevatorTravelTime);
 			break;
 		case Target.Bottom:
 			targetPos = CableBotton;
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableBotton, ref velocity, TravelTime);
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableBotton, ref velocity, config.ElevatorTravelTime);
+			break;
+		case Target.Nothing:
+			//print(Time.unscaledTime - startWaitTime);
+			// If we haven't waited long enough, set the targetPos to key value to prevent UpdatePosition from getting
+			// called. Else, set the target and localPos to the same
+			if (Time.unscaledTime - startWaitTime < config.ElevatorWaitTime)
+			{
+				//print("waiting");
+				targetPos = new Vector3(999, 999, 999);
+			}
+			else
+			{
+				//print("here");
+				//targetPos = transform.localPosition;
+				update = true;
+			}
 			break;
 		default:
-			targetPos = CableTop;
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, CableTop, ref velocity, TravelTime);
 			break;
 		}
 
@@ -82,8 +104,9 @@ public class ElevatorMotion : MonoBehaviour {
 		transform.GetChild(2).transform.localPosition = button2Pos;
 
 		// If we are close enough to the current target, switch to the other one
-		if (Vector3.Distance(transform.localPosition, targetPos) < buffer)
+		if (Vector3.Distance(transform.localPosition, targetPos) < buffer || update)
 		{
+			update = false;
 			UpdateTarget();
 			if (UserElevator)
 			{
@@ -103,22 +126,34 @@ public class ElevatorMotion : MonoBehaviour {
 	public void UpdateTarget()
 	{
 		targetSet = true;
+		PreviousTarget = CurrentTarget;
+
+		print("current: " + CurrentTarget + " prev: " + PreviousTarget);
+
+		if (CurrentTarget != Target.Nothing)
+		{
+			startWaitTime = Time.unscaledTime;
+			CurrentTarget = Target.Nothing;
+			return;
+		}
+
+		Target target = CurrentTarget == Target.Nothing ? PreviousTarget : CurrentTarget;
 
 		// Switch the target position
-		switch (CurrentTarget)
+		switch (target)
 		{
-		case Target.Top:
-			CurrentTarget = Target.Bottom;
-			buffer = botBuffer;
-			break;
-		case Target.Bottom:
-			CurrentTarget = Target.Top;
-			buffer = topBuffer;
-			break;
-		default:
-			CurrentTarget = Target.Bottom;
-			buffer = botBuffer;
-			break;
+			case Target.Top:
+				CurrentTarget = Target.Bottom;
+				buffer = botBuffer;
+				break;
+			case Target.Bottom:
+				CurrentTarget = Target.Top;
+				buffer = topBuffer;
+				break;
+			default:
+				CurrentTarget = Target.Bottom;
+				buffer = botBuffer;
+				break;
 		}
 	}
 

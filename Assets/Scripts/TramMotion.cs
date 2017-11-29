@@ -8,7 +8,6 @@ public class TramMotion : MonoBehaviour {
 	public List<Vector3> positions = new List<Vector3>();			// All destinatins for the tram
 	private Constants.Configuration config;							// Holds reference to config script
 	private float startTime;										// Starting time of the movement. Reset when a cycle is completed
-	private bool keysSet;											// Flag controlling activation of tram motion
 	private bool travelTram;										// Set true if the tram does not stop
 	private Vector3 velocity;										// Speed cap for smoothdamp
 
@@ -16,7 +15,6 @@ public class TramMotion : MonoBehaviour {
 	{
 		velocity = Vector3.zero;
 		travelTram = false;
-		keysSet = false;
 	}
 
 	// Use this for initialization
@@ -26,8 +24,6 @@ public class TramMotion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (!keysSet)
-		{ return; }
 		int Scene = 0;
 		float Blend = 0.0f;
 
@@ -55,7 +51,6 @@ public class TramMotion : MonoBehaviour {
 	void OnEnable()
 	{
 		startTime = Time.unscaledTime;
-		keysSet = true;
 	}
 
 	/// <summary>
