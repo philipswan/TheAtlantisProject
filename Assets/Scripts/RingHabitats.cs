@@ -101,10 +101,14 @@ public class RingHabitats : MonoBehaviour {
 		hableft.z = phi0 * Mathf.Sin(theta);
 		hableft.y = -0.0075f * Mathf.Sin(config.RingLatitude * Mathf.Deg2Rad);
 
-		GameObject cylinder = Instantiate(habitat, transform);
-		cylinder.SetActive(true);
-		cylinder.name = "Habitat " + ringHabitatObjects.Count;
-		cylinder.transform.localPosition = habbot;
+		GameObject newHabitat = Instantiate(habitat, transform);
+		newHabitat.name = "Habitat " + ringHabitatObjects.Count;
+		newHabitat.transform.localPosition = habbot;
+
+		if (ringHabitatObjects.Count % numRingHabitatsPerInstance != 0)
+		{
+			newHabitat.SetActive(true);
+		}
 
 		if (ringHabitatObjects.Count == 0)
 		{
@@ -112,12 +116,10 @@ public class RingHabitats : MonoBehaviour {
 		}
 		else if (ringHabitatObjects.Count > 0)
 		{
-			cylinder.transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+			newHabitat.transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
 		}
-		//cylinder.transform.up = this.transform.TransformVector(habtop - habbot);
-		//cylinder.transform.localPosition -= cylinder.transform.up * 1e-4f;
 
-		ringHabitatObjects.Add(cylinder);
+		ringHabitatObjects.Add(newHabitat);
 
 		// Fix end points
 		if (ringHabitatObjects.Count == startIndex * numRingHabitatsPerInstance + (numInstances - endIndex + 1) * numRingHabitatsPerInstance)

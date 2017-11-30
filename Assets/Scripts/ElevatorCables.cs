@@ -13,6 +13,7 @@ public class ElevatorCables : MonoBehaviour
 
 	public GameObject carrier_prefab;
 	public GameObject climber_prefab;
+	public GameObject elevator_terminus;
 	public Transform ring_edge_transform;
 	public float tubeRadius = 0.00001f;
 	public int numTubeSides = 8;
@@ -154,6 +155,13 @@ public class ElevatorCables : MonoBehaviour
 				acc_bot.transform.localScale = Vector3.one * 3e-7f;
 				acc_bot.transform.localPosition = Vector3.Lerp(cablebot, cabletop, 0.0025f);
 				acc_bot.transform.LookAt(this.transform.TransformPoint(cabletop), this.transform.TransformVector(cableleft_old));
+			
+				// Add a terminus at the top by the transit tube
+				GameObject acc_top = Instantiate(elevator_terminus, new Vector3(0, 0, 0), Quaternion.identity, this.transform);
+				acc_top.transform.localScale = Vector3.one * 3e-4f;
+				acc_top.transform.localPosition = Vector3.Lerp(cabletop, cablebot, 0.015f);
+				acc_top.transform.LookAt(this.transform.TransformPoint(cableleft_old), this.transform.TransformVector(cabletop));
+				acc_top.SetActive(true);
 			}
 
 

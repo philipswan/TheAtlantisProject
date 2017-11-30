@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RingContainer : MonoBehaviour {
+	public bool UpdateScale = false;
 
 	// Use this for initialization
 	void Start () {
-		Vector3 childPos0 = Vector3.zero;
-		Vector3 childPos1 = Vector3.zero;
+		List<Vector3> children = new List<Vector3>();
 
-		if (transform.childCount > 0)
-			childPos0 = transform.GetChild(0).position;
-		if (transform.childCount > 1)
-			childPos1 = transform.GetChild(1).position;
-		
+		for (int i=0; i<transform.childCount; i++)
+		{
+			children.Add(transform.GetChild(i).position);
+		}
+
 		transform.position = GameObject.FindGameObjectWithTag("Positioner").transform.position;
 
-		if (transform.childCount > 0)
-			transform.GetChild(0).position = childPos0;
-		if (transform.childCount > 1)
-			transform.GetChild(1).position = childPos1;		
-
-		transform.localScale = new Vector3(.99965f, .99985f, 1);
+		for (int i=0; i<transform.childCount; i++)
+		{
+			transform.GetChild(i).position = children[i];
+		}
+			
+		if (UpdateScale)
+		{
+			transform.localScale = new Vector3(0.99965f, 0.99985f, 1);
+		}
 	}
 	
 	// Update is called once per frame
