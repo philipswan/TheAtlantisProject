@@ -18,7 +18,6 @@ public class Transition1b : MonoBehaviour {
 	}
 
     void Update() {
-
 		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.SystemTravelTime);
 		float Blend = Mathf.Min (Time.unscaledTime / config.SystemTravelTime - Scene, 1.0f);
 
