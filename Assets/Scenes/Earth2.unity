@@ -187,7 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numSections: 100
   numKeysPerSection: 50
-  numTramsPerSection: 5
+  numTramsPerSection: 1
   habitatHeight: 0.00001
   train: {fileID: 1452890902}
 --- !u!23 &85185512
@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraTravelTime: 40
-  SystemTravelTime: 10
+  SystemTravelTime: 1
   ElevatorTravelTime: 10
   ElevatorWaitTime: 3
   TramTravelTimeStops: 5

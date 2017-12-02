@@ -34,7 +34,7 @@ public class TramCars : MonoBehaviour {
 	{
 		config = Constants.Configuration.Instance;
 
-		startIndex = 3;	// Set start/end section to only draw cars that can be seen by the user
+		startIndex = 1;	// Set start/end section to only draw cars that can be seen by the user
 		endIndex = 8;
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 
