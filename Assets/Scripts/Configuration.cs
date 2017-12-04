@@ -13,6 +13,10 @@ namespace Constants{
 
 	public class Configuration : MonoBehaviour {
 
+		[Header("Camera")]
+		[Tooltip("Time to fade camera in/out")]
+		public float FadeTime = 2.0f;
+
 		[Header("Movement")]
 		[Tooltip("Lerp time for camera movment")]
 		public float CameraTravelTime = 5.0f;

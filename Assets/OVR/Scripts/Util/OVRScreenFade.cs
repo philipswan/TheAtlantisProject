@@ -27,19 +27,18 @@ using System.Collections; // required for Coroutines
 /// </summary>
 public class OVRScreenFade : MonoBehaviour
 {
-	/// <summary>
-	/// How long it takes to fade.
-	/// </summary>
-	public float fadeTime = 2.0f;
-
+	
 	/// <summary>
 	/// The initial screen color.
 	/// </summary>
-	public Color fadeColor = new Color(0.01f, 0.01f, 0.01f, 1.0f);
+	public Color fadeOutColor = new Color(0.01f, 0.01f, 0.01f, 1.0f);
+	public Color fadeInColor = new Color(0.01f, 0.01f, 0.01f, 1.0f);
 
 	private Material fadeMaterial = null;
 	private bool isFading = false;
 	private YieldInstruction fadeInstruction = new WaitForEndOfFrame();
+	private Constants.Configuration config;
+	private float fadeTime;
 
 	/// <summary>
 	/// Initialize.
@@ -50,24 +49,22 @@ public class OVRScreenFade : MonoBehaviour
 		fadeMaterial = new Material(Shader.Find("Oculus/Unlit Transparent Color"));
 	}
 
-	/// <summary>
-	/// Starts the fade in
-	/// </summary>
-	void OnEnable()
+	void Start()
 	{
-		StartCoroutine(FadeIn());
+		config = Constants.Configuration.Instance;
+		fadeTime = config.FadeTime;
 	}
 
 	/// <summary>
 	/// Starts a fade in when a new level is loaded
 	/// </summary>
 #if UNITY_5_4_OR_NEWER
-	void OnLevelFinishedLoading(int level)
+	public void FadeCamera(bool fadeIn)
 #else
 	void OnLevelWasLoaded(int level)
 #endif
 	{
-		StartCoroutine(FadeIn());
+		StartCoroutine(Fade(fadeIn));
 	}
 
 	/// <summary>
@@ -84,17 +81,24 @@ public class OVRScreenFade : MonoBehaviour
 	/// <summary>
 	/// Fades alpha from 1.0 to 0.0
 	/// </summary>
-	IEnumerator FadeIn()
+	IEnumerator Fade(bool fadeIn)
 	{
 		float elapsedTime = 0.0f;
-		fadeMaterial.color = fadeColor;
-		Color color = fadeColor;
+		fadeMaterial.color =  fadeIn ? fadeInColor : fadeOutColor;
+		Color color =  fadeIn ? fadeInColor : fadeOutColor;
 		isFading = true;
 		while (elapsedTime < fadeTime)
 		{
 			yield return fadeInstruction;
 			elapsedTime += Time.deltaTime;
-			color.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
+			if (fadeIn)
+			{
+				color.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
+			}
+			else
+			{
+				color.a = Mathf.Clamp01(elapsedTime / fadeTime);
+			}
 			fadeMaterial.color = color;
 		}
 		isFading = false;
