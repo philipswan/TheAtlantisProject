@@ -3,22 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ControllerTransition : MonoBehaviour {
-	public Transform FinalKey;						// Transform holding scale info for sphere to be reset to
+	public Transform FinalSystemKey;				// Transform holding scale info for sphere to be reset to
+	public Transform FinalCamerakey;				// Transform holding position info for the player to be reset to
 	public int UppserScaleLimit = 10900;			// How large the user is allowed to scale the system
 	public int LowerScaleLimit = 500;				// How small the user is allowed to scale the system
 
 	private GameObject player;						// Holds reference to player object
 
 	private Vector3 velocity;						// Velocity cap for smoothdamp
-	private Vector3 initialPlayerPosition;			// Position of player's original positoin to be reset to
 	private float fadeTime;							// Time for camera fade
 	private bool resettingTransform;				// Flag to check if reset transform coroutine is running
 	private Constants.Configuration config;			// Holds reference to config file
 
-	void Awake()
-	{
+	void Awake() {
 		player = GameObject.FindGameObjectWithTag("Player");
-		initialPlayerPosition = player.transform.position;
 	}
 
 	// Use this for initialization
@@ -125,8 +123,8 @@ public class ControllerTransition : MonoBehaviour {
 	/// </summary>
 	private IEnumerator ResetTransform()
 	{
-		if (Vector3.Distance(transform.localScale, FinalKey.localScale) == 0 &&
-			Vector3.Distance(player.transform.position, initialPlayerPosition) == 0)
+		if (Vector3.Distance(transform.localScale, FinalSystemKey.localScale) == 0 &&
+			Vector3.Distance(player.transform.position, FinalCamerakey.position) == 0)
 		{
 			yield break;
 		}
@@ -141,8 +139,8 @@ public class ControllerTransition : MonoBehaviour {
 			yield return null;
 		}
 
-		transform.localScale = FinalKey.localScale;
-		player.transform.position = initialPlayerPosition;
+		transform.localScale = FinalSystemKey.localScale;
+		player.transform.position = FinalCamerakey.position;
 
 		startTime = Time.time;
 		Camera.main.SendMessage("FadeCamera", true);

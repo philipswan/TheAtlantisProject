@@ -40,14 +40,21 @@ public class Transition1 : MonoBehaviour {
 		int Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.CameraTravelTime);
 		float Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.CameraTravelTime - Scene, 1.0f);
 
-		if (Scene < Keys.Count * 2)
+		print("Scene: " + Scene + " Count*2: " + Keys.Count*2);
+		if (Scene < Keys.Count * 2 - 1)
 		{
-			UpdateCamera(Scene, Blend);
+			UpdateSystem(Scene, Blend);
 		}
-		else if (MoveCamera)
+		else if (Scene == Keys.Count * 2 - 1)
 		{
-			transform.position = Vector3.SmoothDamp(transform.position, target.position + target.forward * ElevatorBuffer, ref velocity, 0);
+			enabled = false;
 		}
+	}
+
+	void OnEnable()
+	{
+		startTime = Time.unscaledTime;
+		ready = true;
 	}
 
 	/// <summary>
@@ -58,16 +65,6 @@ public class Transition1 : MonoBehaviour {
 	{
 		Keys.Add(_transform);
 		buffer.Add(_buffer);
-	}
-
-
-	/// <summary>
-	/// Start the transition
-	/// </summary>
-	public void BeginTransition()
-	{
-		startTime = Time.unscaledTime;
-		ready = true;
 	}
 
 	/// <summary>
@@ -91,25 +88,35 @@ public class Transition1 : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Update the camera position
+	/// Max the specified a and b.
+	/// </summary>
+	/// <param name="a">The alpha component.</param>
+	/// <param name="b">The blue component.</param>
+	private int max(int a, int b)
+	{
+		return (a > b) ? a : b;
+	}
+
+	/// <summary>
+	/// Minimum the specified a and b.
+	/// </summary>
+	/// <param name="a">The alpha component.</param>
+	/// <param name="b">The blue component.</param>
+	private int min(int a, int b)
+	{
+		return (a < b) ? a : b;
+	}
+
+	/// <summary>
+	/// Move the system to the proper transforms in the Keys list
 	/// </summary>
 	/// <param name="scene">Scene.</param>
 	/// <param name="blend">Blend.</param>
-	private void UpdateCamera(int scene, float blend)
+	private void UpdateSystem(int scene, float blend)
 	{
-		int index = (int)Mathf.Floor(scene/2);
+		int index0 = max(0, min(Keys.Count - 1, (int)Mathf.Floor(scene / 2)));
+		int index1 = max(0, min(Keys.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
 
-		if(index == 0)
-		{
-			transform.localPosition = Vector3.Lerp(transform.localPosition, Keys[index].position  + Keys[index].forward * buffer[index], Mathf.Pow(blend, 1f));
-		}
-		else //if (scene % 2 == 0 || index == Keys.Count-1)
-		{
-			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position  + Keys[index+1].forward * buffer[index+1], Mathf.Pow(blend, 1f));
-		}
-//		else if (index < Keys.Count-1)
-//		{
-//			transform.localPosition = Vector3.Lerp(Keys[index].position, Keys[index+1].position + Keys[index+1].forward * buffer[index], Mathf.Pow(blend, 1f));
-//		}
+		transform.localPosition = Vector3.Lerp(Keys[index0].localPosition, Keys[index1].position, blend);
 	}
 }
