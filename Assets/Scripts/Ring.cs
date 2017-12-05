@@ -108,9 +108,10 @@ public class Ring : MonoBehaviour {
 		MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
         mFilter.mesh = mesh;
 
-        Renderer renderer = GetComponent<MeshRenderer>();
-		string matString = TramRing ? "TramRing" : "Outline Diffuse";
-        Material mat = Resources.Load(matString) as Material;
-        renderer.material = mat;
+//        Renderer renderer = GetComponent<MeshRenderer>();
+//		string matString = "Outline Diffuse";
+//		renderer.materials[1].SetColor("_OutlineColor", new Vector4 (255, 255, 255, 106));
+//        Material mat = Resources.Load(matString) as Material;
+//        renderer.material = mat;
 	}
 }

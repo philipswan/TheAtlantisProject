@@ -79,11 +79,11 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void DeleteKeys()
 	{
-//		foreach (GameObject k in keysTopLeft)
-//		{
-//			Destroy(k);
-//		}
-//		keysTopLeft.Clear();
+		foreach (GameObject k in keysTopLeft)
+		{
+			Destroy(k);
+		}
+		keysTopLeft.Clear();
 
 		foreach (GameObject k in keysBottomRight)
 		{
@@ -197,7 +197,6 @@ public class TramCars : MonoBehaviour {
 		// Set the first key and tram position and orientation
 		if (keysBottomRight.Count == numSections * numKeysPerSection)
 		{
-			print("Count: " + keysBottomRight.Count);
 			keysBottomRight[0].transform.LookAt(keysBottomRight[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
 			tramBottomRightObjects[0].transform.LookAt(keysBottomRight[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
 
