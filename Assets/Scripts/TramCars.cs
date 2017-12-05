@@ -109,8 +109,20 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void CreateTramSections()
 	{
+		// R of earth is 6.371e6f m
+		// Arc length = RC where C is the center angle
 		bool createTram;
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
+
+		/*
+		 * Calculate distance in meters between trams
+		float rpk = (2 * Mathf.PI) / (numSections * numKeysPerSection);
+		print("tram spacing: " + tramSpacing + " total keys: " + numSections * numKeysPerSection);
+		print("rad per key: " + rpk);
+		print("arc length between keys: " + 6.371e6f * rpk);
+		print("arc length between trams: " + 6.371e6f * rpk * tramSpacing);
+		*/
+
 		int numKeys = numKeysPerSection * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numKeys;
 

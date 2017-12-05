@@ -102,14 +102,14 @@ public class Ring : MonoBehaviour {
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
 
-		GameObject ring = new GameObject(TramRing ? "Ring - Transit" : "Ring");
-		ring.transform.SetParent(transform);
+//		GameObject ring = new GameObject(TramRing ? "Ring - Transit" : "Ring");
+//		ring.transform.SetParent(transform);
 
 		MeshFilter mFilter = GetComponent<MeshFilter>(); // tweaked to Generic
         mFilter.mesh = mesh;
 
 //        Renderer renderer = GetComponent<MeshRenderer>();
-//		string matString = "Outline Diffuse";
+//		string matString = TramRing ? "Tram Ring" : "Ring";
 //		renderer.materials[1].SetColor("_OutlineColor", new Vector4 (255, 255, 255, 106));
 //        Material mat = Resources.Load(matString) as Material;
 //        renderer.material = mat;

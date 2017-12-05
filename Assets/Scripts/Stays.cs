@@ -158,10 +158,12 @@ public class Stays : MonoBehaviour
         obj.transform.localRotation = Quaternion.identity;
         obj.transform.localScale = new Vector3(1, 1, 1);
 
-		List<Material> materials = new List<Material>();
-		materials.Add(material);
-		materials.Add(Resources.Load("Outline Diffuse") as Material);
-		mr.materials = materials.ToArray();
+//		List<Material> materials = new List<Material>();
+//		materials.Add(material);
+//		materials.Add(Resources.Load("Outline Diffuse") as Material);
+//		mr.materials = materials.ToArray();
+
+		mr.sharedMaterial = material;
 
         //mr.sharedMaterial = material;
 		//mr.material = Resources.Load("Outline Diffuse") as Material;
