@@ -40,7 +40,6 @@ public class Transition1 : MonoBehaviour {
 		int Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.CameraTravelTime);
 		float Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.CameraTravelTime - Scene, 1.0f);
 
-		print("Scene: " + Scene + " Count*2: " + Keys.Count*2);
 		if (Scene < Keys.Count * 2 - 1)
 		{
 			UpdateSystem(Scene, Blend);

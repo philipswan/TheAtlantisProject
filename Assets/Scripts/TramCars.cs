@@ -79,11 +79,11 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void DeleteKeys()
 	{
-		foreach (GameObject k in keysTopLeft)
-		{
-			Destroy(k);
-		}
-		keysTopLeft.Clear();
+//		foreach (GameObject k in keysTopLeft)
+//		{
+//			Destroy(k);
+//		}
+//		keysTopLeft.Clear();
 
 		foreach (GameObject k in keysBottomRight)
 		{
@@ -197,16 +197,17 @@ public class TramCars : MonoBehaviour {
 		// Set the first key and tram position and orientation
 		if (keysBottomRight.Count == numSections * numKeysPerSection)
 		{
+			print("Count: " + keysBottomRight.Count);
 			keysBottomRight[0].transform.LookAt(keysBottomRight[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
 			tramBottomRightObjects[0].transform.LookAt(keysBottomRight[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
 
 			keysBottomLeft[0].transform.LookAt(keysBottomLeft[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
 			tramBottomLeftObjects[0].transform.LookAt(keysBottomLeft[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
 		
-			key1.transform.LookAt(-keysTopLeft[endIndex * numKeysPerSection + ringHabitatIndex].transform.position, transform.TransformVector(prevUp));
+			key1.transform.LookAt(keysTopLeft[0].transform.position, transform.TransformVector(prevUp));
 			tramTopLeftObjects[tramTopLeftObjects.Count-1].transform.LookAt(keysTopLeft[endIndex * numKeysPerSection + ringHabitatIndex].transform.position, transform.TransformVector(prevUp));
 
-			key3.transform.LookAt(-keysTopRight[endIndex* numKeysPerSection + ringHabitatIndex].transform.position, transform.TransformVector(prevUp));
+			key3.transform.LookAt(keysTopRight[0].transform.position, transform.TransformVector(prevUp));
 			tramTopRightObjects[tramTopRightObjects.Count-1].transform.LookAt(keysTopRight[endIndex* numKeysPerSection + ringHabitatIndex].transform.position, transform.TransformVector(prevUp));
 		}
 

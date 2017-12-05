@@ -109,7 +109,7 @@ public class Ring : MonoBehaviour {
         mFilter.mesh = mesh;
 
         Renderer renderer = GetComponent<MeshRenderer>();
-		string matString = TramRing ? "TramRing" : "earthMat";
+		string matString = TramRing ? "TramRing" : "Outline Diffuse";
         Material mat = Resources.Load(matString) as Material;
         renderer.material = mat;
 	}
