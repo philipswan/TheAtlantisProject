@@ -5,6 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TramCars : MonoBehaviour {
 
+	public static TramCars Instance;
 	[Tooltip("Totol keys is numSections * numKeysPerSectoin")]
 	public int numSections = 10;												// Number of sections
 	public int numKeysPerSection = 10;											// Total number of trams
@@ -29,6 +30,11 @@ public class TramCars : MonoBehaviour {
 	private List<GameObject> keysTopLeft = new List<GameObject>();				// List of all top left keys. Points for the top left trams to travel to
 	private List<GameObject> keysTopRight = new List<GameObject>();				// List of all top right keys. Points for the top right trams to travel to
 
+	void Awake()
+	{
+		Instance = this;
+	}
+
 	// Use this for initialization
 	void Start()
 	{
@@ -41,7 +47,7 @@ public class TramCars : MonoBehaviour {
 		CreateTramSections();	// Create all trams and keys
 		UpdatePositions();		// Move trams to proper positions
 		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
-		ActivateTrams();		// Activate all trams
+		//ActivateTrams();		// Activate all trams
 		DeleteKeys();			// Delete keys as they are no longer needed
 	}
 		
@@ -49,7 +55,7 @@ public class TramCars : MonoBehaviour {
 	/// Set trams active over multiple frames
 	/// </summary>
 	/// <returns>The trams.</returns>
-	private void ActivateTrams()
+	public void ActivateTrams()
 	{
 		foreach(GameObject t in tramBottomRightObjects)
 		{

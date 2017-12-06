@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Transition1b : MonoBehaviour {
+
+	public static Transition1b Instance;
 	[Tooltip("The transforms that the system will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds all transforms
+	public List<Material> Materials = new List<Material>();		// Runtime materials
 
 	private Constants.Configuration config;						// Holds reference to config script
+	private float startTime;									// Time script was enabled
 
     // Use this for initialization
     void Awake () {
+		Instance = this;
+		enabled = false;
 	}
 
 	void Start()
@@ -18,8 +24,8 @@ public class Transition1b : MonoBehaviour {
 	}
 
     void Update() {
-		int Scene = (int)Mathf.Floor(Time.unscaledTime / config.SystemTravelTime);
-		float Blend = Mathf.Min (Time.unscaledTime / config.SystemTravelTime - Scene, 1.0f);
+		int Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.SystemTravelTime);
+		float Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.SystemTravelTime - Scene, 1.0f);
 
 		if (Scene < Keys.Count * 2 - 1)
 		{
@@ -31,6 +37,12 @@ public class Transition1b : MonoBehaviour {
 			enabled = false;
 		}
     }
+
+	void OnEnable()
+	{
+		transform.GetChild(0).GetComponent<MeshRenderer>().materials = Materials.ToArray();
+		startTime = Time.unscaledTime;
+	}
 
 	/// <summary>
 	/// Max the specified a and b.

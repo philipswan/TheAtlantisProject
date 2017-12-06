@@ -40,11 +40,11 @@ public class Transition1 : MonoBehaviour {
 		int Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.CameraTravelTime);
 		float Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.CameraTravelTime - Scene, 1.0f);
 
-		if (Scene < Keys.Count * 2 - 1)
+		if (Scene < Keys.Count * 2 - 2)
 		{
 			UpdateSystem(Scene, Blend);
 		}
-		else if (Scene == Keys.Count * 2 - 1)
+		else if (Scene == Keys.Count * 2 - 2)
 		{
 			ControllerTransition.Instance.enabled = true;
 			enabled = false;
