@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ControllerTransition : MonoBehaviour {
+
+	public static ControllerTransition Instance;	// Reference to the script
 	public Transform FinalSystemKey;				// Transform holding scale info for sphere to be reset to
 	public Transform FinalCamerakey;				// Transform holding position info for the player to be reset to
 	public int UppserScaleLimit = 10900;			// How large the user is allowed to scale the system
@@ -16,6 +18,7 @@ public class ControllerTransition : MonoBehaviour {
 	private Constants.Configuration config;			// Holds reference to config file
 
 	void Awake() {
+		Instance = this;
 		player = GameObject.FindGameObjectWithTag("Player");
 	}
 

@@ -3,6 +3,7 @@
 /[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
+/[Aa]pp/
 /Assets/AssetStoreTools*
 Assets/SampleScenes/
 Assets/SampleScenes.meta

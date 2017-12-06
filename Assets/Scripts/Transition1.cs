@@ -46,6 +46,7 @@ public class Transition1 : MonoBehaviour {
 		}
 		else if (Scene == Keys.Count * 2 - 1)
 		{
+			ControllerTransition.Instance.enabled = true;
 			enabled = false;
 		}
 	}

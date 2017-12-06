@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/OVRHarness/Scenes/Loading.unity
     guid: 0e94513ae709c964da9fc34e03e72913
   - enabled: 0
@@ -56,7 +56,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/SampleScenes/UI/Pointers - Gaze Click/Pointers - Gaze Click.unity
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/OVRHarness/Scenes/StartUp.unity
     guid: a899a6e5d1e3813459952712ee7aaac0
   - enabled: 1

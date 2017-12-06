@@ -115,7 +115,7 @@ public class TramCars : MonoBehaviour {
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
 
 		/*
-		 * Calculate distance in meters between trams
+		// Calculate distance in meters between trams
 		float rpk = (2 * Mathf.PI) / (numSections * numKeysPerSection);
 		print("tram spacing: " + tramSpacing + " total keys: " + numSections * numKeysPerSection);
 		print("rad per key: " + rpk);
@@ -209,17 +209,17 @@ public class TramCars : MonoBehaviour {
 		// Set the first key and tram position and orientation
 		if (keysBottomRight.Count == numSections * numKeysPerSection)
 		{
-			keysBottomRight[0].transform.LookAt(keysBottomRight[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
-			tramBottomRightObjects[0].transform.LookAt(keysBottomRight[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
+			keysBottomRight[0].transform.LookAt(keysBottomRight[keysBottomRight.Count - 1].transform.position, transform.TransformVector(prevUp));
+			tramBottomRightObjects[0].transform.LookAt(keysBottomRight[keysBottomRight.Count - 1].transform.position, transform.TransformVector(prevUp));
 
-			keysBottomLeft[0].transform.LookAt(keysBottomLeft[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
-			tramBottomLeftObjects[0].transform.LookAt(keysBottomLeft[startIndex * numKeysPerSection - 1].transform.position, transform.TransformVector(prevUp));
+			keysBottomLeft[0].transform.LookAt(keysBottomLeft[keysBottomLeft.Count - 1].transform.position, transform.TransformVector(prevUp));
+			tramBottomLeftObjects[0].transform.LookAt(keysBottomLeft[keysBottomLeft.Count - 1].transform.position, transform.TransformVector(prevUp));
 		
 			key1.transform.LookAt(keysTopLeft[0].transform.position, transform.TransformVector(prevUp));
-			tramTopLeftObjects[tramTopLeftObjects.Count-1].transform.LookAt(keysTopLeft[endIndex * numKeysPerSection + ringHabitatIndex].transform.position, transform.TransformVector(prevUp));
+			tramTopLeftObjects[tramTopLeftObjects.Count-1].transform.LookAt(keysTopLeft[0].transform.position, transform.TransformVector(prevUp));
 
 			key3.transform.LookAt(keysTopRight[0].transform.position, transform.TransformVector(prevUp));
-			tramTopRightObjects[tramTopRightObjects.Count-1].transform.LookAt(keysTopRight[endIndex* numKeysPerSection + ringHabitatIndex].transform.position, transform.TransformVector(prevUp));
+			tramTopRightObjects[tramTopRightObjects.Count-1].transform.LookAt(keysTopRight[0].transform.position, transform.TransformVector(prevUp));
 		}
 
 		// Create a tram at an interval set by the user

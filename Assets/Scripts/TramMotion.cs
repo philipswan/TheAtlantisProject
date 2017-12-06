@@ -38,7 +38,11 @@ public class TramMotion : MonoBehaviour {
 			Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.TramTravelTimeStops - Scene, 1.0f);
 		}
 
-		if (Scene < positions.Count * 2)
+		if (Scene < positions.Count - 1 && !travelTram)
+		{
+			UpdateSystem(Scene, Blend, travelTram);
+		}
+		else if (Scene < positions.Count && travelTram)
 		{
 			UpdateSystem(Scene, Blend, travelTram);
 		}

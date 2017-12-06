@@ -5,8 +5,6 @@ using System.Collections;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TrainTracks : MonoBehaviour {
 
-	public GameObject trainTrack;												// Train track prefab
-
 	private int numSections = 100;												// Number of track sections
 	private int numTracks = 100;												// Number of tracks per sectoin
 	private float habitatHeight = 0.00001f;										// Offset
@@ -82,7 +80,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer.positionCount = trackBottomLeftObjects.Count;
 		lineRenderer.widthMultiplier = 0.001f;
 		lineRenderer.loop = true;
-		lineRenderer.material = Resources.Load("TramRail") as Material;
+		lineRenderer.material = Resources.Load("Ring") as Material;
 
 		// Get all positions for line
 		Vector3[] linePos = new Vector3[trackBottomLeftObjects.Count];
@@ -101,7 +99,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer1.positionCount = trackBottomRightObjects.Count;
 		lineRenderer1.widthMultiplier = 0.001f;
 		lineRenderer1.loop = true;
-		lineRenderer1.material = Resources.Load("TramRail") as Material;
+		lineRenderer1.material = Resources.Load("Ring") as Material;
 
 		Vector3[] linePos1 = new Vector3[trackBottomRightObjects.Count];
 		for (int i=0; i<trackBottomRightObjects.Count; i++)
@@ -118,7 +116,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer2.positionCount = trackTopLeftObjects.Count;
 		lineRenderer2.widthMultiplier = 0.001f;
 		lineRenderer2.loop = true;
-		lineRenderer2.material = Resources.Load("TramRail") as Material;
+		lineRenderer2.material = Resources.Load("Ring") as Material;
 
 		Vector3[] linePos2 = new Vector3[trackTopLeftObjects.Count];
 		for (int i=0; i<trackTopLeftObjects.Count; i++)
@@ -135,7 +133,7 @@ public class TrainTracks : MonoBehaviour {
 		lineRenderer3.positionCount = trackTopRightObjects.Count;
 		lineRenderer3.widthMultiplier = 0.001f;
 		lineRenderer3.loop = true;
-		lineRenderer3.material = Resources.Load("TramRail") as Material;
+		lineRenderer3.material = Resources.Load("Ring") as Material;
 
 		Vector3[] linePos3 = new Vector3[trackTopRightObjects.Count];
 		for (int i=0; i<trackTopRightObjects.Count; i++)
