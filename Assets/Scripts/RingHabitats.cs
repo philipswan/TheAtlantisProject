@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class RingHabitats : MonoBehaviour {
 
+	public static RingHabitats Instance;
     public int numInstances = 10;
     public int numRingHabitatsPerInstance = 10;
     public int numTubeSides = 8;
@@ -17,6 +18,10 @@ public class RingHabitats : MonoBehaviour {
     private List<GameObject> ringHabitatObjects = new List<GameObject>();
 	private int startIndex;
 	private int endIndex;
+
+	void Awake() {
+		Instance = this;
+	}
 
     // Use this for initialization
     void Start()

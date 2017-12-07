@@ -258,7 +258,7 @@ Transform:
   - {fileID: 85185510}
   - {fileID: 1761398639}
   m_Father: {fileID: 1879430682}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &95683308
 MonoBehaviour:
@@ -797,10 +797,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FadeTime: 2
   CameraTravelTime: 10
-  SystemTravelTime: 1
+  SystemTravelTime: 10
   ElevatorTravelTime: 10
   ElevatorWaitTime: 3
-  TramTravelTimeStops: 5
+  TramTravelTimeStops: 2
   TramTravelTime: 1
   RingLatitude: -34
 --- !u!4 &461670053
@@ -1597,20 +1597,20 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1099432010
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099432009}
-  m_LocalRotation: {x: 0.76625913, y: -0.5485675, z: 0.060930643, w: -0.32895026}
+  m_LocalRotation: {x: 0.7662591, y: -0.5485675, z: 0.060930602, w: -0.32895032}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0005, y: 0.0005, z: 0.0005}
+  m_LocalScale: {x: 0.00050000014, y: 0.00050000014, z: 0.00050000026}
   m_Children:
   - {fileID: 1841920128}
-  m_Father: {fileID: 1879430682}
-  m_RootOrder: 5
+  m_Father: {fileID: 1132047106}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1132047105
 GameObject:
@@ -1639,7 +1639,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1099432010}
   m_Father: {fileID: 1879430682}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1655,7 +1656,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numInstances: 100
-  numRingHabitatsPerInstance: 1
+  numRingHabitatsPerInstance: 10
   numTubeSides: 8
   tubeRadius: 0.00001
   habitatHeight: 0.00002
@@ -2498,7 +2499,6 @@ Transform:
   - {fileID: 727307575}
   - {fileID: 1347469581}
   - {fileID: 1132047106}
-  - {fileID: 1099432010}
   - {fileID: 95683307}
   m_Father: {fileID: 2003560873}
   m_RootOrder: 0

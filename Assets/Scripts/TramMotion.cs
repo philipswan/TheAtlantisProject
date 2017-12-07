@@ -93,6 +93,9 @@ public class TramMotion : MonoBehaviour {
 		positions = new List<Vector3>(pos);
 	}
 
+	/// <summary>
+	/// Sets the travel tram (tram does not make stops)
+	/// </summary>
 	public void SetTravelTram()
 	{
 		travelTram = true;
@@ -123,22 +126,20 @@ public class TramMotion : MonoBehaviour {
 	/// </summary>
 	/// <param name="scene">Scene.</param>
 	/// <param name="blend">Blend.</param>
-	private void UpdateSystem(int scene, float blend, bool makeStops)
+	private void UpdateSystem(int scene, float blend, bool _travelTram)
 	{
-		if (!makeStops)
-		{
-			int index0 = max(0, min(positions.Count - 1, (int)Mathf.Floor(scene / 2)));
-			int index1 = max(0, min(positions.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
+		int index0 = (scene > 0) ? (scene - 1) : 0;
 
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[index1], ref velocity, config.TramTravelTimeStops/2);
-			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[index1], Mathf.Pow(blend, 1.05f));
-		}
-		else
+		if (_travelTram)
 		{
-			int index0 = (scene > 0) ? (scene - 1) : 0;
-
 			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTime);
 			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
 		}
+		else
+		{
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTimeStops);
+			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
+		}
+
 	}
 }
