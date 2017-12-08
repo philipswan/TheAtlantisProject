@@ -242,6 +242,15 @@ public class Stays : MonoBehaviour
                     mesh.RecalculateNormals();
                     MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
                     mFilter.mesh = mesh;
+					obj.name = instance.ToString();
+					print(instance);
+					if (instance == 70 && stayIndex == 0)
+					{
+						obj.AddComponent<MeshCollider>();
+						obj.GetComponent<MeshCollider>().inflateMesh = true;
+						obj.GetComponent<MeshCollider>().convex = true;
+						obj.GetComponent<MeshCollider>().enabled = false;
+					}
                 }
             }
         }

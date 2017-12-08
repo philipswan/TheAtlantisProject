@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1.14
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 84421c7c90fd19840893d35bba84071d, type: 2}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0030036338, g: 0.003032865, b: 0.0030036338, a: 1}
+  m_IndirectSpecularColor: {r: 0.4495011, g: 0.49649704, b: 0.55914706, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1777,7 +1777,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1099432010}
-  - component: {fileID: 1099432011}
+  - component: {fileID: 1099432014}
   - component: {fileID: 1099432012}
   m_Layer: 0
   m_Name: Habitat Container
@@ -1800,25 +1800,50 @@ Transform:
   m_Father: {fileID: 1132047106}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1099432011
+--- !u!114 &1099432012
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099432009}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a251d414d3e099f438bc78946e0847de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Materials: []
---- !u!33 &1099432012
-MeshFilter:
+--- !u!23 &1099432014
+MeshRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099432009}
-  m_Mesh: {fileID: 0}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &1132047105
 GameObject:
   m_ObjectHideFlags: 0
@@ -1827,10 +1852,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1132047106}
-  - component: {fileID: 1132047109}
-  - component: {fileID: 1132047108}
   - component: {fileID: 1132047107}
-  - component: {fileID: 1132047110}
   m_Layer: 0
   m_Name: RingHabitats
   m_TagString: Untagged
@@ -1869,61 +1891,6 @@ MonoBehaviour:
   tubeRadius: 0.00001
   habitatHeight: 0.00002
   habitat: {fileID: 1099432009}
---- !u!23 &1132047108
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1132047105}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1132047109
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1132047105}
-  m_Mesh: {fileID: 0}
---- !u!114 &1132047110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1132047105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a251d414d3e099f438bc78946e0847de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Materials:
-  - {fileID: 2100000, guid: f3cf3116657f39440813c47ea63ba7ee, type: 2}
-  - {fileID: 2100000, guid: 28ce46b06cfccc549ab202f7fe7474c7, type: 2}
-  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
-  - {fileID: 2100000, guid: d8c8ac1582157984c8982216b9215f44, type: 2}
 --- !u!1 &1140208475 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: 126d619cf4daa52469682f85c1378b4a, type: 2}
@@ -3206,7 +3173,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1841920128}
-  - component: {fileID: 1867073822}
   - component: {fileID: 1867073823}
   m_Layer: 0
   m_Name: model
@@ -3215,13 +3181,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!33 &1867073822
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1867073820}
-  m_Mesh: {fileID: 0}
 --- !u!23 &1867073823
 MeshRenderer:
   m_ObjectHideFlags: 0

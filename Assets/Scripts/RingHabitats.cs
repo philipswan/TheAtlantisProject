@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class RingHabitats : MonoBehaviour {
 
 	public static RingHabitats Instance;
@@ -33,7 +32,6 @@ public class RingHabitats : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshRingHabitats();		// Create habitats and their sections
 		UpdatePositions();			// Move habitats to be adjacent to transit ring
-		GetComponent<CombineMeshes>().GetHabitats();
     }
 
 	/// <summary>

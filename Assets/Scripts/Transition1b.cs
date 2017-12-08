@@ -42,9 +42,10 @@ public class Transition1b : MonoBehaviour {
 		else if (Scene == Keys.Count * 2 - 1)
 		{
 			Transition1.Instance.enabled = true;
+			//CombineMeshes.Instance.GetHabitats();
 			//StartCoroutine("ActivateAllColliders");
 			finishedTransition = true;
-			//enabled = false;
+			enabled = false;
 		}
     }
 
@@ -116,12 +117,6 @@ public class Transition1b : MonoBehaviour {
 			}
 		}
 
-//		foreach (GameObject go in objects)
-//		{
-//			print(go.name);
-//		}
-//
-		print(objects.Count);
 		return objects;
 	}
 
