@@ -31,6 +31,8 @@ public class TramCars : MonoBehaviour {
 	private List<GameObject> keysTopLeft = new List<GameObject>();				// List of all top left keys. Points for the top left trams to travel to
 	private List<GameObject> keysTopRight = new List<GameObject>();				// List of all top right keys. Points for the top right trams to travel to
 
+	private List<Material> onGazeEnterMaterials = new List<Material>();
+	private Material onGazeExitMaterial;
 	void Awake()
 	{
 		Instance = this;
@@ -40,6 +42,8 @@ public class TramCars : MonoBehaviour {
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
+
+
 
 		habitatIndex = (int)numKeysPerSection / RingHabitats.Instance.numRingHabitatsPerInstance;
 
@@ -88,11 +92,11 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void DeleteKeys()
 	{
-//		foreach (GameObject k in keysTopLeft)
-//		{
-//			Destroy(k);
-//		}
-//		keysTopLeft.Clear();
+		foreach (GameObject k in keysTopLeft)
+		{
+			Destroy(k);
+		}
+		keysTopLeft.Clear();
 
 		foreach (GameObject k in keysBottomRight)
 		{
@@ -264,6 +268,16 @@ public class TramCars : MonoBehaviour {
 			tramBottomLeftObjects.Add(tram2);
 			tramTopRightObjects.Add(tram3);
 		}
+	}
+
+	private void SetTramMaterials(GameObject tram)
+	{
+		MeshRenderer mr = tram.GetComponent<MeshRenderer>();
+		List<Material> materials = new List<Material>();
+		materials.Add(mr.material);
+		materials.Add(Resources.Load("Outline Diffuse") as Material);
+		mr.materials = materials.ToArray();
+		//mr.materials[1].SetFloat("_Outline", 0);
 	}
 
 	/// <summary>
@@ -486,7 +500,6 @@ public class TramCars : MonoBehaviour {
 				newPos.Add(positions[i]);
 				newPos.Add(positions[i]);
 				newPos.Add(positions[i]);
-
 			}
 		}
 
@@ -505,10 +518,32 @@ public class TramCars : MonoBehaviour {
 				newRot.Add(rotations[i]);
 				newRot.Add(rotations[i]);
 				newRot.Add(rotations[i]);
-
 			}
 		}
 
 		return newRot;
+	}
+
+	private void OnGazeEnter()
+	{
+		foreach(GameObject t in tramBottomRightObjects)
+		{
+			
+		}
+
+		foreach(GameObject t in tramTopRightObjects)
+		{
+
+		}
+
+		foreach(GameObject t in tramBottomLeftObjects)
+		{
+
+		}
+
+		foreach(GameObject t in tramTopLeftObjects)
+		{
+			
+		}
 	}
 }

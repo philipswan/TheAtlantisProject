@@ -57,6 +57,16 @@ ModelImporter:
     4300014: mesh_440838161
     4300016: mesh_960514920
     4300018: mesh_1013706185
+    6400000: mesh_1013706185
+    6400002: mesh_1332687832
+    6400004: mesh_1646740523
+    6400006: mesh_1653305145
+    6400008: mesh_1793348775
+    6400010: mesh_1958518833
+    6400012: mesh_2112385611
+    6400014: mesh_432963275
+    6400016: mesh_440838161
+    6400018: mesh_960514920
   materials:
     importMaterials: 1
     materialName: 0
@@ -85,7 +95,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0

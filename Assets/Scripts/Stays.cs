@@ -150,7 +150,9 @@ public class Stays : MonoBehaviour
     GameObject createStayObject()
     {
         GameObject obj = new GameObject("Stay part " + stayObjects.Count);
+		obj.layer = LayerMask.NameToLayer("Interactible");
         obj.AddComponent<MeshFilter>();
+		obj.AddComponent<ColliderManager>();
         MeshRenderer mr = obj.AddComponent<MeshRenderer>();
 
         obj.transform.SetParent(transform);
@@ -158,12 +160,13 @@ public class Stays : MonoBehaviour
         obj.transform.localRotation = Quaternion.identity;
         obj.transform.localScale = new Vector3(1, 1, 1);
 
-//		List<Material> materials = new List<Material>();
-//		materials.Add(material);
-//		materials.Add(Resources.Load("Outline Diffuse") as Material);
-//		mr.materials = materials.ToArray();
+		List<Material> materials = new List<Material>();
+		materials.Add(material);
+		materials.Add(Resources.Load("Outline Diffuse") as Material);
+		mr.materials = materials.ToArray();
+		mr.materials[1].SetFloat("_Outline", 0);
 
-		mr.sharedMaterial = material;
+		//mr.sharedMaterial = material;
 
         //mr.sharedMaterial = material;
 		//mr.material = Resources.Load("Outline Diffuse") as Material;
