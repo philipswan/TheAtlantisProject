@@ -150,9 +150,7 @@ public class Stays : MonoBehaviour
     GameObject createStayObject()
     {
         GameObject obj = new GameObject("Stay part " + stayObjects.Count);
-		obj.layer = LayerMask.NameToLayer("Interactible");
         obj.AddComponent<MeshFilter>();
-		obj.AddComponent<ColliderManager>();
         MeshRenderer mr = obj.AddComponent<MeshRenderer>();
 
         obj.transform.SetParent(transform);
@@ -162,14 +160,9 @@ public class Stays : MonoBehaviour
 
 		List<Material> materials = new List<Material>();
 		materials.Add(material);
-		materials.Add(Resources.Load("Outline Diffuse") as Material);
+		//materials.Add(Resources.Load("Outline Diffuse") as Material);
 		mr.materials = materials.ToArray();
-		mr.materials[1].SetFloat("_Outline", 0);
-
-		//mr.sharedMaterial = material;
-
-        //mr.sharedMaterial = material;
-		//mr.material = Resources.Load("Outline Diffuse") as Material;
+		//mr.materials[1].SetFloat("_Outline", 0);
 
         stayObjects.Add(obj);
         return obj;
@@ -243,14 +236,6 @@ public class Stays : MonoBehaviour
                     MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
                     mFilter.mesh = mesh;
 					obj.name = instance.ToString();
-					print(instance);
-					if (instance == 70 && stayIndex == 0)
-					{
-						obj.AddComponent<MeshCollider>();
-						obj.GetComponent<MeshCollider>().inflateMesh = true;
-						obj.GetComponent<MeshCollider>().convex = true;
-						obj.GetComponent<MeshCollider>().enabled = false;
-					}
                 }
             }
         }

@@ -8,30 +8,22 @@ public class Transition1b : MonoBehaviour {
 	public static Transition1b Instance;
 	[Tooltip("The transforms that the system will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds all transforms
-	public List<Material> Materials = new List<Material>();		// Runtime materials
 
 	private Constants.Configuration config;						// Holds reference to config script
 	private float startTime;									// Time script was enabled
-	private List<GameObject> interactibleList = new List<GameObject>();
-	private bool finishedTransition;
 
     // Use this for initialization
     void Awake () {
 		Instance = this;
 		enabled = false;
-		finishedTransition = false;
 	}
 
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
-		interactibleList = FindAllInLayer("Interactible");
 	}
 
     void Update() {
-		if (finishedTransition)
-		{ return; }
-
 		int Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.SystemTravelTime);
 		float Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.SystemTravelTime - Scene, 1.0f);
 
@@ -42,16 +34,12 @@ public class Transition1b : MonoBehaviour {
 		else if (Scene == Keys.Count * 2 - 1)
 		{
 			Transition1.Instance.enabled = true;
-			//CombineMeshes.Instance.GetHabitats();
-			//StartCoroutine("ActivateAllColliders");
-			finishedTransition = true;
 			enabled = false;
 		}
     }
 
 	void OnEnable()
 	{
-		transform.GetChild(0).GetComponent<MeshRenderer>().materials = Materials.ToArray();
 		startTime = Time.unscaledTime;
 	}
 
@@ -97,41 +85,5 @@ public class Transition1b : MonoBehaviour {
 	public void SetElevator(Transform _elevator)
 	{
 		Keys.Add(_elevator);
-	}
-
-	/// <summary>
-	/// Returns list of all objects in a layer
-	/// </summary>
-	/// <returns>The all in layer.</returns>
-	private List<GameObject> FindAllInLayer(string layerName =  "Interactible")
-	{
-		int layer = LayerMask.NameToLayer(layerName);
-		List<GameObject> objects = new List<GameObject>();
-		GameObject[] gos = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[]; //will return an array of all GameObjects in the scene
-
-		foreach(GameObject go in gos)
-		{
-			if(go.layer == layer)
-			{
-				objects.Add(go);
-			}
-		}
-
-		return objects;
-	}
-
-	private IEnumerator ActivateAllColliders()
-	{
-		float waitTime = config.CameraTravelTime / interactibleList.Count;
-		print(waitTime);
-
-		foreach (GameObject go in interactibleList)
-		{
-			go.GetComponent<ColliderManager>().SetColliderActive();
-			print("Name: " + go.name + " Parent Name: " + go.transform.parent.name);
-		}
-		yield return null;
-
-		enabled = false;
 	}
 }

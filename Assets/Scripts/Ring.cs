@@ -26,6 +26,7 @@ public class Ring : MonoBehaviour {
 
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		RefreshRing();
+		FloatingMenu.Instance.AddItems(gameObject, "Tethered Ring");
     }
 
     public void RefreshRing() {
