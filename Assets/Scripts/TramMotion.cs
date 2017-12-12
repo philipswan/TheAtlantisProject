@@ -6,7 +6,7 @@ public class TramMotion : MonoBehaviour {
 
 	public List<Quaternion> rotations = new List<Quaternion>();		// Rotation of the tram at its destination
 	public List<Vector3> positions = new List<Vector3>();			// All destinatins for the tram
-	public List<Material> DefaultMaterials = new List<Material>();
+	private Material[] DefaultMaterials;
 	public List<Material> HighlightMaterials = new List<Material>();
 
 	bool highlited;
@@ -25,6 +25,12 @@ public class TramMotion : MonoBehaviour {
 	void Start () {
 		config = Constants.Configuration.Instance;
 		highlited = false;
+
+		DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+		for (int i=HighlightMaterials.Count-1; i<DefaultMaterials.Length; i++)
+		{
+			HighlightMaterials.Add(DefaultMaterials[i]);
+		}
 	}
 	
 	// Update is called once per frame
@@ -66,12 +72,15 @@ public class TramMotion : MonoBehaviour {
 	{
 		if (highlited)
 		{
-			transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials;
 		}
 		else
 		{
 			transform.GetChild(0).GetComponent<MeshRenderer>().materials = HighlightMaterials.ToArray();
-			transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 1000);
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials[0].SetFloat("_Outline", 0.001f);
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials[0].SetColor("_Color", new Color(0.9568f,0.2627f,0.2118f, 1));
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.001f);
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetColor("_Color", new Color(1,1,1,1));
 		}
 
 		highlited = ! highlited;

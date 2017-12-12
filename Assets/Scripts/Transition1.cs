@@ -47,6 +47,7 @@ public class Transition1 : MonoBehaviour {
 		else if (Scene == Keys.Count * 2 - 2)
 		{
 			ControllerTransition.Instance.enabled = true;
+			FloatingMenu.Instance.enabled = true;
 			enabled = false;
 		}
 	}

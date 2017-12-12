@@ -55,7 +55,6 @@ public class TramCars : MonoBehaviour {
 		//ActivateTrams();		// Activate all trams
 		DeleteKeys();			// Delete keys as they are no longer needed
 
-		print("here");
 		FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
 	}
 		

@@ -790,7 +790,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
   HighlightMaterials:
   - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
-  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   TramRing: 0
 --- !u!23 &330127975
 MeshRenderer:
@@ -1098,7 +1098,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &480851265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1663,7 +1663,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
   HighlightMaterials:
   - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
-  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
 --- !u!1001 &1015838822
 Prefab:
   m_ObjectHideFlags: 0
@@ -1806,7 +1806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighlightMaterial:
   - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
-  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   DefulatMaterial:
   - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
 --- !u!1 &1106139765
@@ -2493,11 +2493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotations: []
   positions: []
-  DefaultMaterials:
-  - {fileID: 0}
   HighlightMaterials:
-  - {fileID: 0}
-  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
 --- !u!1 &1547149515
 GameObject:
   m_ObjectHideFlags: 0

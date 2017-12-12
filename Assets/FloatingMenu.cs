@@ -103,6 +103,7 @@ public class FloatingMenu : MonoBehaviour {
 
 		go.SetActive(false);
 		go.transform.localScale = _scale;
+		go.layer = LayerMask.NameToLayer("Menu");
 
 		// Set child rotations to zero
 		for (int i=0; i<go.transform.childCount; i++)
@@ -182,7 +183,7 @@ public class FloatingMenu : MonoBehaviour {
 		}
 
 		currentTag =  currentIcon.tag;
-		UpdateMaterials(prevTag, currentTag);
+		UpdateMaterials(currentTag, prevTag);
 
 		index = menuObjects.IndexOf(currentIcon);
 		StopCoroutine("RotateItem");
@@ -216,7 +217,7 @@ public class FloatingMenu : MonoBehaviour {
 		}
 
 		currentTag =  currentIcon.tag;
-		UpdateMaterials(prevTag, currentTag);
+		UpdateMaterials(currentTag, prevTag);
 		index = menuObjects.IndexOf(currentIcon);
 		StopCoroutine("RotateItem");
 		StartCoroutine("RotateItem", index);
@@ -244,6 +245,7 @@ public class FloatingMenu : MonoBehaviour {
 
 		// Set tag
 		container.tag = _tag;
+		_icon.tag = "Untagged";
 
 		return container;
 	}
@@ -254,6 +256,7 @@ public class FloatingMenu : MonoBehaviour {
 	/// <param name="_tag">Tag.</param>
 	private void UpdateMaterials(string _currentTag, string _prevTag = null)
 	{
+		//print("Current: " + _currentTag + " Prev: " + _prevTag);
 		GameObject[] currentObjects = GameObject.FindGameObjectsWithTag(_currentTag);
 		foreach (GameObject go in currentObjects)
 		{
@@ -261,7 +264,10 @@ public class FloatingMenu : MonoBehaviour {
 			{
 				continue;
 			}
-			go.SendMessage("SetMaterials");
+			else
+			{
+				go.SendMessage("SetMaterials");
+			}
 		}
 
 		if (_prevTag != null)
@@ -269,11 +275,14 @@ public class FloatingMenu : MonoBehaviour {
 			GameObject[] prevObjects = GameObject.FindGameObjectsWithTag(_prevTag);
 			foreach (GameObject go in prevObjects)
 			{
-				if (menuObjects.Contains(go) || (go.transform.childCount > 0 && menuObjects.Contains(go.transform.GetChild(0).gameObject)))
+				if (menuObjects.Contains(go))
 				{
 					continue;
 				}
-				go.SendMessage("SetMaterials");
+				else
+				{
+					go.SendMessage("SetMaterials");
+				}
 			}
 		}
 	}
