@@ -31,14 +31,22 @@ public class OVRScreenFade : MonoBehaviour
 	/// <summary>
 	/// The initial screen color.
 	/// </summary>
-	public Color fadeOutColor = new Color(0.01f, 0.01f, 0.01f, 1.0f);
-	public Color fadeInColor = new Color(0.01f, 0.01f, 0.01f, 1.0f);
+	public Color fadeOutColor = new Color(1f, 1f, 1f, 0.0f);
+	public Color fadeInColor = new Color(1f, 1f, 1f, 1f);
 
 	private Material fadeMaterial = null;
 	private bool isFading = false;
 	private YieldInstruction fadeInstruction = new WaitForEndOfFrame();
 	private Constants.Configuration config;
 	private float fadeTime;
+	private bool fadeIn;
+	private enum FadeOptions
+	{
+		fadeIn,
+		fadeOut,
+		wait
+	}
+	private FadeOptions fadeOptions;
 
 	/// <summary>
 	/// Initialize.
@@ -59,12 +67,17 @@ public class OVRScreenFade : MonoBehaviour
 	/// Starts a fade in when a new level is loaded
 	/// </summary>
 #if UNITY_5_4_OR_NEWER
-	public void FadeCamera(bool fadeIn)
+	public void FadeCamera(bool _fadeIn)
 #else
 	void OnLevelWasLoaded(int level)
 #endif
 	{
-		StartCoroutine(Fade(fadeIn));
+		fadeOptions = _fadeIn ? FadeOptions.fadeIn : FadeOptions.fadeOut;
+
+		if (!isFading)
+		{
+			StartCoroutine("Fade");
+		}
 	}
 
 	/// <summary>
@@ -81,27 +94,51 @@ public class OVRScreenFade : MonoBehaviour
 	/// <summary>
 	/// Fades alpha from 1.0 to 0.0
 	/// </summary>
-	IEnumerator Fade(bool fadeIn)
+	IEnumerator Fade()
 	{
-		float elapsedTime = 0.0f;
-		fadeMaterial.color =  fadeIn ? fadeInColor : fadeOutColor;
-		Color color =  fadeIn ? fadeInColor : fadeOutColor;
 		isFading = true;
-		while (elapsedTime < fadeTime)
+
+		while (isFading)
 		{
-			yield return fadeInstruction;
-			elapsedTime += Time.deltaTime;
-			if (fadeIn)
-			{
-				color.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
+			switch (fadeOptions){
+			case FadeOptions.fadeOut:
+				float elapsedTime = 0.0f;
+				fadeMaterial.color = fadeOutColor;
+				Color color =  fadeOutColor;
+
+				while (elapsedTime < fadeTime)
+				{
+					yield return fadeInstruction;
+					elapsedTime += Time.deltaTime;
+					color.a = Mathf.Clamp01(elapsedTime / fadeTime);
+					//print(color.a + " Fading: " + isFading);
+					fadeMaterial.color = color;
+				}
+
+				fadeOptions = FadeOptions.wait;
+				break;
+			case FadeOptions.fadeIn:
+				elapsedTime = 0.0f;
+				fadeMaterial.color =  fadeInColor;
+				color = fadeInColor;
+
+				while (elapsedTime < fadeTime)
+				{
+					yield return fadeInstruction;
+					elapsedTime += Time.deltaTime;
+					color.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
+					//print(color.a + " Fading: " + isFading);
+					fadeMaterial.color = color;
+				}
+
+				isFading = false;
+
+				break;
+			case FadeOptions.wait:
+				yield return fadeInstruction;
+				break;
 			}
-			else
-			{
-				color.a = Mathf.Clamp01(elapsedTime / fadeTime);
-			}
-			fadeMaterial.color = color;
 		}
-		isFading = false;
 	}
 
 	/// <summary>

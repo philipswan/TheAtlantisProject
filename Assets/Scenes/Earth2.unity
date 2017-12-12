@@ -395,7 +395,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 141075043}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bdff1723f886d740a63d1279e3d1105, type: 3}
   m_Name: 
@@ -972,7 +972,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FadeTime: 2
   CameraTravelTime: 10
-  SystemTravelTime: 1
+  SystemTravelTime: 10
   ElevatorTravelTime: 10
   ElevatorWaitTime: 3
   TramTravelTimeStops: 2
@@ -2494,6 +2494,7 @@ MonoBehaviour:
   rotations: []
   positions: []
   HighlightMaterials:
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
 --- !u!1 &1547149515
 GameObject:

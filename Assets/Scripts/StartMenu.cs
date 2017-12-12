@@ -24,26 +24,34 @@ public class StartMenu : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Fade the camera and enable components
+	/// </summary>
+	/// <returns>The scene.</returns>
 	private IEnumerator StartScene()
 	{
 		starting = true;
 
+		// Play click
 		GetComponent<AudioSource>().Play();
 
 		// Fade camera out
 		float startTime = Time.time;
 		Camera.main.SendMessage("FadeCamera", false);
 
+		// Wait while the camera fades
 		while (Time.time - startTime < fadeTime)
 		{
 			yield return null;
 		}
+			
+		Transition1b.Instance.enabled = true;	// Enable transition script
+		TramCars.Instance.ActivateTrams();	// Activate trams and their movement
 
-		//begin transition scripts and disable this script
-		Transition1b.Instance.enabled = true;
-		TramCars.Instance.ActivateTrams();
-		transform.GetChild(0).gameObject.SetActive(false);
-		OctahedronSphereTester.Instance.SetMaterials();
+		yield return null; 
+
+		OctahedronSphereTester.Instance.SetMaterials();	// Set earth mats
+		transform.GetChild(0).gameObject.SetActive(false);	// Disable text
 
 		// Find the background music, stop it and store its reference to play it later
 		AudioSource[] sources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
@@ -59,9 +67,13 @@ public class StartMenu : MonoBehaviour {
 		startTime = Time.time;
 		Camera.main.SendMessage("FadeCamera", true);
 
+		// Wait while the camera fades
 		while (Time.time - startTime < fadeTime)
 		{
 			yield return null;
 		}
+
+		// Deactive since we have started
+		gameObject.SetActive(false);
 	}
 }
