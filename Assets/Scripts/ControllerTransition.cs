@@ -77,6 +77,14 @@ public class ControllerTransition : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Toggle script enable
+	/// </summary>
+	public void Activate(bool _state)
+	{
+		enabled = _state;
+	}
+
+	/// <summary>
 	/// Updates the scale of the system. Called when triggers are pressed.
 	/// </summary>
 	/// <param name="scaleUp">If set to <c>true</c> scale up.</param>

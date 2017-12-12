@@ -6,6 +6,10 @@ public class TramMotion : MonoBehaviour {
 
 	public List<Quaternion> rotations = new List<Quaternion>();		// Rotation of the tram at its destination
 	public List<Vector3> positions = new List<Vector3>();			// All destinatins for the tram
+	public List<Material> DefaultMaterials = new List<Material>();
+	public List<Material> HighlightMaterials = new List<Material>();
+
+	bool highlited;
 	private Constants.Configuration config;							// Holds reference to config script
 	private float startTime;										// Starting time of the movement. Reset when a cycle is completed
 	private bool travelTram;										// Set true if the tram does not stop
@@ -20,6 +24,7 @@ public class TramMotion : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		config = Constants.Configuration.Instance;
+		highlited = false;
 	}
 	
 	// Update is called once per frame
@@ -55,6 +60,21 @@ public class TramMotion : MonoBehaviour {
 	void OnEnable()
 	{
 		startTime = Time.unscaledTime;
+	}
+
+	public void SetMaterials()
+	{
+		if (highlited)
+		{
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
+		}
+		else
+		{
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = HighlightMaterials.ToArray();
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 1000);
+		}
+
+		highlited = ! highlited;
 	}
 
 	/// <summary>

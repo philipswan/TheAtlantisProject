@@ -14,6 +14,11 @@ TagManager:
   - Elevator
   - Placeholder
   - Positioner
+  - Ring
+  - Ring - Transit
+  - Tram
+  - Carrier
+  - Habitat
   layers:
   - Default
   - TransparentFX

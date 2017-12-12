@@ -14,22 +14,73 @@ public class Ring : MonoBehaviour {
     public float TubeRadius = 0.001f;
     public int NumSegments = 100;
     public int NumTubes = 12;
+	public List<Material> DefulatMaterials = new List<Material>();
+	public List<Material> HighlightMaterials = new List<Material>();
 	[Header("Tram Options")]
 	[Tooltip("Set true if this is the tram ring")]
 	public bool TramRing;
 
 	private float tetheredRingRadius;								// Calculated radius of ring
 	private Constants.Configuration config;							// Holds reference to config file
+	private float furthestPoint;									// Furthest point from position on the mesh. Used to center in a container for the menu
+	bool highlited;
 
     void Start() {
 		config = Constants.Configuration.Instance;
+		highlited = false;
 
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		RefreshRing();
-		FloatingMenu.Instance.AddItems(gameObject, "Tethered Ring");
+
+		GameObject p = Instantiate(gameObject, transform.parent);
+		p.GetComponent<Ring>().enabled = false;
+
+		if (TramRing)
+		{
+			FloatingMenu.Instance.AddItems(p, "Transit Ring", new Vector3(14,2860,15), furthestPoint);
+		}
+		else
+		{
+			FloatingMenu.Instance.AddItems(p, "Tethered Ring", new Vector3(14,2860,15), furthestPoint);
+		}
     }
 
-    public void RefreshRing() {
+	public void SetMaterials()
+	{
+		if (highlited)
+		{
+			GetComponent<MeshRenderer>().materials = DefulatMaterials.ToArray();
+		}
+		else
+		{
+			GetComponent<MeshRenderer>().materials = HighlightMaterials.ToArray();
+			GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 1000);
+		}
+
+		highlited = ! highlited;
+	}
+
+	/// <summary>
+	/// Retuns the diameter of the ring
+	/// </summary>
+	/// <param name="_go">Go.</param>
+	private void FindPointOnMesh(GameObject _go)
+	{
+		Vector3[] verticies = GetComponent<MeshFilter>().mesh.vertices;
+		float distance = 0;
+
+		for (int i=0; i<verticies.Length; i++)
+		{
+			if (distance < Vector3.Distance(transform.localPosition, verticies[i]))
+			{
+				distance = Vector3.Distance(transform.localPosition, verticies[i]);
+			}
+		}
+
+		furthestPoint = distance;
+	}
+
+    private void RefreshRing() {
         // Total vertices
         int totalVertices = NumSegments * NumTubes;
 
@@ -107,10 +158,8 @@ public class Ring : MonoBehaviour {
         mFilter.mesh = mesh;
 
 		MeshRenderer mr = GetComponent<MeshRenderer>();
-		List<Material> materials = new List<Material>();
-		materials.Add(mr.material);
-		materials.Add(Resources.Load("Outline Diffuse") as Material);
-		mr.materials = materials.ToArray();
-		mr.materials[1].SetFloat("_Outline", 0);
+		mr.materials = DefulatMaterials.ToArray();
+
+		FindPointOnMesh(gameObject);
 	}
 }

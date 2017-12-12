@@ -43,6 +43,7 @@ public class StartMenu : MonoBehaviour {
 		Transition1b.Instance.enabled = true;
 		TramCars.Instance.ActivateTrams();
 		transform.GetChild(0).gameObject.SetActive(false);
+		OctahedronSphereTester.Instance.SetMaterials();
 
 		// Find the background music, stop it and store its reference to play it later
 		AudioSource[] sources = FindObjectsOfType(typeof(AudioSource)) as AudioSource[];

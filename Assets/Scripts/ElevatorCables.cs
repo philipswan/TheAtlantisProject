@@ -29,9 +29,12 @@ public class ElevatorCables : MonoBehaviour
 
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		RefreshElevatorCables();
+
+		FloatingMenu.Instance.AddItems(carrier_prefab, "Carrier", new Vector3(0.04f,0.04f,0.04f));
+		FloatingMenu.Instance.AddItems(climber_prefab.transform.GetChild(0).gameObject, "Elevator", new Vector3(0.15f,0.15f,0.15f));
 	}
 
-	public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)
+	private void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)
 	{
 		Vector3 v1 = (end - start).normalized;
 		Vector3 v2 = Vector3.Cross(v1, Vector3.up).normalized * Radius;
@@ -70,7 +73,7 @@ public class ElevatorCables : MonoBehaviour
 		}
 	}
 
-	public void RefreshElevatorCables()
+	private void RefreshElevatorCables()
 	{
 		// Total vertices - We'll construct a tube for each branch and that tube will have numTubeSides. 
 		int totalVertices = numElevatorCables * numTubeSides * 2;

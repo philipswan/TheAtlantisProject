@@ -19,9 +19,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4395667950178968}
+  - component: {fileID: 114760825314044672}
   m_Layer: 0
   m_Name: AircraftCarrier
-  m_TagString: Untagged
+  m_TagString: Carrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,8 +37,6 @@ GameObject:
   - component: {fileID: 4271388489852386}
   - component: {fileID: 33310847027356208}
   - component: {fileID: 23556556536348128}
-  - component: {fileID: 114511396868965006}
-  - component: {fileID: 64768222855144742}
   m_Layer: 18
   m_Name: default
   m_TagString: Untagged
@@ -111,28 +110,19 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1586656328828526}
   m_Mesh: {fileID: 4300000, guid: 13abfdfcb6814704fa4bd6bdf8ac7513, type: 3}
---- !u!64 &64768222855144742
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586656328828526}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 0
-  m_InflateMesh: 0
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 13abfdfcb6814704fa4bd6bdf8ac7513, type: 3}
---- !u!114 &114511396868965006
+--- !u!114 &114760825314044672
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586656328828526}
+  m_GameObject: {fileID: 1122113844473088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61615111447978b4d8fbe96da67749fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 574ae9106348ce34388df6fec5169a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DefulatMaterials:
+  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  HighlightMaterials:
+  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}

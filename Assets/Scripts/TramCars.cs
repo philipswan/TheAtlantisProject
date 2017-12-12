@@ -43,8 +43,6 @@ public class TramCars : MonoBehaviour {
 	{
 		config = Constants.Configuration.Instance;
 
-
-
 		habitatIndex = (int)numKeysPerSection / RingHabitats.Instance.numRingHabitatsPerInstance;
 
 		startIndex = 1;	// Set start/end section to only draw cars that can be seen by the user
@@ -56,6 +54,9 @@ public class TramCars : MonoBehaviour {
 		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
 		//ActivateTrams();		// Activate all trams
 		DeleteKeys();			// Delete keys as they are no longer needed
+
+		print("here");
+		FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
 	}
 		
 	/// <summary>

@@ -288,6 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7022400d9af964c548a4444465c01ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Earthmaterials:
+  - {fileID: 2100000, guid: f201b6451c1d274449d6875178099975, type: 2}
+  - {fileID: 2100000, guid: f01d2d50e41869846818a3a2b5032f7e, type: 2}
   subdivisions: 6
   radius: 0.495
 --- !u!114 &129125188
@@ -326,7 +329,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 141075043}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: -0}
+  m_LocalPosition: {x: 0, y: 0.05, z: -0}
   m_LocalScale: {x: 0.017393868, y: 0.017393868, z: 0.017393868}
   m_Children:
   - {fileID: 1106139766}
@@ -340,11 +343,11 @@ TextMesh:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 141075043}
-  m_Text: test
+  m_Text: 
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
-  m_Anchor: 0
+  m_Anchor: 7
   m_Alignment: 0
   m_TabSize: 4
   m_FontSize: 24
@@ -397,10 +400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bdff1723f886d740a63d1279e3d1105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MenuIcons:
-  - {fileID: 1099432009}
-  Descriptions:
-  - Ring Habitat
 --- !u!1 &154204964
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,10 +765,9 @@ GameObject:
   - component: {fileID: 330127976}
   - component: {fileID: 330127975}
   - component: {fileID: 330127974}
-  - component: {fileID: 330127978}
   m_Layer: 0
   m_Name: Ring
-  m_TagString: Untagged
+  m_TagString: Ring
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -788,6 +786,11 @@ MonoBehaviour:
   TubeRadius: 0.000004
   NumSegments: 2000
   NumTubes: 12
+  DefulatMaterials:
+  - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
+  HighlightMaterials:
+  - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
+  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
   TramRing: 0
 --- !u!23 &330127975
 MeshRenderer:
@@ -834,24 +837,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 330127973}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.000000014901161, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1879430682}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
---- !u!114 &330127978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 330127973}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61615111447978b4d8fbe96da67749fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &440553184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,7 +1004,7 @@ GameObject:
   - component: {fileID: 466295305}
   m_Layer: 0
   m_Name: Ring - Transit
-  m_TagString: Untagged
+  m_TagString: Ring - Transit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1044,6 +1036,11 @@ MonoBehaviour:
   TubeRadius: 0.00004
   NumSegments: 2000
   NumTubes: 12
+  DefulatMaterials:
+  - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
+  HighlightMaterials:
+  - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
+  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
   TramRing: 1
 --- !u!23 &466295306
 MeshRenderer:
@@ -1447,7 +1444,7 @@ GameObject:
   - component: {fileID: 727307575}
   - component: {fileID: 727307576}
   m_Layer: 0
-  m_Name: Ring Container
+  m_Name: Ring Container - Transit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1647,6 +1644,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &994910422 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100002, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
+  m_PrefabInternal: {fileID: 1203673757}
+--- !u!114 &994910423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 994910422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be88806953723df46a0b4b7d5d97238b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefulatMaterials:
+  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  HighlightMaterials:
+  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
 --- !u!1001 &1015838822
 Prefab:
   m_ObjectHideFlags: 0
@@ -1722,6 +1739,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 8cdd1d5e6f940914e9d7400d547dd674, type: 3}
+      propertyPath: m_TagString
+      value: Tram
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6400000, guid: 8cdd1d5e6f940914e9d7400d547dd674, type: 3}
   m_ParentPrefab: {fileID: 100100000, guid: 8cdd1d5e6f940914e9d7400d547dd674, type: 3}
@@ -1750,10 +1771,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1099432010}
-  - component: {fileID: 1099432014}
+  - component: {fileID: 1099432011}
   m_Layer: 0
   m_Name: Habitat Container
-  m_TagString: Untagged
+  m_TagString: Habitat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1772,38 +1793,22 @@ Transform:
   m_Father: {fileID: 1132047106}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &1099432014
-MeshRenderer:
+--- !u!114 &1099432011
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099432009}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0b75a0eb809411439313960aab1e566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighlightMaterial:
+  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
+  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
+  DefulatMaterial:
+  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
 --- !u!1 &1106139765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1831,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1106139765}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: 0, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 141075044}
@@ -1970,6 +1975,10 @@ Prefab:
     - target: {fileID: 6400000, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
+      propertyPath: m_TagString
+      value: Elevator
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6400000, guid: e6a3a7874d86f9748b8a1ddace61cf6b, type: 3}
@@ -2385,7 +2394,6 @@ GameObject:
   - component: {fileID: 1374056248}
   - component: {fileID: 1374056250}
   - component: {fileID: 1374056249}
-  - component: {fileID: 1374056252}
   - component: {fileID: 1374056251}
   m_Layer: 18
   m_Name: mesh_1793348775
@@ -2459,21 +2467,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61615111447978b4d8fbe96da67749fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!64 &1374056252
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 6400008, guid: cb28c4031e9a36046baf61fc96e60fff,
-    type: 3}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1374056247}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_InflateMesh: 1
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300002, guid: cb28c4031e9a36046baf61fc96e60fff, type: 3}
 --- !u!4 &1380999639 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4058849966807760, guid: 07e2fbb6eb98b484f9706250514b0404,
@@ -2500,6 +2493,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotations: []
   positions: []
+  DefaultMaterials:
+  - {fileID: 0}
+  HighlightMaterials:
+  - {fileID: 0}
+  - {fileID: 2100000, guid: 1f70cc0651457c94d910f2017c6033bd, type: 2}
 --- !u!1 &1547149515
 GameObject:
   m_ObjectHideFlags: 0

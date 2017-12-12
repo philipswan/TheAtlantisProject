@@ -5,14 +5,13 @@ using UnityEngine;
 public class FloatingMenu : MonoBehaviour {
 
 	public static FloatingMenu Instance;
-	public List<GameObject> MenuIcons = new List<GameObject>();
-	public List<string> Descriptions = new List<string>();
 
-	private List<GameObject> menuObjects = new List<GameObject>();
-	private TextMesh tm;
-	private GameObject currentIcon;
-	private bool waitToReset;
-	private bool activated;
+	private List<string> Descriptions = new List<string>();				// Holds all descriptions
+	private List<GameObject> menuObjects = new List<GameObject>();		// Holds gameobjects to display
+	private TextMesh tm;												// Reference to text mesh
+	private GameObject currentIcon;										// Current displayed menu object
+	private bool waitToReset;											// Limit one cycle per thumbstick movement
+	private bool activated;												// Is the menu active
 
 	void Awake()
 	{
@@ -25,8 +24,6 @@ public class FloatingMenu : MonoBehaviour {
 		tm.text = "";
 		waitToReset = false;
 		activated = false;
-
-		InstantiateObjects();
 	}
 	
 	// Update is called once per frame
@@ -62,39 +59,68 @@ public class FloatingMenu : MonoBehaviour {
 		}
 	}
 
-	public void AddItems(GameObject icon, string desc)
+	/// <summary>
+	/// Add new item to the list and instantiate it
+	/// </summary>
+	/// <param name="_go">Go.</param>
+	/// <param name="_desc">Desc.</param>
+	/// <param name="_scale">Scale.</param>
+	/// <param name="_distance">Distance.</param>
+	public void AddItems(GameObject _go, string _desc, Vector3 _scale, float _distance = 0.0f)
 	{
-		MenuIcons.Add(icon);
-		Descriptions.Add(desc);
-		InstantiateObjects(icon);
+		Descriptions.Add(_desc);
+
+		InstantiateObjects(_go, _scale, _distance);
 	}
 
-	private void InstantiateObjects(GameObject _go = null)
+	/// <summary>
+	/// Instantiate the object and add it to the list
+	/// </summary>
+	/// <param name="_go">Go.</param>
+	/// <param name="_scale">Scale.</param>
+	/// <param name="_distance">Distance.</param>
+	private void InstantiateObjects(GameObject _go, Vector3 _scale, float _distance = 0.0f)
 	{
-		print("instantiated");
-		if (_go == null)
+		// Ignore duplicates
+		foreach (GameObject g in menuObjects)
 		{
-			for (int i=0; i<MenuIcons.Count; i++)
+			if (g.tag == _go.tag)
 			{
-				GameObject go = Instantiate(MenuIcons[i], transform.GetChild(0).position, Quaternion.identity, transform);
-				go.SetActive(false);
-				go.transform.localScale = new Vector3(100 ,100, 100);
-				menuObjects.Add(go);
+				return;
 			}
+		}
+
+		// If it is a ring, create a container to center it
+		GameObject go;
+		if (_go.tag == "Ring" || _go.tag == "Ring - Transit")
+		{
+			go = CreateContianer(_go, _go.tag, _distance);
 		}
 		else
 		{
-			GameObject go = Instantiate(_go, transform.GetChild(0).position, Quaternion.identity, transform);
-			go.SetActive(false);
-			go.transform.localScale = new Vector3(100 ,100, 100);
-			menuObjects.Add(go);
+			go = Instantiate(_go, transform.GetChild(0).position, Quaternion.identity, transform);
 		}
+
+		go.SetActive(false);
+		go.transform.localScale = _scale;
+
+		// Set child rotations to zero
+		for (int i=0; i<go.transform.childCount; i++)
+		{
+			go.transform.GetChild(i).localRotation = Quaternion.identity;
+		}
+		menuObjects.Add(go);
 	}
 
+	/// <summary>
+	/// Activates the menu.
+	/// </summary>
 	private void ActivateMenu()
 	{
 		activated = true;
 		waitToReset = true;
+
+		ControllerTransition.Instance.Activate(false);
 
 		gameObject.SetActive(true);
 		currentIcon = menuObjects[0];
@@ -103,50 +129,75 @@ public class FloatingMenu : MonoBehaviour {
 
 		int index = menuObjects.IndexOf(currentIcon);
 
+		string currentTag = currentIcon.tag;
+		UpdateMaterials(currentTag);
+
 		StartCoroutine("RotateItem", index);
 	}
 
+	/// <summary>
+	/// Deactivates the menu.
+	/// </summary>
 	private void DeactivateMenu()
 	{
 		activated = false;
 		waitToReset = true;
 
+		ControllerTransition.Instance.Activate(true);
+
 		int index = menuObjects.IndexOf(currentIcon);
 
+		string currentTag = currentIcon.tag;
+		UpdateMaterials(currentTag);
 		menuObjects[index].SetActive(false);
 		tm.text = "";
 
 		StopCoroutine("RotateItem");
 	}
 
+	/// <summary>
+	/// Cycle meu objects by moving the thumbstick right
+	/// </summary>
 	private void CycleRight()
 	{
-		print("right");
 		waitToReset = true;
+
+		string prevTag, currentTag;
+		prevTag = currentIcon.tag;
 
 		int index = menuObjects.IndexOf(currentIcon);
 		menuObjects[index].SetActive(false);
 
 		if (index < menuObjects.Count - 1)
 		{
-			print("primary");
 			currentIcon = menuObjects[index+1];
 			menuObjects[index+1].SetActive(true);
-			//tm.text = Descriptions[index+1];
+			tm.text = Descriptions[index+1];
 		}
 		else
 		{
-			print("secondary");
 			currentIcon = menuObjects[0];
 			menuObjects[0].SetActive(true);
 			tm.text = Descriptions[0];
 		}
+
+		currentTag =  currentIcon.tag;
+		UpdateMaterials(prevTag, currentTag);
+
+		index = menuObjects.IndexOf(currentIcon);
+		StopCoroutine("RotateItem");
+		StartCoroutine("RotateItem", index);
 	}
 
+	/// <summary>
+	/// Cycle menu objects by moving the thumbstick left
+	/// </summary>
 	private void CycleLeft()
 	{
-		print("left");
 		waitToReset = true;
+
+		string prevTag, currentTag;
+		prevTag = currentIcon.tag;
 
 		int index = menuObjects.IndexOf(currentIcon);
 		menuObjects[index].SetActive(false);
@@ -163,8 +214,75 @@ public class FloatingMenu : MonoBehaviour {
 			menuObjects[menuObjects.Count-1].SetActive(true);
 			tm.text = Descriptions[Descriptions.Count-1];
 		}
+
+		currentTag =  currentIcon.tag;
+		UpdateMaterials(prevTag, currentTag);
+		index = menuObjects.IndexOf(currentIcon);
+		StopCoroutine("RotateItem");
+		StartCoroutine("RotateItem", index);
 	}
 
+	/// <summary>
+	/// Create container for the ring to center it
+	/// </summary>
+	/// <returns>The contianer.</returns>
+	/// <param name="_icon">Icon.</param>
+	/// <param name="_tag">Tag.</param>
+	/// <param name="_distance">Distance.</param>
+	private GameObject CreateContianer(GameObject _icon, string _tag, float _distance)
+	{
+		// Create container, set ring transform parent to container
+		GameObject container = new GameObject("Container - " + _tag);
+		container.transform.SetParent(transform);
+		_icon.transform.SetParent(container.transform);
+
+		// Center ring
+		container.transform.localScale = Vector3.one;
+		container.transform.position = transform.GetChild(0).position;
+		_icon.transform.localScale = Vector3.one;
+		_icon.transform.localPosition = Vector3.zero + _icon.transform.InverseTransformDirection(_icon.transform.right) * (_distance / 2);
+
+		// Set tag
+		container.tag = _tag;
+
+		return container;
+	}
+
+	/// <summary>
+	/// Set materials of selected objects
+	/// </summary>
+	/// <param name="_tag">Tag.</param>
+	private void UpdateMaterials(string _currentTag, string _prevTag = null)
+	{
+		GameObject[] currentObjects = GameObject.FindGameObjectsWithTag(_currentTag);
+		foreach (GameObject go in currentObjects)
+		{
+			if (menuObjects.Contains(go))
+			{
+				continue;
+			}
+			go.SendMessage("SetMaterials");
+		}
+
+		if (_prevTag != null)
+		{
+			GameObject[] prevObjects = GameObject.FindGameObjectsWithTag(_prevTag);
+			foreach (GameObject go in prevObjects)
+			{
+				if (menuObjects.Contains(go) || (go.transform.childCount > 0 && menuObjects.Contains(go.transform.GetChild(0).gameObject)))
+				{
+					continue;
+				}
+				go.SendMessage("SetMaterials");
+			}
+		}
+	}
+
+	/// <summary>
+	/// Rotate the menu object
+	/// </summary>
+	/// <returns>The item.</returns>
+	/// <param name="index">Index.</param>
 	private IEnumerator RotateItem(int index)
 	{
 		while (true)
