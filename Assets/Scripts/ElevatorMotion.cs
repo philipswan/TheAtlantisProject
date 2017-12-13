@@ -30,6 +30,8 @@ public class ElevatorMotion : MonoBehaviour {
 	private Vector3 button1Pos;				// Holds button1 position to prevent drifting when moving
 	private Vector3 button2Pos;				// Holds button2 position to prevent drifting when moving
 	private GameObject backgroundMusic;		// Holds reference to background clip game object
+	private GameObject button1;
+	private GameObject button2;
 	private float botBuffer;				// Distance between carrier and elevator to stop motion
 	private float topBuffer;				// Distance between ring and elevator to stop motion
 	private float buffer;					// Holds current buffer
@@ -55,8 +57,12 @@ public class ElevatorMotion : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		// Store button positions to prevent drift in update method
-		button1Pos = transform.FindChild("Button 1").localPosition;
-		button2Pos = transform.FindChild("Button 2").localPosition;
+		button1Pos = transform.GetChild(0).FindChild("Button 1").localPosition;
+		button2Pos = transform.GetChild(0).FindChild("Button 2").localPosition;
+
+		// Store button gameobject references
+		button1 = transform.GetChild(0).FindChild("Button 1").gameObject;
+		button2 = transform.GetChild(0).FindChild("Button 2").gameObject;
 	}
 
 	// Update is called once per frame
@@ -100,8 +106,8 @@ public class ElevatorMotion : MonoBehaviour {
 		}
 
 		// Keep buttons in the same local position to prevent drift
-		transform.GetChild(1).transform.localPosition = button1Pos;
-		transform.GetChild(2).transform.localPosition = button2Pos;
+		button1.transform.localPosition = button1Pos;
+		button2.transform.localPosition = button2Pos;
 
 		// If we are close enough to the current target, switch to the other one
 		if (Vector3.Distance(transform.localPosition, targetPos) <= 1e-5f || update)
