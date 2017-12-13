@@ -31,16 +31,16 @@ public class OVRScreenFade : MonoBehaviour
 	/// <summary>
 	/// The initial screen color.
 	/// </summary>
-	public Color fadeOutColor = new Color(1f, 1f, 1f, 0.0f);
-	public Color fadeInColor = new Color(1f, 1f, 1f, 1f);
+	public Color fadeOutColor = new Color(1f, 1f, 1f, 0.0f);				// Fade out color
+	public Color fadeInColor = new Color(1f, 1f, 1f, 1f);					// Fade in color
 
-	private Material fadeMaterial = null;
-	private bool isFading = false;
-	private YieldInstruction fadeInstruction = new WaitForEndOfFrame();
-	private Constants.Configuration config;
-	private float fadeTime;
-	private bool fadeIn;
-	private enum FadeOptions
+	private Material fadeMaterial = null;									// Current fade material
+	private bool isFading = false;											// Is the fade coroutine running
+	private YieldInstruction fadeInstruction = new WaitForEndOfFrame();		// Yield option
+	private Constants.Configuration config;									// Reference to config script
+	private float fadeTime;													// Time to fade
+	private bool fadeIn;													// Fade in/out option passed in
+	private enum FadeOptions												// Fade options
 	{
 		fadeIn,
 		fadeOut,
@@ -74,6 +74,7 @@ public class OVRScreenFade : MonoBehaviour
 	{
 		fadeOptions = _fadeIn ? FadeOptions.fadeIn : FadeOptions.fadeOut;
 
+		// Only start coroutine if it is not currently running
 		if (!isFading)
 		{
 			StartCoroutine("Fade");
@@ -101,6 +102,7 @@ public class OVRScreenFade : MonoBehaviour
 		while (isFading)
 		{
 			switch (fadeOptions){
+			// Fade camera out
 			case FadeOptions.fadeOut:
 				float elapsedTime = 0.0f;
 				fadeMaterial.color = fadeOutColor;
@@ -111,12 +113,12 @@ public class OVRScreenFade : MonoBehaviour
 					yield return fadeInstruction;
 					elapsedTime += Time.deltaTime;
 					color.a = Mathf.Clamp01(elapsedTime / fadeTime);
-					//print(color.a + " Fading: " + isFading);
 					fadeMaterial.color = color;
 				}
 
 				fadeOptions = FadeOptions.wait;
 				break;
+			// Fade camera in
 			case FadeOptions.fadeIn:
 				elapsedTime = 0.0f;
 				fadeMaterial.color =  fadeInColor;
@@ -127,13 +129,13 @@ public class OVRScreenFade : MonoBehaviour
 					yield return fadeInstruction;
 					elapsedTime += Time.deltaTime;
 					color.a = 1.0f - Mathf.Clamp01(elapsedTime / fadeTime);
-					//print(color.a + " Fading: " + isFading);
 					fadeMaterial.color = color;
 				}
 
 				isFading = false;
 
 				break;
+			// Wait in between fade out/in to preform actions in calling script
 			case FadeOptions.wait:
 				yield return fadeInstruction;
 				break;

@@ -786,7 +786,7 @@ MonoBehaviour:
   TubeRadius: 0.000004
   NumSegments: 2000
   NumTubes: 12
-  DefulatMaterials:
+  DefaultMaterials:
   - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
   HighlightMaterials:
   - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
@@ -971,8 +971,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FadeTime: 2
-  CameraTravelTime: 10
-  SystemTravelTime: 10
+  CameraTravelTime: 1
+  SystemTravelTime: 1
   ElevatorTravelTime: 10
   ElevatorWaitTime: 3
   TramTravelTimeStops: 2
@@ -1036,7 +1036,7 @@ MonoBehaviour:
   TubeRadius: 0.00004
   NumSegments: 2000
   NumTubes: 12
-  DefulatMaterials:
+  DefaultMaterials:
   - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
   HighlightMaterials:
   - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
@@ -2394,7 +2394,6 @@ GameObject:
   - component: {fileID: 1374056248}
   - component: {fileID: 1374056250}
   - component: {fileID: 1374056249}
-  - component: {fileID: 1374056251}
   m_Layer: 18
   m_Name: mesh_1793348775
   m_TagString: Untagged
@@ -2456,17 +2455,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1374056247}
   m_Mesh: {fileID: 4300002, guid: cb28c4031e9a36046baf61fc96e60fff, type: 3}
---- !u!114 &1374056251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1374056247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61615111447978b4d8fbe96da67749fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1380999639 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4058849966807760, guid: 07e2fbb6eb98b484f9706250514b0404,

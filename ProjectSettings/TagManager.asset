@@ -19,6 +19,7 @@ TagManager:
   - Tram
   - Carrier
   - Habitat
+  - Stay
   layers:
   - Default
   - TransparentFX

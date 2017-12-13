@@ -14,6 +14,7 @@ public class Stays : MonoBehaviour
 
 	private float tetheredRingRadius;
 	private Constants.Configuration config;		// Holds reference to config file
+	private GameObject menuStay;
 
     void Start()
     {
@@ -21,6 +22,9 @@ public class Stays : MonoBehaviour
 
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshStays();
+
+		FloatingMenu.Instance.AddItems(menuStay, "Stays", new Vector3(1000,1000,1000));
+		Destroy(menuStay);
     }
 
     public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)
@@ -151,6 +155,7 @@ public class Stays : MonoBehaviour
     {
         GameObject obj = new GameObject("Stay part " + stayObjects.Count);
         obj.AddComponent<MeshFilter>();
+		obj.AddComponent<StayManager>();
         MeshRenderer mr = obj.AddComponent<MeshRenderer>();
 
         obj.transform.SetParent(transform);
@@ -158,11 +163,15 @@ public class Stays : MonoBehaviour
         obj.transform.localRotation = Quaternion.identity;
         obj.transform.localScale = new Vector3(1, 1, 1);
 
-		List<Material> materials = new List<Material>();
-		materials.Add(material);
-		//materials.Add(Resources.Load("Outline Diffuse") as Material);
-		mr.materials = materials.ToArray();
-		//mr.materials[1].SetFloat("_Outline", 0);
+		List<Material> defaultMaterials = new List<Material>();
+		defaultMaterials.Add(material);
+		mr.materials = defaultMaterials.ToArray();
+
+		List<Material> highlightMaterials = new List<Material>();
+		highlightMaterials.Add(material);
+		highlightMaterials.Add(Resources.Load("Silhouetted Diffuse") as Material);
+
+		obj.GetComponent<StayManager>().SetMaterialLists(defaultMaterials, highlightMaterials);
 
         stayObjects.Add(obj);
         return obj;
@@ -236,8 +245,44 @@ public class Stays : MonoBehaviour
                     MeshFilter mFilter = obj.GetComponent<MeshFilter>(); // tweaked to Generic
                     mFilter.mesh = mesh;
 					obj.name = instance.ToString();
+					obj.tag = "Stay";
                 }
             }
         }
+
+		GameObject obj1 = createStayObject();
+		Mesh mesh1 = new Mesh();
+
+		tubeRadius = 1e-4f;
+
+		sectionIndex = 0;
+		NewStaySection(
+			72,
+			0,
+			ref sectionIndex,
+			numStayLevels,
+			0, // currentLevel
+			0, // start_r
+			Mathf.Pow(2, numStayLevels - 1), // end_r
+			0, // start_t
+			0, // target_t
+			0, // end_t
+			SegmentLength,
+			segmentsPerSection,
+			numSegments,
+			vertices,
+			triangleIndices);
+
+		mesh1.vertices = vertices;
+		mesh1.triangles = triangleIndices;
+
+		mesh1.RecalculateBounds();
+		mesh1.RecalculateNormals();
+		MeshFilter mFilter1 = obj1.GetComponent<MeshFilter>(); // tweaked to Generic
+		mFilter1.mesh = mesh1;
+		obj1.name = 72.ToString();
+		obj1.tag = "Stay";
+
+		menuStay = obj1;
     }
 }

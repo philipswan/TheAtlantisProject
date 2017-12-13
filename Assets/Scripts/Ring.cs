@@ -14,7 +14,7 @@ public class Ring : MonoBehaviour {
     public float TubeRadius = 0.001f;
     public int NumSegments = 100;
     public int NumTubes = 12;
-	public List<Material> DefulatMaterials = new List<Material>();
+	public List<Material> DefaultMaterials = new List<Material>();
 	public List<Material> HighlightMaterials = new List<Material>();
 	[Header("Tram Options")]
 	[Tooltip("Set true if this is the tram ring")]
@@ -23,7 +23,7 @@ public class Ring : MonoBehaviour {
 	private float tetheredRingRadius;								// Calculated radius of ring
 	private Constants.Configuration config;							// Holds reference to config file
 	private float furthestPoint;									// Furthest point from position on the mesh. Used to center in a container for the menu
-	bool highlited;
+	private bool highlited;
 
     void Start() {
 		config = Constants.Configuration.Instance;
@@ -49,7 +49,7 @@ public class Ring : MonoBehaviour {
 	{
 		if (highlited)
 		{
-			GetComponent<MeshRenderer>().materials = DefulatMaterials.ToArray();
+			GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
 		}
 		else
 		{
@@ -158,7 +158,7 @@ public class Ring : MonoBehaviour {
         mFilter.mesh = mesh;
 
 		MeshRenderer mr = GetComponent<MeshRenderer>();
-		mr.materials = DefulatMaterials.ToArray();
+		mr.materials = DefaultMaterials.ToArray();
 
 		FindPointOnMesh(gameObject);
 	}

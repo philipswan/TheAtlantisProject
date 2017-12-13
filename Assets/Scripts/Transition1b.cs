@@ -33,7 +33,7 @@ public class Transition1b : MonoBehaviour {
 		}
 		else if (Scene == Keys.Count * 2 - 1)
 		{
-			Transition1.Instance.enabled = true;
+			Transition1.Instance.enabled = true;	// When the system transition is done, start the camera transition
 			enabled = false;
 		}
     }

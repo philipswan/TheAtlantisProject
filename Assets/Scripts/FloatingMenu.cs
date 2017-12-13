@@ -28,6 +28,7 @@ public class FloatingMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		// Wait for the user to reset the thumbstick position to prevent flying through the menu
 		if (waitToReset)
 		{
 			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) == Vector2.zero)
@@ -39,22 +40,28 @@ public class FloatingMenu : MonoBehaviour {
 		{
 			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x > 0.5)
 			{
+				// Cycle menu right
 				CycleRight();
 			}
 			else if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x < -0.5)
 			{
+				// Cycle menu left
 				CycleLeft();
 			}
 		}
 
+		// Activate menu
 		if (OVRInput.GetDown(OVRInput.Button.One) && !activated)
 		{
 			ActivateMenu();
+			ControllerTransition.Instance.Activate(false);	// Since we need the thumbstick to navigate the menu
 			return;
 		}
+		// Deactive menu
 		if (OVRInput.GetDown(OVRInput.Button.One) && activated)
 		{
 			DeactivateMenu();
+			ControllerTransition.Instance.Activate(true);	// Thumbstick for this script is no longer needed
 			return;
 		}
 	}
@@ -66,7 +73,7 @@ public class FloatingMenu : MonoBehaviour {
 	/// <param name="_desc">Desc.</param>
 	/// <param name="_scale">Scale.</param>
 	/// <param name="_distance">Distance.</param>
-	public void AddItems(GameObject _go, string _desc, Vector3 _scale, float _distance = 0.0f)
+	public void AddItems(GameObject _go, string _desc, Vector3 _scale, float _distance = -1.0f)
 	{
 		Descriptions.Add(_desc);
 
@@ -79,7 +86,7 @@ public class FloatingMenu : MonoBehaviour {
 	/// <param name="_go">Go.</param>
 	/// <param name="_scale">Scale.</param>
 	/// <param name="_distance">Distance.</param>
-	private void InstantiateObjects(GameObject _go, Vector3 _scale, float _distance = 0.0f)
+	private void InstantiateObjects(GameObject _go, Vector3 _scale, float _distance = -1.0f)
 	{
 		// Ignore duplicates
 		foreach (GameObject g in menuObjects)
@@ -92,7 +99,7 @@ public class FloatingMenu : MonoBehaviour {
 
 		// If it is a ring, create a container to center it
 		GameObject go;
-		if (_go.tag == "Ring" || _go.tag == "Ring - Transit")
+		if (_distance != -1.0f)
 		{
 			go = CreateContianer(_go, _go.tag, _distance);
 		}
@@ -103,7 +110,6 @@ public class FloatingMenu : MonoBehaviour {
 
 		go.SetActive(false);
 		go.transform.localScale = _scale;
-		go.layer = LayerMask.NameToLayer("Menu");
 
 		// Set child rotations to zero
 		for (int i=0; i<go.transform.childCount; i++)
@@ -119,9 +125,6 @@ public class FloatingMenu : MonoBehaviour {
 	private void ActivateMenu()
 	{
 		activated = true;
-		waitToReset = true;
-
-		ControllerTransition.Instance.Activate(false);
 
 		gameObject.SetActive(true);
 		currentIcon = menuObjects[0];
@@ -142,9 +145,6 @@ public class FloatingMenu : MonoBehaviour {
 	private void DeactivateMenu()
 	{
 		activated = false;
-		waitToReset = true;
-
-		ControllerTransition.Instance.Activate(true);
 
 		int index = menuObjects.IndexOf(currentIcon);
 
@@ -256,10 +256,10 @@ public class FloatingMenu : MonoBehaviour {
 	/// <param name="_tag">Tag.</param>
 	private void UpdateMaterials(string _currentTag, string _prevTag = null)
 	{
-		//print("Current: " + _currentTag + " Prev: " + _prevTag);
 		GameObject[] currentObjects = GameObject.FindGameObjectsWithTag(_currentTag);
 		foreach (GameObject go in currentObjects)
 		{
+			// Ignore the menu object
 			if (menuObjects.Contains(go))
 			{
 				continue;
@@ -275,6 +275,7 @@ public class FloatingMenu : MonoBehaviour {
 			GameObject[] prevObjects = GameObject.FindGameObjectsWithTag(_prevTag);
 			foreach (GameObject go in prevObjects)
 			{
+				// Ignore the menu object
 				if (menuObjects.Contains(go))
 				{
 					continue;
