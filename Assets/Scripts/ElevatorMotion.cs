@@ -55,8 +55,8 @@ public class ElevatorMotion : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		// Store button positions to prevent drift in update method
-//		button1Pos = transform.FindChild("Button 1").localPosition;
-//		button2Pos = transform.FindChild("Button 2").localPosition;
+		button1Pos = transform.FindChild("Button 1").localPosition;
+		button2Pos = transform.FindChild("Button 2").localPosition;
 	}
 
 	// Update is called once per frame
@@ -100,8 +100,8 @@ public class ElevatorMotion : MonoBehaviour {
 		}
 
 		// Keep buttons in the same local position to prevent drift
-//		transform.GetChild(1).transform.localPosition = button1Pos;
-//		transform.GetChild(2).transform.localPosition = button2Pos;
+		transform.GetChild(1).transform.localPosition = button1Pos;
+		transform.GetChild(2).transform.localPosition = button2Pos;
 
 		// If we are close enough to the current target, switch to the other one
 		if (Vector3.Distance(transform.localPosition, targetPos) <= 1e-5f || update)
