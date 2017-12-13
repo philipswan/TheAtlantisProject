@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class HabitatManager : MonoBehaviour {
 
-	public List<Material> HighlightMaterial = new List<Material>();
-	public List<Material> DefulatMaterial = new List<Material>();
+	public List<Material> HighlightMaterial = new List<Material>();		// Regular materials
+	public List<Material> DefaultMaterial = new List<Material>();		// Regarul materials + highlight material
 
-	private bool highlited;
+	private bool highlited;												// Current materials used
 
 	// Use this for initialization
 	void Start () {
@@ -18,11 +18,15 @@ public class HabitatManager : MonoBehaviour {
 		
 	}
 
+	/// <summary>
+	/// Toggle highlight material when selected on controller menu
+	/// </summary>
 	public void SetMaterials()
 	{
+		// We only need to change the largest part of the habitat
 		if (highlited)
 		{
-			transform.GetChild(0).transform.GetChild(7).GetComponent<MeshRenderer>().materials = DefulatMaterial.ToArray();
+			transform.GetChild(0).transform.GetChild(7).GetComponent<MeshRenderer>().materials = DefaultMaterial.ToArray();
 		}
 		else
 		{

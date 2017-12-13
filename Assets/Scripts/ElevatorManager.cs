@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class ElevatorManager : MonoBehaviour {
 
-	public List<Material> DefulatMaterials = new List<Material>();
-	public List<Material> HighlightMaterials = new List<Material>();
+	public List<Material> DefaultMaterials = new List<Material>();		// Regular materials
+	public List<Material> HighlightMaterials = new List<Material>();	// Regarul materials + highlight material
 
-	bool highlited;
+	private bool highlited;												// Current materials used
 
 	// Use this for initialization
 	void Start () {
 		highlited = false;
-		transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefulatMaterials.ToArray();
+		transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
 	}
 	
 	// Update is called once per frame
@@ -20,11 +20,14 @@ public class ElevatorManager : MonoBehaviour {
 		
 	}
 
+	/// <summary>
+	/// Toggle highlight material when selected on controller menu
+	/// </summary>
 	public void SetMaterials()
 	{
 		if (highlited)
 		{
-			transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefulatMaterials.ToArray();
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
 		}
 		else
 		{

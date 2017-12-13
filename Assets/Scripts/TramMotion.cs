@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class TramMotion : MonoBehaviour {
 
-	public List<Quaternion> rotations = new List<Quaternion>();		// Rotation of the tram at its destination
-	public List<Vector3> positions = new List<Vector3>();			// All destinatins for the tram
-	private Material[] DefaultMaterials;
-	public List<Material> HighlightMaterials = new List<Material>();
+	public List<Quaternion> rotations = new List<Quaternion>();			// Rotation of the tram at its destination
+	public List<Vector3> positions = new List<Vector3>();				// All destinatins for the tram
+	public List<Material> HighlightMaterials = new List<Material>();	// Regarul materials + highlight material
 
-	bool highlited;
-	private Constants.Configuration config;							// Holds reference to config script
-	private float startTime;										// Starting time of the movement. Reset when a cycle is completed
-	private bool travelTram;										// Set true if the tram does not stop
-	private Vector3 velocity;										// Speed cap for smoothdamp
+	private Constants.Configuration config;								// Holds reference to config script
+	private float startTime;											// Starting time of the movement. Reset when a cycle is completed
+	private bool travelTram;											// Set true if the tram does not stop
+	private Vector3 velocity;											// Speed cap for smoothdamp
+	private Material[] DefaultMaterials;								// Regular materials
+	private bool highlited;												// Current materials used
 
 	void Awake()
 	{
@@ -68,6 +68,9 @@ public class TramMotion : MonoBehaviour {
 		startTime = Time.unscaledTime;
 	}
 
+	/// <summary>
+	/// Toggle highlight material when selected on controller menu
+	/// </summary>
 	public void SetMaterials()
 	{
 		if (highlited)

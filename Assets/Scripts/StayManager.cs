@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class StayManager : MonoBehaviour {
 
-	public List<Material> defaultMaterials;
-	public List<Material> highlightMaterials;
-	private bool highlited;
+	public List<Material> defaultMaterials;		// Regular materials
+	public List<Material> highlightMaterials;	// Regarul materials + highlight material
+
+	private bool highlited;						// Current materials used
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +30,9 @@ public class StayManager : MonoBehaviour {
 		highlightMaterials = new List<Material>(_highlight);
 	}
 
+	/// <summary>
+	/// Toggle highlight material when selected on controller menu
+	/// </summary>
 	public void SetMaterials()
 	{
 		if (highlited)

@@ -14,7 +14,7 @@ public class Stays : MonoBehaviour
 
 	private float tetheredRingRadius;
 	private Constants.Configuration config;		// Holds reference to config file
-	private GameObject menuStay;
+	private GameObject menuStay;				// Stay with thicker radius to be passed to floating menu
 
     void Start()
     {
