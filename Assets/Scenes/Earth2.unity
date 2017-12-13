@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7022400d9af964c548a4444465c01ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Earthmaterials:
+  EarthMaterials:
   - {fileID: 2100000, guid: f201b6451c1d274449d6875178099975, type: 2}
   - {fileID: 2100000, guid: f01d2d50e41869846818a3a2b5032f7e, type: 2}
   subdivisions: 6

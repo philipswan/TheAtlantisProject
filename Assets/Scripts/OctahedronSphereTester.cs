@@ -6,7 +6,7 @@ using UnityEngine;
 public class OctahedronSphereTester : MonoBehaviour {
 
 	public static OctahedronSphereTester Instance;					// Reference to script
-	public List<Material> Earthmaterials = new List<Material>();	// Earth materials
+	public List<Material> EarthMaterials = new List<Material>();	// Earth materials
 
 	public int subdivisions = 0;
 	public float radius = 1f;
@@ -16,11 +16,19 @@ public class OctahedronSphereTester : MonoBehaviour {
 		GetComponent<MeshFilter>().mesh = OctahedronSphereCreator.Create(subdivisions, radius);
 	}
 
+//	void Update()
+//	{
+//		Vector3 center = GetComponent<MeshFilter>().mesh.bounds.center;
+//		Vector3 edge = GetComponent<MeshFilter>().mesh.vertices[0];
+//		float distance = Vector3.Distance(center, edge);
+//		print(distance);
+//	}
+//
 	/// <summary>
 	/// Set sphere materials once the user starts the transition
 	/// </summary>
 	public void SetMaterials()
 	{
-		GetComponent<MeshRenderer>().materials = Earthmaterials.ToArray();
+		GetComponent<MeshRenderer>().materials = EarthMaterials.ToArray();
 	}
 }
