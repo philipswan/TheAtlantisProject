@@ -52,10 +52,11 @@ public class TramCars : MonoBehaviour {
 		CreateTramSections();	// Create all trams and keys
 		UpdatePositions();		// Move trams to proper positions
 		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
-		//ActivateTrams();		// Activate all trams
 		DeleteKeys();			// Delete keys as they are no longer needed
 
 		FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
+
+
 	}
 		
 	/// <summary>
@@ -122,18 +123,24 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void CreateTramSections()
 	{
-		// R of earth is 6.371e6f m
-		// Arc length = RC where C is the center angle
 		bool createTram;
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
 
 		/*
-		// Calculate distance in meters between trams
+		// Calculate distance in meters between trams and keys
+		// R of ring at key 3 is 2072
+		// R of earth is 6.371e6f
+		// Hyperloop train speed is 333 m/s
+		// Ratio of real radius to system radius 3.25e-4
+		// Arc length = RC where C is the center angle
+		float radius = 2072f;
+		float velocity = 0.108f;
 		float rpk = (2 * Mathf.PI) / (numSections * numKeysPerSection);
 		print("tram spacing: " + tramSpacing + " total keys: " + numSections * numKeysPerSection);
-		print("rad per key: " + rpk);
-		print("arc length between keys: " + 6.371e6f * rpk);
-		print("arc length between trams: " + 6.371e6f * rpk * tramSpacing);
+		print("rad per key: " + rpk + "rad");
+		print("arc length between keys: " + radius * rpk + "m");
+		print("arc length between trams: " + radius * rpk * tramSpacing + "m");
+		print("travel time between keys: " + (radius * rpk) / velocity + "s");
 		*/
 
 		int numKeys = numKeysPerSection * numSections;
