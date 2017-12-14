@@ -51,14 +51,14 @@ public class FloatingMenu : MonoBehaviour {
 		}
 
 		// Activate menu
-		if (OVRInput.GetDown(OVRInput.Button.One) && !activated)
+		if ((OVRInput.GetDown(OVRInput.Button.One) || OVRInput.GetDown(OVRInput.Button.Two)) && !activated)
 		{
 			ActivateMenu();
 			ControllerTransition.Instance.Activate(false);	// Since we need the thumbstick to navigate the menu
 			return;
 		}
 		// Deactive menu
-		if (OVRInput.GetDown(OVRInput.Button.One) && activated)
+		if ((OVRInput.GetDown(OVRInput.Button.One) || OVRInput.GetDown(OVRInput.Button.Two))  && activated)
 		{
 			DeactivateMenu();
 			ControllerTransition.Instance.Activate(true);	// Thumbstick for this script is no longer needed
@@ -137,6 +137,13 @@ public class FloatingMenu : MonoBehaviour {
 		UpdateMaterials(currentTag);
 
 		StartCoroutine("RotateItem", index);
+
+		// Update the messages to be displayed in the help menu
+		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
+		foreach(GameObject go in helpMenus)
+		{
+			go.BroadcastMessage("UpdateMessage", true);
+		}
 	}
 
 	/// <summary>
@@ -154,6 +161,13 @@ public class FloatingMenu : MonoBehaviour {
 		tm.text = "";
 
 		StopCoroutine("RotateItem");
+
+		// Update the messages to be displayed in the help menu
+		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
+		foreach(GameObject go in helpMenus)
+		{
+			go.BroadcastMessage("UpdateMessage", false);
+		}
 	}
 
 	/// <summary>

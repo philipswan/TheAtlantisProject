@@ -11,6 +11,7 @@ public class RightHandController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+			
 	}
 
 	private void CheckStatus()
@@ -53,5 +54,6 @@ public class RightHandController : MonoBehaviour {
 		// returns true if the right hand trigger has been pressed more than halfway.  
 		// (Interpret the trigger as a button).
 		OVRInput.Get(OVRInput.RawButton.RHandTrigger);
+
 	}
 }

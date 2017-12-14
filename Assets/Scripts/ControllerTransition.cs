@@ -43,8 +43,7 @@ public class ControllerTransition : MonoBehaviour {
 		if (!resettingTransform)
 		{
 			// Button A is reserved for the floating menu
-			if(OVRInput.GetDown(OVRInput.RawButton.X) || OVRInput.GetDown(OVRInput.RawButton.Y) ||
-				OVRInput.GetDown(OVRInput.RawButton.B))
+			if(OVRInput.GetDown(OVRInput.RawButton.X) || OVRInput.GetDown(OVRInput.RawButton.Y))
 			{
 				// Reset the scale
 				StartCoroutine("ResetTransform");

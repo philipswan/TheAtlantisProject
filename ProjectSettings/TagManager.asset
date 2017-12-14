@@ -20,6 +20,7 @@ TagManager:
   - Carrier
   - Habitat
   - Stay
+  - Help Menu
   layers:
   - Default
   - TransparentFX
