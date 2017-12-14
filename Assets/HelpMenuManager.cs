@@ -50,4 +50,12 @@ public class HelpMenuManager : MonoBehaviour {
 
 		activated = false;
 	}
+
+	public void UpdateMessages(bool _menuMessages)
+	{
+		for (int i=0; i<transform.childCount; i++)
+		{
+			transform.GetChild(i).GetComponent<ButtonInfoManager>().UpdateMessage(_menuMessages);
+		}
+	}
 }

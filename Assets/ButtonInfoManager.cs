@@ -28,13 +28,25 @@ public class ButtonInfoManager : MonoBehaviour {
 	void Update () {
 		if (button != null)
 		{
-			Vector3 pos1 = button.position + button.transform.forward * 0.00001f;
-			Vector3 pos2 =  button.position + button.transform.forward * 0.05f;
-			Vector4 pos3 = transform.position;
-			Vector3[] linePos = new Vector3[] {pos1, pos2, pos3};
+			if (tm.text != "")
+			{
+				if (!lr.enabled)
+				{
+					lr.enabled = true;
+				}
 
-			lr.positionCount = linePos.Length;
-			lr.SetPositions(linePos);
+				Vector3 pos1 = button.position + button.transform.forward * 0.00001f;
+				Vector3 pos2 =  button.position + button.transform.forward * 0.05f;
+				Vector4 pos3 = transform.position;
+				Vector3[] linePos = new Vector3[] {pos1, pos2, pos3};
+
+				lr.positionCount = linePos.Length;
+				lr.SetPositions(linePos);
+			}
+			else 
+			{
+				lr.enabled = false;
+			}
 		}
 	}
 
@@ -44,8 +56,16 @@ public class ButtonInfoManager : MonoBehaviour {
 	public void OnCreate()
 	{
 		button = GameObject.Find(ButtonObjectName).transform;
-		transform.parent.GetComponent<HelpMenuManager>().DeactivateChildren();
-		tm.text = MovementAction;
+
+		// If this is the last object to recieve the message, set all initial messages and deactive the objects
+		if (transform.parent.GetChild(transform.parent.childCount-1).name == gameObject.name)
+		{
+			for (int i=0; i<transform.parent.childCount; i++)
+			{
+				transform.parent.GetChild(i).GetComponent<ButtonInfoManager>().SetInitialMessage();
+			}
+			transform.parent.GetComponent<HelpMenuManager>().DeactivateChildren();
+		}
 	}
 
 	/// <summary>
@@ -62,5 +82,13 @@ public class ButtonInfoManager : MonoBehaviour {
 		{
 			tm.text = MovementAction;
 		}
+	}
+
+	/// <summary>
+	/// Sets the initial message.
+	/// </summary>
+	public void SetInitialMessage()
+	{
+		tm.text = MovementAction;
 	}
 }

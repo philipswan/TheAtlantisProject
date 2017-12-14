@@ -142,7 +142,7 @@ public class FloatingMenu : MonoBehaviour {
 		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
 		foreach(GameObject go in helpMenus)
 		{
-			go.BroadcastMessage("UpdateMessage", true);
+			go.GetComponent<HelpMenuManager>().UpdateMessages(true);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class FloatingMenu : MonoBehaviour {
 		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
 		foreach(GameObject go in helpMenus)
 		{
-			go.BroadcastMessage("UpdateMessage", false);
+			go.GetComponent<HelpMenuManager>().UpdateMessages(false);
 		}
 	}
 
