@@ -35,9 +35,34 @@ public class ButtonInfoManager : MonoBehaviour {
 					lr.enabled = true;
 				}
 
-				Vector3 pos1 = button.position + button.transform.forward * 0.00001f;
-				Vector3 pos2 =  button.position + button.transform.forward * 0.05f;
-				Vector4 pos3 = transform.position;
+				Vector3 pos1, pos2, pos3;
+				if (name == "LHand Trigger")
+				{
+					pos1 = button.position - button.transform.right * 0.00001f;
+					pos2 =  button.position - button.transform.right * 0.05f;
+				}
+				else if (name == "LIndex Trigger")
+				{
+					pos1 = button.position - button.transform.up * 0.00001f;
+					pos2 =  button.position - button.transform.up * 0.05f;
+				}
+				else if (name == "RHand Trigger")
+				{
+					pos1 = button.position + button.transform.right * 0.00001f;
+					pos2 =  button.position + button.transform.right * 0.05f;
+				}
+				else if (name == "RIndex Trigger")
+				{
+					pos1 = button.position + button.transform.up * 0.00001f;
+					pos2 =  button.position + button.transform.up * 0.05f;
+				}
+				else
+				{
+					pos1 = button.position + button.transform.forward * 0.00001f;
+					pos2 =  button.position + button.transform.forward * 0.05f;
+				}
+
+				pos3 = transform.position;
 				Vector3[] linePos = new Vector3[] {pos1, pos2, pos3};
 
 				lr.positionCount = linePos.Length;

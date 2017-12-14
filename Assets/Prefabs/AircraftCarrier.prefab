@@ -121,8 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574ae9106348ce34388df6fec5169a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefulatMaterials:
-  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  DefaultMaterials:
+  - {fileID: 2100000, guid: f02169a9d6016ff45a908e52bba5c757, type: 2}
   HighlightMaterials:
   - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
   - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
