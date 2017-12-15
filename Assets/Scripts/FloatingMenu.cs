@@ -31,19 +31,19 @@ public class FloatingMenu : MonoBehaviour {
 		// Wait for the user to reset the thumbstick position to prevent flying through the menu
 		if (waitToReset)
 		{
-			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) == Vector2.zero)
+			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) == Vector2.zero && OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick) == Vector2.zero)
 			{
 				waitToReset = false;
 			}
 		}
 		else if (activated)
 		{
-			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x > 0.5)
+			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x > 0.5f || OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x > 0.5f)
 			{
 				// Cycle menu right
 				CycleRight();
 			}
-			else if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x < -0.5)
+			else if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x < -0.5f || OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x < -0.5f)
 			{
 				// Cycle menu left
 				CycleLeft();

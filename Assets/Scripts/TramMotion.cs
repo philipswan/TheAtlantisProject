@@ -9,7 +9,9 @@ public class TramMotion : MonoBehaviour {
 	public List<Material> HighlightMaterials = new List<Material>();	// Regarul materials + highlight material
 
 	private Constants.Configuration config;								// Holds reference to config script
+	private int prevScene;
 	private float startTime;											// Starting time of the movement. Reset when a cycle is completed
+	private float switchTime;
 	private bool travelTram;											// Set true if the tram does not stop
 	private Vector3 velocity;											// Speed cap for smoothdamp
 	private Material[] DefaultMaterials;								// Regular materials
@@ -19,6 +21,8 @@ public class TramMotion : MonoBehaviour {
 	{
 		velocity = Vector3.zero;
 		travelTram = false;
+
+		prevScene = -999;
 	}
 
 	// Use this for initialization
@@ -47,6 +51,12 @@ public class TramMotion : MonoBehaviour {
 		{
 			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.TramTravelTimeStops);
 			Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.TramTravelTimeStops - Scene, 1.0f);
+		}
+
+		if (prevScene != Scene)
+		{
+			prevScene = Scene;
+			switchTime = Time.unscaledTime;
 		}
 
 		if (Scene < positions.Count - 1 && !travelTram)

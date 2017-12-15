@@ -178,7 +178,7 @@ MonoBehaviour:
   numCirclePoints: 128
   panoramaWidth: 4096
   antiAliasing: 8
-  ssaaFactor: 4
+  ssaaFactor: 2
   saveImagePath: C:\Users\norgo\Pictures\360_Video
   saveCubemap: 0
   uploadImages: 0
@@ -4925,7 +4925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ButtonObjectName: lctrl:b_stick_IGNORE
   MovementAction: Move Up/Down
-  MenuAction: 
+  MenuAction: Choose Item
 --- !u!23 &1780617591
 MeshRenderer:
   m_ObjectHideFlags: 0
