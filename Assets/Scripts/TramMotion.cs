@@ -17,6 +17,14 @@ public class TramMotion : MonoBehaviour {
 	private Material[] DefaultMaterials;								// Regular materials
 	private bool highlited;												// Current materials used
 
+	private enum TravelState
+	{
+		Accelerate,
+		Cruise,
+		Decelerate
+	}
+	private TravelState travelState;
+
 	void Awake()
 	{
 		velocity = Vector3.zero;
@@ -174,7 +182,8 @@ public class TramMotion : MonoBehaviour {
 
 		if (_travelTram)
 		{
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTime);
+			//transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTime);
+			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], Mathf.Pow(blend, 1.05f));
 			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
 		}
 		else
@@ -182,6 +191,5 @@ public class TramMotion : MonoBehaviour {
 			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTimeStops);
 			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
 		}
-
 	}
 }
