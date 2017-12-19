@@ -200,17 +200,15 @@ public class TramMotion : MonoBehaviour {
 	{
 		int index0 = (scene > 0) ? (scene - 1) : 0;
 
-		print("index0: " + index0 + " scene: " + scene);
-
 		if (_travelTram)
 		{
-			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], blend);
-			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], blend);
+			transform.localPosition = Vector3.Lerp(positions[scene], positions[scene+1], blend);
+			transform.localRotation = Quaternion.Lerp(rotations[scene], rotations[scene+1], blend);
 		}
 		else
 		{
-			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], blend);
-			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], blend);
+			transform.localPosition = Vector3.Lerp(positions[scene], positions[scene+1], blend);
+			transform.localRotation = Quaternion.Lerp(rotations[scene], rotations[scene+1], blend);
 		}
 	}
 }
