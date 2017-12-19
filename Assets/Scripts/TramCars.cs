@@ -16,6 +16,10 @@ public class TramCars : MonoBehaviour {
 	public GameObject train;													// Train car prefab
 
 	private float torusRadius;													// Radius of torus ring
+	private float acceleration;
+	private float topSpeed;
+	private float travelTime;
+	private float accelerationTime;
 	private Constants.Configuration config;										// Holds reference to config file
 	private Vector3 prevUp;														// Holds up position for first tram
 	private int startIndex;														// What index the trams should start being created
@@ -67,23 +71,27 @@ public class TramCars : MonoBehaviour {
 		foreach(GameObject t in tramBottomRightObjects)
 		{
 			t.SetActive(true);
+			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime);
 		}
 
 		foreach(GameObject t in tramTopRightObjects)
 		{
 			t.SetActive(true);
 			t.GetComponent<TramMotion>().SetTravelTram();
+			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime);
 		}
 			
 		foreach(GameObject t in tramBottomLeftObjects)
 		{
 			t.SetActive(true);
 			t.GetComponent<TramMotion>().SetTravelTram();
+			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime);
 		}
 
 		foreach(GameObject t in tramTopLeftObjects)
 		{
 			t.SetActive(true);
+			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime);
 		}
 	}
 
@@ -122,19 +130,33 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void CreateTramSections()
 	{
-		// R of earth is 6.371e6f m
-		// Arc length = RC where C is the center angle
 		bool createTram;
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
 
-		/*
-		// Calculate distance in meters between trams
-		float rpk = (2 * Mathf.PI) / (numSections * numKeysPerSection);
-		print("tram spacing: " + tramSpacing + " total keys: " + numSections * numKeysPerSection);
+		//  R of actual ring is 5,182,853 m
+		//  R of tram ring is 0.41453875 (Sphere size (1, 1, 1))
+		//  R of tram ring at scale 5000 is 2072 m
+		//  Arc length = RC where C is the center angle
+		// Tram top speed is 223.5 m/s
+		// Tram acceleration is +/-11.7 m/s^2
+
+		float radiusRing 	= 2072f;	// Radius of the tram ring
+		float rpk 			= (2 * Mathf.PI) / (numSections * numKeysPerSection);	// Radians between keys
+		float scaleRatio 	= 2072.0f / 5182853.0f;	// ratio of tram ring to actual ring (when the system is at scale 5000)
+		float alKeys 		= radiusRing * rpk;	// arc length between keys in meters
+		topSpeed 			= 223.5f * scaleRatio;	// top speed (500 mph) scaled to system
+		acceleration 		= 11.7f * scaleRatio;	// acceleartion (1.2g) scaled to system
+		travelTime 			= alKeys / topSpeed;
+		accelerationTime 	= topSpeed / acceleration;
+
+		// Print calculations
+		print("Scale Ratio: " + scaleRatio);
+		print("Ttotal keys: " + numSections * numKeysPerSection);
 		print("rad per key: " + rpk);
-		print("arc length between keys: " + 6.371e6f * rpk);
-		print("arc length between trams: " + 6.371e6f * rpk * tramSpacing);
-		*/
+		print("arc length between keys: " + alKeys + "m");
+		print("Top speed: " + topSpeed + "m/s" + " acceleration: " + acceleration + "m/s^2");
+		print("Top speed travel time: " + travelTime + "s");
+		print("Acceleartion time: " + accelerationTime + "s");
 
 		int numKeys = numKeysPerSection * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numKeys;
@@ -351,11 +373,11 @@ public class TramCars : MonoBehaviour {
 		for (int i=0; i<tramBottomRightObjects.Count; i++)
 		{
 			List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottomRight);
-			sortedRotations = InsertRotations(sortedRotations);
+			//sortedRotations = InsertRotations(sortedRotations);
 			tramBottomRightObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottomRight);
-			sortedPositions = InsertPositions(sortedPositions);
+			//sortedPositions = InsertPositions(sortedPositions);
 			tramBottomRightObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
 		}
 
@@ -373,11 +395,11 @@ public class TramCars : MonoBehaviour {
 		for (int i=0; i<tramTopLeftObjects.Count; i++)
 		{
 			List<Quaternion> sortedRotations = ReverseSortKeysRotations(i, keysTopLeft);
-			sortedRotations = InsertRotations(sortedRotations);
+			//sortedRotations = InsertRotations(sortedRotations);
 			tramTopLeftObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
 			List<Vector3> sortedPositions = ReverseSortKeysPositions(i, keysTopLeft);
-			sortedPositions = InsertPositions(sortedPositions);
+			//sortedPositions = InsertPositions(sortedPositions);
 			tramTopLeftObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
 		}
 
@@ -522,28 +544,5 @@ public class TramCars : MonoBehaviour {
 		}
 
 		return newRot;
-	}
-
-	private void OnGazeEnter()
-	{
-		foreach(GameObject t in tramBottomRightObjects)
-		{
-			
-		}
-
-		foreach(GameObject t in tramTopRightObjects)
-		{
-
-		}
-
-		foreach(GameObject t in tramBottomLeftObjects)
-		{
-
-		}
-
-		foreach(GameObject t in tramTopLeftObjects)
-		{
-			
-		}
 	}
 }

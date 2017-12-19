@@ -1568,12 +1568,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FadeTime: 2
-  CameraTravelTime: 10
-  SystemTravelTime: 10
+  CameraTravelTime: 1
+  SystemTravelTime: 1
   ElevatorTravelTime: 10
   ElevatorWaitTime: 3
-  TramTravelTimeStops: 2
-  TramTravelTime: 1
+  TramTravelTimeStops: 29
+  TramTravelTime: 29
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:

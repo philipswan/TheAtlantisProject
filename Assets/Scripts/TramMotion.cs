@@ -9,28 +9,22 @@ public class TramMotion : MonoBehaviour {
 	public List<Material> HighlightMaterials = new List<Material>();	// Regarul materials + highlight material
 
 	private Constants.Configuration config;								// Holds reference to config script
-	private int prevScene;
 	private float startTime;											// Starting time of the movement. Reset when a cycle is completed
-	private float switchTime;
+	public float accelerationTime;
+	public float travelTime;
+	public float t;
+	public float topSpeed;
+	public float acceleration;
+	public float cruiseTime;
 	private bool travelTram;											// Set true if the tram does not stop
 	private Vector3 velocity;											// Speed cap for smoothdamp
 	private Material[] DefaultMaterials;								// Regular materials
 	private bool highlited;												// Current materials used
 
-	private enum TravelState
-	{
-		Accelerate,
-		Cruise,
-		Decelerate
-	}
-	private TravelState travelState;
-
 	void Awake()
 	{
 		velocity = Vector3.zero;
 		travelTram = false;
-
-		prevScene = -999;
 	}
 
 	// Use this for initialization
@@ -52,19 +46,29 @@ public class TramMotion : MonoBehaviour {
 
 		if (travelTram)
 		{
-			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.TramTravelTime);
-			Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.TramTravelTime - Scene, 1.0f);
+			if (travelTime > cruiseTime)
+			{
+				travelTime -= Time.deltaTime;
+			}
+			else
+			{
+				travelTime = cruiseTime;
+			}
+			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
+			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
 		}
 		else
 		{
-			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.TramTravelTimeStops);
-			Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.TramTravelTimeStops - Scene, 1.0f);
-		}
-
-		if (prevScene != Scene)
-		{
-			prevScene = Scene;
-			switchTime = Time.unscaledTime;
+			if (travelTime > cruiseTime)
+			{
+				travelTime -= Time.deltaTime;
+			}
+			else
+			{
+				travelTime = cruiseTime;
+			}
+			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
+			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
 		}
 
 		if (Scene < positions.Count - 1 && !travelTram)
@@ -110,7 +114,7 @@ public class TramMotion : MonoBehaviour {
 	/// <summary>
 	/// Adds the rotation to the list
 	/// </summary>
-	/// <param name="_key">Key.</param>
+	/// <param name="rot">Rot.</param>
 	public void AddRotation(Quaternion rot)
 	{
 		rotations.Add(rot);
@@ -119,7 +123,7 @@ public class TramMotion : MonoBehaviour {
 	/// <summary>
 	/// Sets the rotations to the list
 	/// </summary>
-	/// <param name="_key">Key.</param>
+	/// <param name="rot">Rot.</param>
 	public void AddRotation(List<Quaternion> rot)
 	{
 		rotations = new List<Quaternion>(rot);
@@ -152,6 +156,22 @@ public class TramMotion : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Sets the speeds.
+	/// </summary>
+	/// <param name="_acceleration">Acceleration.</param>
+	/// <param name="_topSpeed">Top speed.</param>
+	/// <param name="_travelTime">Travel time.</param>
+	public void SetSpeeds(float _acceleration, float _topSpeed, float _cruiseTime, float _accelerationTime)
+	{
+		acceleration = _acceleration;
+		topSpeed = _topSpeed;
+		cruiseTime = _cruiseTime;
+		accelerationTime = _accelerationTime;
+
+		travelTime = accelerationTime + cruiseTime;
+	}
+
+	/// <summary>
 	/// Max the specified a and b.
 	/// </summary>
 	/// <param name="a">The alpha component.</param>
@@ -180,16 +200,17 @@ public class TramMotion : MonoBehaviour {
 	{
 		int index0 = (scene > 0) ? (scene - 1) : 0;
 
+		print("index0: " + index0 + " scene: " + scene);
+
 		if (_travelTram)
 		{
-			//transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTime);
-			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], Mathf.Pow(blend, 1.05f));
-			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
+			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], blend);
+			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], blend);
 		}
 		else
 		{
-			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTimeStops);
-			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
+			transform.localPosition = Vector3.Lerp(positions[index0], positions[scene], blend);
+			transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], blend);
 		}
 	}
 }
