@@ -25,6 +25,7 @@ public class TramCars : MonoBehaviour {
 	private int startIndex;														// What index the trams should start being created
 	private int endIndex;														// What index the trams should stop being created
 	private int habitatIndex;													// How many keys between habitats
+	private int insertedKeys;
 
 	private List<GameObject> tramBottomRightObjects = new List<GameObject>();	// List of all bottom right trams
 	private List<GameObject> tramBottomLeftObjects = new List<GameObject>();	// List of all bottom left trams
@@ -49,6 +50,7 @@ public class TramCars : MonoBehaviour {
 
 		habitatIndex = (int)numKeysPerSection / RingHabitats.Instance.numRingHabitatsPerInstance;
 
+		insertedKeys = 3;
 		startIndex = 1;	// Set start/end section to only draw cars that can be seen by the user
 		endIndex = 8;
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
@@ -56,7 +58,6 @@ public class TramCars : MonoBehaviour {
 		CreateTramSections();	// Create all trams and keys
 		UpdatePositions();		// Move trams to proper positions
 		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
-		//ActivateTrams();		// Activate all trams
 		DeleteKeys();			// Delete keys as they are no longer needed
 
 		FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
@@ -71,7 +72,7 @@ public class TramCars : MonoBehaviour {
 		foreach(GameObject t in tramBottomRightObjects)
 		{
 			t.SetActive(true);
-			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime);
+			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime, insertedKeys);
 		}
 
 		foreach(GameObject t in tramTopRightObjects)
@@ -91,7 +92,7 @@ public class TramCars : MonoBehaviour {
 		foreach(GameObject t in tramTopLeftObjects)
 		{
 			t.SetActive(true);
-			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime);
+			t.GetComponent<TramMotion>().SetSpeeds(acceleration, topSpeed, travelTime, accelerationTime, insertedKeys);
 		}
 	}
 
@@ -373,11 +374,11 @@ public class TramCars : MonoBehaviour {
 		for (int i=0; i<tramBottomRightObjects.Count; i++)
 		{
 			List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottomRight);
-			//sortedRotations = InsertRotations(sortedRotations);
+			//sortedRotations = InsertRotations(sortedRotations, insertedKeys);
 			tramBottomRightObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
 			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottomRight);
-			//sortedPositions = InsertPositions(sortedPositions);
+			//sortedPositions = InsertPositions(sortedPositions, insertedKeys);
 			tramBottomRightObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
 		}
 
@@ -395,11 +396,11 @@ public class TramCars : MonoBehaviour {
 		for (int i=0; i<tramTopLeftObjects.Count; i++)
 		{
 			List<Quaternion> sortedRotations = ReverseSortKeysRotations(i, keysTopLeft);
-			//sortedRotations = InsertRotations(sortedRotations);
+			//sortedRotations = InsertRotations(sortedRotations, insertedKeys);
 			tramTopLeftObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
 			List<Vector3> sortedPositions = ReverseSortKeysPositions(i, keysTopLeft);
-			//sortedPositions = InsertPositions(sortedPositions);
+			//sortedPositions = InsertPositions(sortedPositions, insertedKeys);
 			tramTopLeftObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
 		}
 
@@ -510,7 +511,13 @@ public class TramCars : MonoBehaviour {
 		return sortedKeys;
 	}
 
-	private List<Vector3> InsertPositions(List<Vector3> positions)
+	/// <summary>
+	/// Insert extra positions at habitat indexes
+	/// </summary>
+	/// <returns>The positions.</returns>
+	/// <param name="positions">Positions.</param>
+	/// <param name="insertedKeys">Inserted keys.</param>
+	private List<Vector3> InsertPositions(List<Vector3> positions, int insertedKeys)
 	{
 		List<Vector3> newPos = new List<Vector3>();
 
@@ -519,16 +526,23 @@ public class TramCars : MonoBehaviour {
 			newPos.Add(positions[i]);
 			if (i % habitatIndex == 0)
 			{
-				newPos.Add(positions[i]);
-				newPos.Add(positions[i]);
-				newPos.Add(positions[i]);
+				for (int j=0; j<insertedKeys; j++)
+				{
+					newPos.Add(positions[i]);
+				}
 			}
 		}
 
 		return newPos;
 	}
 
-	private List<Quaternion> InsertRotations(List<Quaternion> rotations)
+	/// <summary>
+	/// Insert extra rotations at habitat indexes
+	/// </summary>
+	/// <returns>The rotations.</returns>
+	/// <param name="rotations">Rotations.</param>
+	/// <param name="insertedKeys">Inserted keys.</param>
+	private List<Quaternion> InsertRotations(List<Quaternion> rotations, int insertedKeys)
 	{
 		List<Quaternion> newRot = new List<Quaternion>();
 
@@ -537,9 +551,10 @@ public class TramCars : MonoBehaviour {
 			newRot.Add(rotations[i]);
 			if (i % habitatIndex == 0)
 			{
-				newRot.Add(rotations[i]);
-				newRot.Add(rotations[i]);
-				newRot.Add(rotations[i]);
+				for (int j=0; j<insertedKeys; j++)
+				{
+					newRot.Add(rotations[i]);
+				}
 			}
 		}
 

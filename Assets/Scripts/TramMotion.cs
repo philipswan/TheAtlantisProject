@@ -9,21 +9,26 @@ public class TramMotion : MonoBehaviour {
 	public List<Material> HighlightMaterials = new List<Material>();	// Regarul materials + highlight material
 
 	private Constants.Configuration config;								// Holds reference to config script
+	private int Scene;
+	private int prevScene;
+	private float sceneSwitchTime;
+	private int insertedKeys;
+	private int accelerationInstance;
 	private float startTime;											// Starting time of the movement. Reset when a cycle is completed
 	public float accelerationTime;
 	public float travelTime;
-	public float t;
 	public float topSpeed;
 	public float acceleration;
 	public float cruiseTime;
 	private bool travelTram;											// Set true if the tram does not stop
-	private Vector3 velocity;											// Speed cap for smoothdamp
 	private Material[] DefaultMaterials;								// Regular materials
 	private bool highlited;												// Current materials used
+	private enum AccelerationState {Accelerate, Cruise, Decelerate, Slowest, None}
+	private AccelerationState accelerationState;
+	private float accelerationStartTime;
 
 	void Awake()
 	{
-		velocity = Vector3.zero;
 		travelTram = false;
 	}
 
@@ -31,6 +36,9 @@ public class TramMotion : MonoBehaviour {
 	void Start () {
 		config = Constants.Configuration.Instance;
 		highlited = false;
+		accelerationInstance = 0;
+		accelerationState = AccelerationState.None;
+		prevScene = -999;
 
 		DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
 		for (int i=HighlightMaterials.Count-1; i<DefaultMaterials.Length; i++)
@@ -41,35 +49,108 @@ public class TramMotion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		int Scene = 0;
 		float Blend = 0.0f;
 
 		if (travelTram)
 		{
-			if (travelTime > cruiseTime)
+			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
+			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
+
+			if ((acceleration * (Time.unscaledTime - startTime)) < topSpeed)
 			{
-				travelTime -= Time.deltaTime;
+				accelerationInstance++;
+				Blend += acceleration * (Time.unscaledTime - startTime) - topSpeed;
 			}
 			else
 			{
-				travelTime = cruiseTime;
+				if (name == "Bottom Right Tram 0")
+				{
+				}
 			}
-			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
-			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
+
 		}
 		else
 		{
-			if (travelTime > cruiseTime)
+			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
+			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
+
+			if (Scene != prevScene)
 			{
-				travelTime -= Time.deltaTime;
+				prevScene = Scene;
+				sceneSwitchTime = Time.unscaledTime;
+			}
+
+			if ((Scene + 1) % 5 != 0 || ((Scene + 1) % 5 == 0) && (Time.unscaledTime - sceneSwitchTime) < (travelTime - accelerationTime))
+			{
+				if ((acceleration * (Time.unscaledTime - accelerationStartTime)) < topSpeed || accelerationState == AccelerationState.Slowest || accelerationState == AccelerationState.Decelerate)
+				{
+					if (accelerationState != AccelerationState.Accelerate)
+					{
+						accelerationState = AccelerationState.Accelerate;
+						accelerationStartTime = Time.unscaledTime;
+						accelerationInstance = 0;
+					}
+
+					accelerationInstance++;
+					if (name == "Bottom Right Tram 0")
+					{
+						print("acceleration, Scene: " + Scene);
+						print("Current velocity: " + (acceleration * (Time.unscaledTime - accelerationStartTime)));
+					}
+
+					Blend +=  acceleration * (Time.unscaledTime - accelerationStartTime) - topSpeed;
+				}
+				else
+				{
+					if (accelerationState != AccelerationState.Cruise)
+					{
+						accelerationState = AccelerationState.Cruise;
+						accelerationStartTime = 0;
+					}
+
+					if (name == "Bottom Right Tram 0")
+					{
+						print("cruise, Scene: " + Scene);
+					}
+				}
 			}
 			else
 			{
-				travelTime = cruiseTime;
+				if ((acceleration * (Time.unscaledTime - accelerationStartTime)) < topSpeed || accelerationState == AccelerationState.Cruise)
+				{
+					if (accelerationState != AccelerationState.Decelerate)
+					{
+						accelerationState = AccelerationState.Decelerate;
+						accelerationStartTime = Time.unscaledTime;
+					}
+
+					if (name == "Bottom Right Tram 0")
+					{
+						print("deceleration, Scene: " + Scene);
+						print("Current velocity: " + acceleration * (Time.unscaledTime - accelerationStartTime));
+					}
+
+					Blend -= acceleration * (Time.unscaledTime - accelerationStartTime);
+				}
+				else
+				{
+					if (accelerationState != AccelerationState.Slowest)
+					{
+						accelerationState = AccelerationState.Slowest;
+						accelerationStartTime = 0;
+					}
+
+					if (name == "Bottom Right Tram 0")
+					{
+						print("slowest, Scene: " + Scene);
+					}
+
+					Blend -= topSpeed;
+				}
 			}
-			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
-			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
 		}
+
+		Blend = Mathf.Min(Blend, 1);
 
 		if (Scene < positions.Count - 1 && !travelTram)
 		{
@@ -88,6 +169,7 @@ public class TramMotion : MonoBehaviour {
 	void OnEnable()
 	{
 		startTime = Time.unscaledTime;
+		accelerationTime = Time.unscaledTime;
 	}
 
 	/// <summary>
@@ -161,14 +243,30 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="_acceleration">Acceleration.</param>
 	/// <param name="_topSpeed">Top speed.</param>
 	/// <param name="_travelTime">Travel time.</param>
-	public void SetSpeeds(float _acceleration, float _topSpeed, float _cruiseTime, float _accelerationTime)
+	public void SetSpeeds(float _acceleration, float _topSpeed, float _cruiseTime, float _accelerationTime, int _insertedKeys = 0)
 	{
 		acceleration = _acceleration;
 		topSpeed = _topSpeed;
 		cruiseTime = _cruiseTime;
 		accelerationTime = _accelerationTime;
+		insertedKeys = _insertedKeys;
 
-		travelTime = accelerationTime + cruiseTime;
+		travelTime = cruiseTime;
+	}
+
+	/// <summary>
+	/// Returns the first digit of an int
+	/// </summary>
+	/// <returns>The first digit.</returns>
+	/// <param name="i">The index.</param>
+	private int GetFirstDigit(int i)
+	{
+		if (i >= 100000000) i /= 100000000;
+		if (i >= 10000) i /= 10000;
+		if (i >= 100) i /= 100;
+		if (i >= 10) i /= 10;
+
+		return i;
 	}
 
 	/// <summary>
@@ -198,17 +296,18 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="blend">Blend.</param>
 	private void UpdateSystem(int scene, float blend, bool _travelTram)
 	{
-		int index0 = (scene > 0) ? (scene - 1) : 0;
+		int index1Position = (scene < positions.Count - 1) ? (scene + 1) : positions.Count - 1;
+		int index1Rotatoin = (scene < rotations.Count - 1) ? (scene + 1) : rotations.Count - 1;
 
 		if (_travelTram)
 		{
-			transform.localPosition = Vector3.Lerp(positions[scene], positions[scene+1], blend);
-			transform.localRotation = Quaternion.Lerp(rotations[scene], rotations[scene+1], blend);
+			transform.localPosition = Vector3.Lerp(positions[scene], positions[index1Position], blend);
+			transform.localRotation = Quaternion.Lerp(rotations[scene], rotations[index1Rotatoin], blend);
 		}
 		else
 		{
-			transform.localPosition = Vector3.Lerp(positions[scene], positions[scene+1], blend);
-			transform.localRotation = Quaternion.Lerp(rotations[scene], rotations[scene+1], blend);
+			transform.localPosition = Vector3.Lerp(positions[scene], positions[index1Position], blend);
+			transform.localRotation = Quaternion.Lerp(rotations[scene], rotations[index1Rotatoin], blend);
 		}
 	}
 }
