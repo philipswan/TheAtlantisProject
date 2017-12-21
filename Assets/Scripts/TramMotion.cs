@@ -36,6 +36,10 @@ public class TramMotion : MonoBehaviour {
 	private int cruiseHash = Animator.StringToHash("Cruise");
 	private int decelerationHash = Animator.StringToHash("Deceleration");
 	private int waitHash = Animator.StringToHash("Wait");
+	private List<AnimationClip> accelerationClips = new List<AnimationClip>();
+	private List<AnimationClip> cruiseClips = new List<AnimationClip>();
+	private List<AnimationClip> decelerationClips = new List<AnimationClip>();
+	private List<AnimationClip> waitClips = new List<AnimationClip>();
 
 	void Awake()
 	{
@@ -50,7 +54,7 @@ public class TramMotion : MonoBehaviour {
 //		evt.time = 2.0f;
 //		evt.functionName = "PrintEvent";
 //
-		clip = anim.runtimeAnimatorController.animationClips[0].cu;
+		clip = anim.runtimeAnimatorController.animationClips[0];
 		//anim.speed = 1/10;
 
 //		clip.AddEvent(evt);
@@ -236,7 +240,8 @@ public class TramMotion : MonoBehaviour {
 		sceneSwitchTime = Time.unscaledTime;
 		anim.speed = accelerationTime;
 
-		parametersSet = true;
+		if (name == "Bottom Right Tram 0")
+			StartCoroutine("CreateClips");
 	}
 
 	/// <summary>
@@ -293,49 +298,50 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="samples">Samples.</param>
 	private List<Keyframe[]> GetPositionKeyframes(Vector3 startPos, Vector3 endPos, AccelerationState state, int samples = 1000)
 	{
-		float[] accelerationFrame = new float[samples];	// Inialize array of size samples to hold all acceleration values for each keyframe
-		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
-		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
-
-		// Calculate the acceleration per index
-		for (int i=0; i<samples; i++)
-		{
-			// If we are accelerating
-			if (state == AccelerationState.Accelerate)
-			{
-				// If we're still in the acceleration phase
-				if (i <= accelerationStopIndex)
-				{
-					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
-				}
-				// If we're done accelerating
-				else
-				{
-					accelerationFrame[i] = accelerationTime * acceleration;
-				}
-			}
-			// If we a decelerating
-			else if (state == AccelerationState.Decelerate)
-			{
-				// If we're decelerating
-				if (i >= accelerationStartIndex)
-				{
-					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
-				}
-				// If we're still cruising
-				else
-				{
-					accelerationFrame[i] = 0.0f;
-				}
-			}
-		}
+//		float[] accelerationFrame = new float[samples];	// Inialize array of size samples to hold all acceleration values for each keyframe
+//		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
+//		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
+//
+//		// Calculate the acceleration per index
+//		for (int i=0; i<samples; i++)
+//		{
+//			// If we are accelerating
+//			if (state == AccelerationState.Accelerate)
+//			{
+//				// If we're still in the acceleration phase
+//				if (i <= accelerationStopIndex)
+//				{
+//					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
+//				}
+//				// If we're done accelerating
+//				else
+//				{
+//					accelerationFrame[i] = accelerationTime * acceleration;
+//				}
+//			}
+//			// If we a decelerating
+//			else if (state == AccelerationState.Decelerate)
+//			{
+//				// If we're decelerating
+//				if (i >= accelerationStartIndex)
+//				{
+//					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
+//				}
+//				// If we're still cruising
+//				else
+//				{
+//					accelerationFrame[i] = 0.0f;
+//				}
+//			}
+//		}
 
 		Keyframe[] keyframesX = new Keyframe[samples];	// Initialize array to hold x coord keyframes
 
 		for (int i=0; i<keyframesX.Length; i++)
 		{
 			// Lerp through points by sample interval
-			keyframesX[i] = new Keyframe((i/keyframesX.Length), Mathf.Lerp(startPos.x, endPos.x, 1/keyframesX.Length) + accelerationFrame[i]);
+			keyframesX[i] = new Keyframe(((float)i/keyframesX.Length), Mathf.Lerp(startPos.x, endPos.x, (float)i/keyframesX.Length));
+			print("i: " + i + " keyframe time: " + keyframesX[i].time + " keyframe pos: " + keyframesX[i].value + " start pos: " + startPos.x + " end pos: " + endPos.x);
 		}
 
 		Keyframe[] keyframesY = new Keyframe[samples];	// Initialize array to hold y coord keyframes
@@ -343,15 +349,15 @@ public class TramMotion : MonoBehaviour {
 		for (int i=0; i<keyframesY.Length; i++)
 		{
 			// Lerp through points by sample interval
-			keyframesY[i] = new Keyframe((i/keyframesY.Length), Mathf.Lerp(startPos.y, endPos.y, 1/keyframesY.Length) + accelerationFrame[i]);
+			keyframesY[i] = new Keyframe(((float)i/keyframesY.Length), Mathf.Lerp(startPos.y, endPos.y, (float)i/keyframesY.Length));
 		}
 
 		Keyframe[] keyframesZ = new Keyframe[samples];	// Initialize array to hold z coord keyframes
 
-		for (int i=0; i<keyframesY.Length; i++)
+		for (int i=0; i<keyframesZ.Length; i++)
 		{
 			// Lerp through points by sample interval
-			keyframesY[i] = new Keyframe((i/keyframesZ.Length), Mathf.Lerp(startPos.z, endPos.z, 1/keyframesZ.Length) + accelerationFrame[i]);
+			keyframesZ[i] = new Keyframe(((float)i/keyframesZ.Length), Mathf.Lerp(startPos.z, endPos.z, (float)i/keyframesZ.Length));
 		}
 			
 		List<Keyframe[]> keyframes = new List<Keyframe[]>(){keyframesX, keyframesY, keyframesZ};
@@ -368,49 +374,49 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="samples">Samples.</param>
 	private List<Keyframe[]> GetRotationKeyframes(Quaternion startRot, Quaternion endRot, AccelerationState state, int samples = 1000)
 	{
-		float[] accelerationFrame = new float[samples];
-		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
-		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
-
-		// Calculate the acceleration per index
-		for (int i=0; i<samples; i++)
-		{
-			// If we are accelerating
-			if (state == AccelerationState.Accelerate)
-			{
-				// If we're still in the acceleration phase
-				if (i <= accelerationStopIndex)
-				{
-					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
-				}
-				// If we're done accelerating
-				else
-				{
-					accelerationFrame[i] = accelerationTime * acceleration;
-				}
-			}
-			// If we a decelerating
-			else if (state == AccelerationState.Decelerate)
-			{
-				// If we're decelerating
-				if (i >= accelerationStartIndex)
-				{
-					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
-				}
-				// If we're still cruising
-				else
-				{
-					accelerationFrame[i] = 0.0f;
-				}
-			}
-		}
+//		float[] accelerationFrame = new float[samples];
+//		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
+//		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
+//
+//		// Calculate the acceleration per index
+//		for (int i=0; i<samples; i++)
+//		{
+//			// If we are accelerating
+//			if (state == AccelerationState.Accelerate)
+//			{
+//				// If we're still in the acceleration phase
+//				if (i <= accelerationStopIndex)
+//				{
+//					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
+//				}
+//				// If we're done accelerating
+//				else
+//				{
+//					accelerationFrame[i] = accelerationTime * acceleration;
+//				}
+//			}
+//			// If we a decelerating
+//			else if (state == AccelerationState.Decelerate)
+//			{
+//				// If we're decelerating
+//				if (i >= accelerationStartIndex)
+//				{
+//					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
+//				}
+//				// If we're still cruising
+//				else
+//				{
+//					accelerationFrame[i] = 0.0f;
+//				}
+//			}
+//		}
 
 		Keyframe[] keyframesX = new Keyframe[samples];	// Initialize array to hold x coord keyframes
 
 		for (int i=0; i<keyframesX.Length; i++)
 		{
 			// Lerp through points by sample interval
-			keyframesX[i] = new Keyframe((i/keyframesX.Length), Mathf.Lerp(startRot.x, endRot.x, 1/keyframesX.Length) + accelerationFrame[i]);
+			keyframesX[i] = new Keyframe(((float)i/keyframesX.Length), Mathf.Lerp(startRot.x, endRot.x, (float)i/keyframesX.Length));
 		}
 
 		Keyframe[] keyframesY = new Keyframe[samples];	// Initialize array to hold y coord keyframes
@@ -418,19 +424,139 @@ public class TramMotion : MonoBehaviour {
 		for (int i=0; i<keyframesY.Length; i++)
 		{
 			// Lerp through points by sample interval
-			keyframesY[i] = new Keyframe((i/keyframesY.Length), Mathf.Lerp(startRot.y, endRot.y, 1/keyframesY.Length) + accelerationFrame[i]);
+			keyframesY[i] = new Keyframe(((float)i/keyframesY.Length), Mathf.Lerp(startRot.y, endRot.y, (float)i/keyframesY.Length));
 		}
 
 		Keyframe[] keyframesZ = new Keyframe[samples];	// Initialize array to hold z coord keyframes
 
-		for (int i=0; i<keyframesY.Length; i++)
+		for (int i=0; i<keyframesZ.Length; i++)
 		{
 			// Lerp through points by sample interval
-			keyframesY[i] = new Keyframe((i/keyframesZ.Length), Mathf.Lerp(startRot.z, endRot.z, 1/keyframesZ.Length) + accelerationFrame[i]);
+			keyframesZ[i] = new Keyframe(((float)i/keyframesZ.Length), Mathf.Lerp(startRot.z, endRot.z, (float)i/keyframesZ.Length));
 		}
 
 		List<Keyframe[]> keyframes = new List<Keyframe[]>(){keyframesX, keyframesY, keyframesZ};
 		return keyframes;
+	}
+
+	/// <summary>
+	/// Creates the curves for the x, y, and z positions or rotations
+	/// </summary>
+	/// <returns>The curve.</returns>
+	/// <param name="keyframes">Keyframes.</param>
+	private List<AnimationCurve> CreateCurve(List<Keyframe[]> keyframes)
+	{
+		AnimationCurve localxPos = new AnimationCurve(keyframes[0]);
+		AnimationCurve localyPos = new AnimationCurve(keyframes[1]);
+		AnimationCurve localzPos = new AnimationCurve(keyframes[2]);
+		AnimationCurve localxRot = new AnimationCurve(keyframes[3]);
+		AnimationCurve localyRot = new AnimationCurve(keyframes[4]);
+		AnimationCurve localzRot = new AnimationCurve(keyframes[5]);
+
+		List<AnimationCurve> curves = new List<AnimationCurve>(){localxPos, localyPos, localzPos, localxRot, localyRot, localzRot};
+		return curves;
+	}
+
+	/// <summary>
+	/// Creates an animation clip and adds it to the list
+	/// </summary>
+	/// <returns>The clip.</returns>
+	/// <param name="curves">Curves.</param>
+	private AnimationClip CreateClip(List<AnimationCurve> curves)
+	{
+		AnimationClip clip = new AnimationClip();
+		clip.legacy = true;
+
+		clip.SetCurve("", typeof(Transform), "localPosition.x", curves[0]);
+		clip.SetCurve("", typeof(Transform), "localPosition.y", curves[1]);
+		clip.SetCurve("", typeof(Transform), "localPosition.z", curves[2]);
+		clip.SetCurve("", typeof(Transform), "localRotation.x", curves[3]);
+		clip.SetCurve("", typeof(Transform), "localRotation.y", curves[4]);
+		clip.SetCurve("", typeof(Transform), "localRotation.z", curves[5]);
+
+		return clip;
+	}
+
+	/// <summary>
+	/// Create all animation clips
+	/// </summary>
+	/// <returns>The clips.</returns>
+	private IEnumerator CreateClips()
+	{
+		for (int i=0; i<positions.Count-1; i++)
+		{
+			List<Keyframe[]> keyframes = new List<Keyframe[]>();
+			List<Keyframe[]> keyPositions = new List<Keyframe[]>();
+			List<Keyframe[]> keyRotations = new List<Keyframe[]>();
+			List<AnimationCurve> curves = new List<AnimationCurve>();
+			AnimationClip clip;
+
+			// If we're at a habitat, create a clip with the same start/end position/rotation to stop the tram
+			if (i % 5 == 0 && i != 0)
+			{
+				// Get the keyframes between the two positions
+				keyPositions = GetPositionKeyframes(positions[i], positions[i], AccelerationState.Cruise, 10);
+				keyRotations = GetRotationKeyframes(rotations[i], rotations[i], AccelerationState.Cruise, 10);
+
+				// Combine the x, y, and z coordinates for position and rotation into one list
+				for (int j=0; j<keyPositions.Count; j++)
+				{
+					keyframes.Add(keyPositions[j]);
+				}
+				for (int j=0; j<keyPositions.Count; j++)
+				{
+					keyframes.Add(keyRotations[j]);
+				}
+
+				// Create animation curves from the keyframes
+				curves = CreateCurve(keyframes);
+
+				clip = CreateClip(curves);
+
+				waitClips.Add(clip);
+
+				keyframes.Clear();
+				keyPositions.Clear();
+				keyRotations.Clear();
+				curves.Clear();
+			}
+
+			// Get the keyframes between the two positions
+			keyPositions = GetPositionKeyframes(positions[i], positions[i+1], AccelerationState.Cruise, 10);
+			keyRotations = GetRotationKeyframes(rotations[i], rotations[i+1], AccelerationState.Cruise, 10);
+
+			// Combine the x, y, and z coordinates for position and rotation into one list
+			for (int j=0; j<keyPositions.Count; j++)
+			{
+				keyframes.Add(keyPositions[j]);
+			}
+			for (int j=0; j<keyPositions.Count; j++)
+			{
+				keyframes.Add(keyRotations[j]);
+			}
+
+			// Create animation curves from the keyframes
+			curves = CreateCurve(keyframes);
+
+			clip = CreateClip(curves);
+
+			if (i % 5 == 0)
+			{
+				accelerationClips.Add(clip);
+			}
+			else if ((i + 1) % 5 == 0 )
+			{
+				decelerationClips.Add(clip);
+			}
+			else
+			{
+				cruiseClips.Add(clip);
+			}
+
+			yield return null;
+		}
+
+		parametersSet = true;
 	}
 
 	/// <summary>
