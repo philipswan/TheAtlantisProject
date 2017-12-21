@@ -26,11 +26,40 @@ public class TramMotion : MonoBehaviour {
 	private enum AccelerationState {Accelerate, Cruise, Decelerate, Slowest, None}
 	private AccelerationState accelerationState;
 	private float accelerationStartTime;
+	private bool parametersSet;
+	private float blendTime;
+
+	private AnimationClip clip;
+	private Animator anim;
+	private AnimationEvent evt;
+	private int accelerationHash = Animator.StringToHash("Acceleration");
+	private int cruiseHash = Animator.StringToHash("Cruise");
+	private int decelerationHash = Animator.StringToHash("Deceleration");
+	private int waitHash = Animator.StringToHash("Wait");
 
 	void Awake()
 	{
 		travelTram = false;
+		parametersSet = false;
+
+//		print(accelerationHash + " " + cruiseHash + " " + decelerationHash + " " + waitHash);
+		anim = GetComponent<Animator>();
+//		evt = new AnimationEvent();
+//
+//		evt.intParameter = 12345;
+//		evt.time = 2.0f;
+//		evt.functionName = "PrintEvent";
+//
+		clip = anim.runtimeAnimatorController.animationClips[0].cu;
+		//anim.speed = 1/10;
+
+//		clip.AddEvent(evt);
 	}
+
+//	public void PrintEvent(int i)
+//	{
+//		print("PrintEvent: " + i + " called at: " + Time.time);
+//	}
 
 	// Use this for initialization
 	void Start () {
@@ -39,7 +68,7 @@ public class TramMotion : MonoBehaviour {
 		accelerationInstance = 0;
 		accelerationState = AccelerationState.None;
 		prevScene = -999;
-
+	
 		DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
 		for (int i=HighlightMaterials.Count-1; i<DefaultMaterials.Length; i++)
 		{
@@ -49,6 +78,9 @@ public class TramMotion : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!parametersSet)
+		{ return; }
+
 		float Blend = 0.0f;
 
 		if (travelTram)
@@ -72,7 +104,7 @@ public class TramMotion : MonoBehaviour {
 		else
 		{
 			Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / travelTime);
-			Blend = Mathf.Min ((Time.unscaledTime - startTime) / travelTime - Scene, 1.0f);
+			Blend = Mathf.Min ((Time.unscaledTime - startTime) / blendTime - Scene, 1.0f);
 
 			if (Scene != prevScene)
 			{
@@ -80,37 +112,32 @@ public class TramMotion : MonoBehaviour {
 				sceneSwitchTime = Time.unscaledTime;
 			}
 
-			if ((Scene + 1) % 5 != 0 || ((Scene + 1) % 5 == 0) && (Time.unscaledTime - sceneSwitchTime) < (travelTime - accelerationTime))
+			if ((Scene + 1) % 5 != 0)
 			{
 				if ((acceleration * (Time.unscaledTime - accelerationStartTime)) < topSpeed || accelerationState == AccelerationState.Slowest || accelerationState == AccelerationState.Decelerate)
 				{
 					if (accelerationState != AccelerationState.Accelerate)
 					{
 						accelerationState = AccelerationState.Accelerate;
-						accelerationStartTime = Time.unscaledTime;
-						accelerationInstance = 0;
 					}
 
 					accelerationInstance++;
 					if (name == "Bottom Right Tram 0")
 					{
-						print("acceleration, Scene: " + Scene);
-						print("Current velocity: " + (acceleration * (Time.unscaledTime - accelerationStartTime)));
+//						print("acceleration, Scene: " + Scene);
+//						print("Current velocity: " + (acceleration * (Time.unscaledTime - accelerationStartTime)));
 					}
-
-					Blend +=  acceleration * (Time.unscaledTime - accelerationStartTime) - topSpeed;
 				}
 				else
 				{
 					if (accelerationState != AccelerationState.Cruise)
 					{
 						accelerationState = AccelerationState.Cruise;
-						accelerationStartTime = 0;
 					}
 
 					if (name == "Bottom Right Tram 0")
 					{
-						print("cruise, Scene: " + Scene);
+//						print("cruise, Scene: " + Scene);
 					}
 				}
 			}
@@ -121,49 +148,46 @@ public class TramMotion : MonoBehaviour {
 					if (accelerationState != AccelerationState.Decelerate)
 					{
 						accelerationState = AccelerationState.Decelerate;
-						accelerationStartTime = Time.unscaledTime;
 					}
 
 					if (name == "Bottom Right Tram 0")
 					{
-						print("deceleration, Scene: " + Scene);
-						print("Current velocity: " + acceleration * (Time.unscaledTime - accelerationStartTime));
+//						print("deceleration, Scene: " + Scene);
+//						print("Current velocity: " + acceleration * (Time.unscaledTime - accelerationStartTime));
 					}
-
-					Blend -= acceleration * (Time.unscaledTime - accelerationStartTime);
 				}
 				else
 				{
 					if (accelerationState != AccelerationState.Slowest)
 					{
 						accelerationState = AccelerationState.Slowest;
-						accelerationStartTime = 0;
 					}
 
 					if (name == "Bottom Right Tram 0")
 					{
-						print("slowest, Scene: " + Scene);
+//						print("slowest, Scene: " + Scene);
 					}
-
-					Blend -= topSpeed;
 				}
 			}
 		}
+			
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			anim.SetTrigger("Cruise");
+		}
 
-		Blend = Mathf.Min(Blend, 1);
-
-		if (Scene < positions.Count - 1 && !travelTram)
-		{
-			UpdateSystem(Scene, Blend, travelTram);
-		}
-		else if (Scene < positions.Count && travelTram)
-		{
-			UpdateSystem(Scene, Blend, travelTram);
-		}
-		else
-		{
-			startTime = Time.unscaledTime;
-		}
+//		if (Scene < positions.Count - 1 && !travelTram)
+//		{
+//			UpdateSystem(Scene, Blend, travelTram);
+//		}
+//		else if (Scene < positions.Count && travelTram)
+//		{
+//			UpdateSystem(Scene, Blend, travelTram);
+//		}
+//		else
+//		{
+//			startTime = Time.unscaledTime;
+//		}
 	}
 
 	void OnEnable()
@@ -191,6 +215,28 @@ public class TramMotion : MonoBehaviour {
 		}
 
 		highlited = ! highlited;
+	}
+
+	/// <summary>
+	/// Sets the speeds.
+	/// </summary>
+	/// <param name="_acceleration">Acceleration.</param>
+	/// <param name="_topSpeed">Top speed.</param>
+	/// <param name="_travelTime">Travel time.</param>
+	public void SetSpeeds(float _acceleration, float _topSpeed, float _cruiseTime, float _accelerationTime, int _insertedKeys = 0)
+	{
+		acceleration = _acceleration;
+		topSpeed = _topSpeed;
+		cruiseTime = 1 / _cruiseTime;
+		accelerationTime = 1 / _accelerationTime;
+		insertedKeys = _insertedKeys;
+
+		travelTime = _cruiseTime;
+
+		sceneSwitchTime = Time.unscaledTime;
+		anim.speed = accelerationTime;
+
+		parametersSet = true;
 	}
 
 	/// <summary>
@@ -238,35 +284,153 @@ public class TramMotion : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Sets the speeds.
+	/// Gets the position keyframes.
 	/// </summary>
-	/// <param name="_acceleration">Acceleration.</param>
-	/// <param name="_topSpeed">Top speed.</param>
-	/// <param name="_travelTime">Travel time.</param>
-	public void SetSpeeds(float _acceleration, float _topSpeed, float _cruiseTime, float _accelerationTime, int _insertedKeys = 0)
+	/// <returns>The position keyframes.</returns>
+	/// <param name="startPos">Start position.</param>
+	/// <param name="endPos">End position.</param>
+	/// <param name="state">State.</param>
+	/// <param name="samples">Samples.</param>
+	private List<Keyframe[]> GetPositionKeyframes(Vector3 startPos, Vector3 endPos, AccelerationState state, int samples = 1000)
 	{
-		acceleration = _acceleration;
-		topSpeed = _topSpeed;
-		cruiseTime = _cruiseTime;
-		accelerationTime = _accelerationTime;
-		insertedKeys = _insertedKeys;
+		float[] accelerationFrame = new float[samples];	// Inialize array of size samples to hold all acceleration values for each keyframe
+		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
+		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
 
-		travelTime = cruiseTime;
+		// Calculate the acceleration per index
+		for (int i=0; i<samples; i++)
+		{
+			// If we are accelerating
+			if (state == AccelerationState.Accelerate)
+			{
+				// If we're still in the acceleration phase
+				if (i <= accelerationStopIndex)
+				{
+					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
+				}
+				// If we're done accelerating
+				else
+				{
+					accelerationFrame[i] = accelerationTime * acceleration;
+				}
+			}
+			// If we a decelerating
+			else if (state == AccelerationState.Decelerate)
+			{
+				// If we're decelerating
+				if (i >= accelerationStartIndex)
+				{
+					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
+				}
+				// If we're still cruising
+				else
+				{
+					accelerationFrame[i] = 0.0f;
+				}
+			}
+		}
+
+		Keyframe[] keyframesX = new Keyframe[samples];	// Initialize array to hold x coord keyframes
+
+		for (int i=0; i<keyframesX.Length; i++)
+		{
+			// Lerp through points by sample interval
+			keyframesX[i] = new Keyframe((i/keyframesX.Length), Mathf.Lerp(startPos.x, endPos.x, 1/keyframesX.Length) + accelerationFrame[i]);
+		}
+
+		Keyframe[] keyframesY = new Keyframe[samples];	// Initialize array to hold y coord keyframes
+
+		for (int i=0; i<keyframesY.Length; i++)
+		{
+			// Lerp through points by sample interval
+			keyframesY[i] = new Keyframe((i/keyframesY.Length), Mathf.Lerp(startPos.y, endPos.y, 1/keyframesY.Length) + accelerationFrame[i]);
+		}
+
+		Keyframe[] keyframesZ = new Keyframe[samples];	// Initialize array to hold z coord keyframes
+
+		for (int i=0; i<keyframesY.Length; i++)
+		{
+			// Lerp through points by sample interval
+			keyframesY[i] = new Keyframe((i/keyframesZ.Length), Mathf.Lerp(startPos.z, endPos.z, 1/keyframesZ.Length) + accelerationFrame[i]);
+		}
+			
+		List<Keyframe[]> keyframes = new List<Keyframe[]>(){keyframesX, keyframesY, keyframesZ};
+		return keyframes;
 	}
 
 	/// <summary>
-	/// Returns the first digit of an int
+	/// Gets the rotation keyframes.
 	/// </summary>
-	/// <returns>The first digit.</returns>
-	/// <param name="i">The index.</param>
-	private int GetFirstDigit(int i)
+	/// <returns>The rotation keyframes.</returns>
+	/// <param name="startRot">Start rot.</param>
+	/// <param name="endRot">End rot.</param>
+	/// <param name="state">State.</param>
+	/// <param name="samples">Samples.</param>
+	private List<Keyframe[]> GetRotationKeyframes(Quaternion startRot, Quaternion endRot, AccelerationState state, int samples = 1000)
 	{
-		if (i >= 100000000) i /= 100000000;
-		if (i >= 10000) i /= 10000;
-		if (i >= 100) i /= 100;
-		if (i >= 10) i /= 10;
+		float[] accelerationFrame = new float[samples];
+		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
+		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
 
-		return i;
+		// Calculate the acceleration per index
+		for (int i=0; i<samples; i++)
+		{
+			// If we are accelerating
+			if (state == AccelerationState.Accelerate)
+			{
+				// If we're still in the acceleration phase
+				if (i <= accelerationStopIndex)
+				{
+					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
+				}
+				// If we're done accelerating
+				else
+				{
+					accelerationFrame[i] = accelerationTime * acceleration;
+				}
+			}
+			// If we a decelerating
+			else if (state == AccelerationState.Decelerate)
+			{
+				// If we're decelerating
+				if (i >= accelerationStartIndex)
+				{
+					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
+				}
+				// If we're still cruising
+				else
+				{
+					accelerationFrame[i] = 0.0f;
+				}
+			}
+		}
+
+		Keyframe[] keyframesX = new Keyframe[samples];	// Initialize array to hold x coord keyframes
+
+		for (int i=0; i<keyframesX.Length; i++)
+		{
+			// Lerp through points by sample interval
+			keyframesX[i] = new Keyframe((i/keyframesX.Length), Mathf.Lerp(startRot.x, endRot.x, 1/keyframesX.Length) + accelerationFrame[i]);
+		}
+
+		Keyframe[] keyframesY = new Keyframe[samples];	// Initialize array to hold y coord keyframes
+
+		for (int i=0; i<keyframesY.Length; i++)
+		{
+			// Lerp through points by sample interval
+			keyframesY[i] = new Keyframe((i/keyframesY.Length), Mathf.Lerp(startRot.y, endRot.y, 1/keyframesY.Length) + accelerationFrame[i]);
+		}
+
+		Keyframe[] keyframesZ = new Keyframe[samples];	// Initialize array to hold z coord keyframes
+
+		for (int i=0; i<keyframesY.Length; i++)
+		{
+			// Lerp through points by sample interval
+			keyframesY[i] = new Keyframe((i/keyframesZ.Length), Mathf.Lerp(startRot.z, endRot.z, 1/keyframesZ.Length) + accelerationFrame[i]);
+		}
+
+		List<Keyframe[]> keyframes = new List<Keyframe[]>(){keyframesX, keyframesY, keyframesZ};
+		return keyframes;
 	}
 
 	/// <summary>
