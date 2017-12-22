@@ -112,10 +112,10 @@ public class TramMotion : MonoBehaviour {
 	{
 		if (anim.isPlaying)
 		{
-//			print("name: " + clips[currentClip] + " index: " + currentClip + " wait offset: " + waitOffset);
+			print("name: " + clips[currentClip] + " index: " + currentClip + " wait offset: " + waitOffset);
 			if (!anim.IsPlaying(clips[currentClip]))
 			{
-				if (currentClip < clips.Count -1 )
+				if (currentClip < clips.Count - 1 )
 				{
 					currentClip++;
 					states[currentClip].speed = 1 / speed;
@@ -550,7 +550,7 @@ public class TramMotion : MonoBehaviour {
 				anim.Play("clip " + i);
 				states.Add(anim["clip " + i]);
 			}
-			else if (i > 1)
+			else if (i > 0)
 			{
 				states.Add(anim.PlayQueued("clip " + i));
 			}
