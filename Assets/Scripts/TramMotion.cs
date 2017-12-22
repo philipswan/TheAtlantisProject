@@ -35,6 +35,7 @@ public class TramMotion : MonoBehaviour {
 	private int currentClip;
 	private int waitOffset;
 	private List<string> clips = new List<string>();
+	private List<AnimationState> states = new List<AnimationState>();
 	private float speed;
 
 	void Awake()
@@ -117,7 +118,7 @@ public class TramMotion : MonoBehaviour {
 				if (currentClip < clips.Count -1 )
 				{
 					currentClip++;
-					anim[clips[currentClip]].speed = 1 / speed;
+					states[currentClip].speed = 1 / speed;
 				}
 				if (currentClip % 5 == 0 && currentClip != 0)
 				{
@@ -139,7 +140,7 @@ public class TramMotion : MonoBehaviour {
 				{
 					speed = cruiseTime;
 				}
-				print("accelerating, speed: " + anim[clips[currentClip]].speed);
+//				print("accelerating, speed: " + states[currentClip].speed);
 
 			}
 			else if (currentClip % (3 + waitOffset) == 0)
@@ -157,7 +158,7 @@ public class TramMotion : MonoBehaviour {
 				{
 					speed = cruiseTime = accelerationTime;
 				}
-				print("decelerating, speed: " + anim[clips[currentClip]].speed);
+//				print("decelerating, speed: " + states[currentClip].speed);
 
 			}
 			else if (currentClip % (4 + waitOffset) == 0)
@@ -167,7 +168,7 @@ public class TramMotion : MonoBehaviour {
 					accelerationState = AccelerationState.Wait;
 					speed = cruiseTime;
 				}
-				print("waiting, speed: " + anim[clips[currentClip]].speed);
+//				print("waiting, speed: " + states[currentClip].speed);
 
 			}
 			else
@@ -177,10 +178,10 @@ public class TramMotion : MonoBehaviour {
 					accelerationState = AccelerationState.Cruise;
 					speed = cruiseTime;
 				}
-				print("cruising, speed: " + anim[clips[currentClip]].speed);
+//				print("cruising, speed: " + states[currentClip].speed);
 
 			}
-			anim[clips[currentClip]].speed = 1 / speed;
+			states[currentClip].speed = 1 / speed;
 		}
 	}
 
@@ -547,10 +548,11 @@ public class TramMotion : MonoBehaviour {
 			if (i == 0)
 			{
 				anim.Play("clip " + i);
+				states.Add(anim["clip " + i]);
 			}
 			else if (i > 1)
 			{
-				anim.PlayQueued("clip " + i);
+				states.Add(anim.PlayQueued("clip " + i));
 			}
 				
 			parametersSet = true;
