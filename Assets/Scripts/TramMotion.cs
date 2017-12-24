@@ -112,17 +112,13 @@ public class TramMotion : MonoBehaviour {
 	{
 		if (anim.isPlaying)
 		{
-			print("name: " + clips[currentClip] + " index: " + currentClip + " wait offset: " + waitOffset);
+			print("name: " + clips[currentClip] + " index: " + currentClip + " wait offset: " + waitOffset + " acceleration state: " + accelerationState.ToString());
 			if (!anim.IsPlaying(clips[currentClip]))
 			{
 				if (currentClip < clips.Count - 1 )
 				{
 					currentClip++;
 					states[currentClip].speed = 1 / speed;
-				}
-				if (currentClip % 5 == 0 && currentClip != 0)
-				{
-					waitOffset++;
 				}
 			}
 			if (currentClip % (5 + waitOffset) == 0 || currentClip == 0)
@@ -143,7 +139,7 @@ public class TramMotion : MonoBehaviour {
 //				print("accelerating, speed: " + states[currentClip].speed);
 
 			}
-			else if (currentClip % (3 + waitOffset) == 0)
+			else if (currentClip % (5 + waitOffset) == 0 || currentClip == 4)
 			{
 				if (accelerationState != AccelerationState.Decelerate)
 				{
@@ -161,12 +157,13 @@ public class TramMotion : MonoBehaviour {
 //				print("decelerating, speed: " + states[currentClip].speed);
 
 			}
-			else if (currentClip % (4 + waitOffset) == 0)
+			else if (currentClip % (5 + waitOffset) == 0 || currentClip == 5)
 			{
 				if (accelerationState != AccelerationState.Wait)
 				{
 					accelerationState = AccelerationState.Wait;
 					speed = cruiseTime;
+					waitOffset++;
 				}
 //				print("waiting, speed: " + states[currentClip].speed);
 
@@ -483,6 +480,9 @@ public class TramMotion : MonoBehaviour {
 	/// <returns>The clips.</returns>
 	private IEnumerator CreateClips()
 	{
+		string name;
+		List<AnimationClip> clipQueue = new List<AnimationClip>();
+
 		for (int i=0; i<positions.Count-1; i++)
 		{
 			List<Keyframe[]> keyframes = new List<Keyframe[]>();
@@ -512,16 +512,19 @@ public class TramMotion : MonoBehaviour {
 				curves = CreateCurve(keyframes);
 
 				clip = CreateClip(curves);
+				clipQueue.Add(clip);
 
 				keyframes.Clear();
 				keyPositions.Clear();
 				keyRotations.Clear();
 				curves.Clear();
 
-				clips.Add("clip " + i);
-
-				anim.AddClip(clip, "clip " + i);
-				anim.PlayQueued("clip " + i);
+//				name = "Wait " + i;
+//
+//				clips.Add(name);
+//
+//				anim.AddClip(clip, name);
+//				anim.PlayQueued(name);
 			}
 
 			// Get the keyframes between the two positions
@@ -542,22 +545,51 @@ public class TramMotion : MonoBehaviour {
 			curves = CreateCurve(keyframes);
 
 			clip = CreateClip(curves);
+			clipQueue.Add(clip);
 				
-			clips.Add("clip " + i);
-			anim.AddClip(clip, "clip " + i);
-			if (i == 0)
-			{
-				anim.Play("clip " + i);
-				states.Add(anim["clip " + i]);
-			}
-			else if (i > 0)
-			{
-				states.Add(anim.PlayQueued("clip " + i));
-			}
+//
+//			name = "";
+//			if (i == 0 || i % 5 == 0)
+//			{
+//				name = "Accelerate " + i;
+//			}
+//			else if (i % 4 == 0)
+//			{
+//				name = "Decelerate " + i;
+//			}
+//			else
+//			{
+//				name = "Cruise " + i;
+//			}
+//
+//			clips.Add(name);
+//			anim.AddClip(clip, name);
+//			if (i == 0)
+//			{
+//				anim.Play(name);
+//				states.Add(anim[name]);
+//			}
+//			else if (i > 0)
+//			{
+//				states.Add(anim.PlayQueued(name));
+//			}
 				
 			parametersSet = true;
 
 			yield return null;
+		}
+	}
+
+	private void AddClipsToList(List<AnimationClip> clipQueue)
+	{
+		string name = "";
+
+		for (int i=0; i<clipQueue.Count; i++)
+		{
+			if (i == 0)
+			{
+				name = 
+			}
 		}
 	}
 
