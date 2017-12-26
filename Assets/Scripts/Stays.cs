@@ -23,7 +23,7 @@ public class Stays : MonoBehaviour
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshStays();
 
-		FloatingMenu.Instance.AddItems(menuStay, "Stays", new Vector3(250,500,1000));
+		//FloatingMenu.Instance.AddItems(menuStay, "Stays", new Vector3(250,500,1000));
 		Destroy(menuStay);
     }
 

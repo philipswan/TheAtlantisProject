@@ -33,7 +33,7 @@ public class RingHabitats : MonoBehaviour {
         RefreshRingHabitats();		// Create habitats and their sections
 		UpdatePositions();			// Move habitats to be adjacent to transit ring
 
-		FloatingMenu.Instance.AddItems(habitat, "Habitat", new Vector3(100,100,100));
+		//FloatingMenu.Instance.AddItems(habitat, "Habitat", new Vector3(100,100,100));
     }
 
 	/// <summary>

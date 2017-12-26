@@ -60,7 +60,7 @@ public class TramCars : MonoBehaviour {
 		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
 		DeleteKeys();			// Delete keys as they are no longer needed
 
-		FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
+		//FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
 	}
 		
 	/// <summary>
@@ -101,13 +101,13 @@ public class TramCars : MonoBehaviour {
 	/// </summary>
 	private void DeleteKeys()
 	{
-		foreach (GameObject k in keysTopLeft)
-		{
-			Destroy(k);
-		}
-		keysTopLeft.Clear();
+        foreach (GameObject k in keysTopLeft)
+        {
+            Destroy(k);
+        }
+        keysTopLeft.Clear();
 
-		foreach (GameObject k in keysBottomRight)
+        foreach (GameObject k in keysBottomRight)
 		{
 			Destroy(k);
 		}
@@ -145,8 +145,8 @@ public class TramCars : MonoBehaviour {
 		float rpk 			= (2 * Mathf.PI) / (numSections * numKeysPerSection);	// Radians between keys
 		float scaleRatio 	= 2072.0f / 5182853.0f;	// ratio of tram ring to actual ring (when the system is at scale 5000)
 		float alKeys 		= radiusRing * rpk;	// arc length between keys in meters
-		topSpeed 			= 1200f * scaleRatio;	// top speed (500 mph) scaled to system
-		acceleration 		= 55f * scaleRatio;	// acceleartion (1.2g) scaled to system
+		topSpeed 			= 223.5f * scaleRatio;	// top speed (500 mph) scaled to system
+		acceleration 		= 11.7f * scaleRatio;	// acceleartion (1.2g) scaled to system
 		travelTime 			= alKeys / topSpeed;
 		accelerationTime 	= topSpeed / acceleration;
 

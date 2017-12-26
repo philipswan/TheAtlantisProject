@@ -18,7 +18,7 @@ public class StartMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(OVRInput.Get(OVRInput.Button.Any) && !starting)
+		if(OVRInput.Get(OVRInput.Button.Any) || Input.GetKeyDown(KeyCode.Space) && !starting)
 		{
 			StartCoroutine("StartScene");
 		}

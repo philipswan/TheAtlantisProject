@@ -37,6 +37,7 @@ public class TramMotion : MonoBehaviour {
 	private List<string> clips = new List<string>();
 	private List<AnimationState> states = new List<AnimationState>();
 	private float speed;
+    private float clipSwitchTime;
 
 	void Awake()
 	{
@@ -110,18 +111,23 @@ public class TramMotion : MonoBehaviour {
 
 	void LateUpdate()
 	{
+        string name = "";
 		if (anim.isPlaying)
 		{
-			print("name: " + clips[currentClip] + " index: " + currentClip + " wait offset: " + waitOffset + " acceleration state: " + accelerationState.ToString());
-			if (!anim.IsPlaying(clips[currentClip]))
+            name = clips[currentClip].Substring(0, clips[currentClip].Length - 2);
+            print("name: " + name + " index: " + currentClip + " wait offset: " + waitOffset + " acceleration state: " + accelerationState.ToString());
+
+            if (!anim.IsPlaying(clips[currentClip]))
 			{
 				if (currentClip < clips.Count - 1 )
 				{
 					currentClip++;
 					states[currentClip].speed = 1 / speed;
+                    clipSwitchTime = Time.unscaledTime;
 				}
 			}
-			if (currentClip % (5 + waitOffset) == 0 || currentClip == 0)
+
+            if (name == "Accelerate")
 			{
 				if (accelerationState != AccelerationState.Accelerate)
 				{
@@ -136,37 +142,31 @@ public class TramMotion : MonoBehaviour {
 				{
 					speed = cruiseTime;
 				}
-//				print("accelerating, speed: " + states[currentClip].speed);
-
 			}
-			else if (currentClip % (5 + waitOffset) == 0 || currentClip == 4)
+			else if (name == "Decelerate")
 			{
 				if (accelerationState != AccelerationState.Decelerate)
 				{
 					speed = cruiseTime;
 					accelerationState = AccelerationState.Decelerate;
 				}
-				if (speed < cruiseTime + accelerationTime)
+				if (speed < (cruiseTime + accelerationTime) && (Time.unscaledTime - clipSwitchTime) >= (cruiseTime - accelerationTime))
 				{
 					speed += Time.deltaTime;
 				}
 				else
 				{
-					speed = cruiseTime = accelerationTime;
+					speed = cruiseTime;
 				}
-//				print("decelerating, speed: " + states[currentClip].speed);
 
 			}
-			else if (currentClip % (5 + waitOffset) == 0 || currentClip == 5)
+			else if (name == "Wait")
 			{
 				if (accelerationState != AccelerationState.Wait)
 				{
 					accelerationState = AccelerationState.Wait;
 					speed = cruiseTime;
-					waitOffset++;
 				}
-//				print("waiting, speed: " + states[currentClip].speed);
-
 			}
 			else
 			{
@@ -175,8 +175,6 @@ public class TramMotion : MonoBehaviour {
 					accelerationState = AccelerationState.Cruise;
 					speed = cruiseTime;
 				}
-//				print("cruising, speed: " + states[currentClip].speed);
-
 			}
 			states[currentClip].speed = 1 / speed;
 		}
@@ -481,6 +479,7 @@ public class TramMotion : MonoBehaviour {
 	private IEnumerator CreateClips()
 	{
 		string name;
+        int clipInPeriod = 0;
 		List<AnimationClip> clipQueue = new List<AnimationClip>();
 
 		for (int i=0; i<positions.Count-1; i++)
@@ -519,13 +518,15 @@ public class TramMotion : MonoBehaviour {
 				keyRotations.Clear();
 				curves.Clear();
 
-//				name = "Wait " + i;
-//
-//				clips.Add(name);
-//
-//				anim.AddClip(clip, name);
-//				anim.PlayQueued(name);
-			}
+                name = "Wait " + i;
+
+                clips.Add(name);
+
+                anim.AddClip(clip, name);
+                anim.PlayQueued(name);
+
+                clipInPeriod = 0;
+            }
 
 			// Get the keyframes between the two positions
 			keyPositions = GetPositionKeyframes(positions[i], positions[i+1], 1000);
@@ -546,50 +547,39 @@ public class TramMotion : MonoBehaviour {
 
 			clip = CreateClip(curves);
 			clipQueue.Add(clip);
-				
-//
-//			name = "";
-//			if (i == 0 || i % 5 == 0)
-//			{
-//				name = "Accelerate " + i;
-//			}
-//			else if (i % 4 == 0)
-//			{
-//				name = "Decelerate " + i;
-//			}
-//			else
-//			{
-//				name = "Cruise " + i;
-//			}
-//
-//			clips.Add(name);
-//			anim.AddClip(clip, name);
-//			if (i == 0)
-//			{
-//				anim.Play(name);
-//				states.Add(anim[name]);
-//			}
-//			else if (i > 0)
-//			{
-//				states.Add(anim.PlayQueued(name));
-//			}
-				
-			parametersSet = true;
+
+
+            name = "";
+            if (clipInPeriod == 0)
+            {
+                name = "Accelerate " + i;
+            }
+            else if (clipInPeriod == 4)
+            {
+                name = "Decelerate " + i;
+            }
+            else
+            {
+                name = "Cruise " + i;
+            }
+
+            clips.Add(name);
+            anim.AddClip(clip, name);
+            if (i == 0)
+            {
+                anim.Play(name);
+                states.Add(anim[name]);
+            }
+            else if (i > 0)
+            {
+                states.Add(anim.PlayQueued(name));
+            }
+
+            clipInPeriod++;
+
+            parametersSet = true;
 
 			yield return null;
-		}
-	}
-
-	private void AddClipsToList(List<AnimationClip> clipQueue)
-	{
-		string name = "";
-
-		for (int i=0; i<clipQueue.Count; i++)
-		{
-			if (i == 0)
-			{
-				name = 
-			}
 		}
 	}
 
