@@ -23,7 +23,7 @@ public class TramMotion : MonoBehaviour {
 	private bool travelTram;											// Set true if the tram does not stop
 	private Material[] DefaultMaterials;								// Regular materials
 	private bool highlited;												// Current materials used
-	private enum AccelerationState {Accelerate, Cruise, Decelerate, Slowest, Wait, None}
+	private enum AccelerationState {Accelerate, Cruise, Decelerate, Wait, None}
 	private AccelerationState accelerationState;
 	private float accelerationStartTime;
 	private bool parametersSet;
@@ -34,8 +34,9 @@ public class TramMotion : MonoBehaviour {
 	private AnimationEvent evt;
 	private int currentClip;
 	private int waitOffset;
-	private List<string> clips = new List<string>();
+	private List<string> clipNames = new List<string>();
 	private List<AnimationState> states = new List<AnimationState>();
+    private List<AnimationCurve> curves = new List<AnimationCurve>();
 	private float speed;
     private float clipSwitchTime;
 
@@ -112,18 +113,22 @@ public class TramMotion : MonoBehaviour {
 	void LateUpdate()
 	{
         string name = "";
-		if (anim.isPlaying)
+		if (anim.GetClipCount() > 0)
 		{
-            name = clips[currentClip].Substring(0, clips[currentClip].Length - 2);
-            print("name: " + name + " index: " + currentClip + " wait offset: " + waitOffset + " acceleration state: " + accelerationState.ToString());
+            name = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - 2);
+            if (name == "Bottom Right Tram 0")
+            {
+                print("name: " + name + " index: " + currentClip + " wait offset: " + waitOffset + " acceleration state: " + accelerationState.ToString());
+            }
 
-            if (!anim.IsPlaying(clips[currentClip]))
+            if (!anim.IsPlaying(clipNames[currentClip]))
 			{
-				if (currentClip < clips.Count - 1 )
+				if (currentClip < clipNames.Count - 1 )
 				{
 					currentClip++;
-					states[currentClip].speed = 1 / speed;
                     clipSwitchTime = Time.unscaledTime;
+
+                    StartCoroutine("CreateClips", 1);
 				}
 			}
 
@@ -150,7 +155,7 @@ public class TramMotion : MonoBehaviour {
 					speed = cruiseTime;
 					accelerationState = AccelerationState.Decelerate;
 				}
-				if (speed < (cruiseTime + accelerationTime) && (Time.unscaledTime - clipSwitchTime) >= (cruiseTime - accelerationTime))
+				if ((Time.unscaledTime - clipSwitchTime) >= (cruiseTime - accelerationTime))
 				{
 					speed += Time.deltaTime;
 				}
@@ -224,37 +229,19 @@ public class TramMotion : MonoBehaviour {
 		travelTime = _cruiseTime;
 
 		sceneSwitchTime = Time.unscaledTime;
-//		anim.speed = accelerationTime;
 
-		if (name == "Bottom Right Tram 0")
-			StartCoroutine("CreateClips");
-	}
+        StartCoroutine("CreateClips", 2);
 
-	/// <summary>
-	/// Adds the rotation to the list
-	/// </summary>
-	/// <param name="rot">Rot.</param>
-	public void AddRotation(Quaternion rot)
-	{
-		rotations.Add(rot);
-	}
+        parametersSet = true;
+    }
 
-	/// <summary>
-	/// Sets the rotations to the list
-	/// </summary>
-	/// <param name="rot">Rot.</param>
-	public void AddRotation(List<Quaternion> rot)
+    /// <summary>
+    /// Sets the rotations to the list
+    /// </summary>
+    /// <param name="rot">Rot.</param>
+    public void AddRotation(List<Quaternion> rot)
 	{
 		rotations = new List<Quaternion>(rot);
-	}
-
-	/// <summary>
-	/// Adds the position to the list.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	public void AddPosition(Vector3 pos)
-	{
-		positions.Add(pos);
 	}
 
 	/// <summary>
@@ -266,10 +253,20 @@ public class TramMotion : MonoBehaviour {
 		positions = new List<Vector3>(pos);
 	}
 
-	/// <summary>
-	/// Sets the travel tram (tram does not make stops)
-	/// </summary>
-	public void SetTravelTram()
+    public void AddClipNames(List<string> names)
+    {
+        clipNames = new List<string>(names);
+    }
+
+    public void AddCurves(List<AnimationCurve> curves)
+    {
+        this.curves = new List<AnimationCurve>(curves);
+    }
+
+    /// <summary>
+    /// Sets the travel tram (tram does not make stops)
+    /// </summary>
+    public void SetTravelTram()
 	{
 		travelTram = true;
 	}
@@ -282,45 +279,8 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="endPos">End position.</param>
 	/// <param name="state">State.</param>
 	/// <param name="samples">Samples.</param>
-	private List<Keyframe[]> GetPositionKeyframes(Vector3 startPos, Vector3 endPos, int samples = 1000)
+	private List<Keyframe[]> GetPositionKeyframes(Vector3 startPos, Vector3 endPos, int samples)
 	{
-//		float[] accelerationFrame = new float[samples];	// Inialize array of size samples to hold all acceleration values for each keyframe
-//		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
-//		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
-//
-//		// Calculate the acceleration per index
-//		for (int i=0; i<samples; i++)
-//		{
-//			// If we are accelerating
-//			if (state == AccelerationState.Accelerate)
-//			{
-//				// If we're still in the acceleration phase
-//				if (i <= accelerationStopIndex)
-//				{
-//					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
-//				}
-//				// If we're done accelerating
-//				else
-//				{
-//					accelerationFrame[i] = accelerationTime * acceleration;
-//				}
-//			}
-//			// If we a decelerating
-//			else if (state == AccelerationState.Decelerate)
-//			{
-//				// If we're decelerating
-//				if (i >= accelerationStartIndex)
-//				{
-//					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
-//				}
-//				// If we're still cruising
-//				else
-//				{
-//					accelerationFrame[i] = 0.0f;
-//				}
-//			}
-//		}
-
 		Keyframe[] keyframesX = new Keyframe[samples];	// Initialize array to hold x coord keyframes
 
 		for (int i=0; i<keyframesX.Length; i++)
@@ -359,43 +319,6 @@ public class TramMotion : MonoBehaviour {
 	/// <param name="samples">Samples.</param>
 	private List<Keyframe[]> GetRotationKeyframes(Quaternion startRot, Quaternion endRot, int samples)
 	{
-//		float[] accelerationFrame = new float[samples];
-//		int accelerationStopIndex = samples * (accelerationTime / cruiseTime);
-//		int accelerationStartIndex = samples * (1 - (accelerationTime / cruiseTime));
-//
-//		// Calculate the acceleration per index
-//		for (int i=0; i<samples; i++)
-//		{
-//			// If we are accelerating
-//			if (state == AccelerationState.Accelerate)
-//			{
-//				// If we're still in the acceleration phase
-//				if (i <= accelerationStopIndex)
-//				{
-//					accelerationFrame[i] = (i / accelerationStopIndex) * accelerationTime * acceleration;
-//				}
-//				// If we're done accelerating
-//				else
-//				{
-//					accelerationFrame[i] = accelerationTime * acceleration;
-//				}
-//			}
-//			// If we a decelerating
-//			else if (state == AccelerationState.Decelerate)
-//			{
-//				// If we're decelerating
-//				if (i >= accelerationStartIndex)
-//				{
-//					accelerationFrame[i] = -((i - accelerationStartIndex) / ( samples - accelerationStartIndex)) * accelerationTime * acceleration;
-//				}
-//				// If we're still cruising
-//				else
-//				{
-//					accelerationFrame[i] = 0.0f;
-//				}
-//			}
-//		}
-
 		Keyframe[] keyframesX = new Keyframe[samples];	// Initialize array to hold x coord keyframes
 
 		for (int i=0; i<keyframesX.Length; i++)
@@ -476,112 +399,76 @@ public class TramMotion : MonoBehaviour {
 	/// Create all animation clips
 	/// </summary>
 	/// <returns>The clips.</returns>
-	private IEnumerator CreateClips()
+	private IEnumerator CreateClips(int clipsToCreate)
 	{
-		string name;
-        int clipInPeriod = 0;
-		List<AnimationClip> clipQueue = new List<AnimationClip>();
+        for (int i = 0; i < clipsToCreate; i++)
+        {
+            // Set up our variables
+            List<Keyframe[]> keyframes = new List<Keyframe[]>();
+            List<Keyframe[]> keyPositions = new List<Keyframe[]>();
+            List<Keyframe[]> keyRotations = new List<Keyframe[]>();
+            List<AnimationCurve> curves = new List<AnimationCurve>();
+            AnimationClip clip;
+            string name;
+            Vector3 startPos, endPos;
+            Quaternion startRot, endRot;
+            int index = anim.GetClipCount();
 
-		for (int i=0; i<positions.Count-1; i++)
-		{
-			List<Keyframe[]> keyframes = new List<Keyframe[]>();
-			List<Keyframe[]> keyPositions = new List<Keyframe[]>();
-			List<Keyframe[]> keyRotations = new List<Keyframe[]>();
-			List<AnimationCurve> curves = new List<AnimationCurve>();
-			AnimationClip clip;
-
-			// If we're at a habitat, create a clip with the same start/end position/rotation to stop the tram
-			if (i % 5 == 0 && i != 0)
-			{
-				// Get the keyframes between the two positions
-				keyPositions = GetPositionKeyframes(positions[i], positions[i], 1000);
-				keyRotations = GetRotationKeyframes(rotations[i], rotations[i], 1000);
-
-				// Combine the x, y, and z coordinates for position and rotation into one list
-				for (int j=0; j<keyPositions.Count; j++)
-				{
-					keyframes.Add(keyPositions[j]);
-				}
-				for (int j=0; j<keyRotations.Count; j++)
-				{
-					keyframes.Add(keyRotations[j]);
-				}
-
-				// Create animation curves from the keyframes
-				curves = CreateCurve(keyframes);
-
-				clip = CreateClip(curves);
-				clipQueue.Add(clip);
-
-				keyframes.Clear();
-				keyPositions.Clear();
-				keyRotations.Clear();
-				curves.Clear();
-
-                name = "Wait " + i;
-
-                clips.Add(name);
-
-                anim.AddClip(clip, name);
-                anim.PlayQueued(name);
-
-                clipInPeriod = 0;
-            }
-
-			// Get the keyframes between the two positions
-			keyPositions = GetPositionKeyframes(positions[i], positions[i+1], 1000);
-			keyRotations = GetRotationKeyframes(rotations[i], rotations[i+1], 1000);
-
-			// Combine the x, y, and z coordinates for position and rotation into one list
-			for (int j=0; j<keyPositions.Count; j++)
-			{
-				keyframes.Add(keyPositions[j]);
-			}
-			for (int j=0; j<keyRotations.Count; j++)
-			{
-				keyframes.Add(keyRotations[j]);
-			}
-				
-			// Create animation curves from the keyframes
-			curves = CreateCurve(keyframes);
-
-			clip = CreateClip(curves);
-			clipQueue.Add(clip);
-
-
-            name = "";
-            if (clipInPeriod == 0)
+            // If we're at a wait anim, set the start and end values to eachother
+            if (index % 5 == 0 && index != 0)
             {
-                name = "Accelerate " + i;
-            }
-            else if (clipInPeriod == 4)
-            {
-                name = "Decelerate " + i;
+                startPos = positions[index];
+                endPos = startPos;
+
+                startRot = rotations[index];
+                endRot = startRot;
+
+                waitOffset++;
             }
             else
             {
-                name = "Cruise " + i;
+                startPos = positions[index - waitOffset];
+                endPos = positions[index + 1 - waitOffset];
+
+                startRot = rotations[index - waitOffset];
+                endRot = rotations[index + 1 - waitOffset];
             }
 
-            clips.Add(name);
+            // Get the keyframes between the two positions
+            keyPositions = GetPositionKeyframes(startPos, endPos, 500);
+            yield return null;
+            keyRotations = GetRotationKeyframes(startRot, endRot, 500);
+            yield return null;
+
+            // Combine the x, y, and z coordinates for position and rotation into one list
+            for (int j = 0; j < keyPositions.Count; j++)
+            {
+                keyframes.Add(keyPositions[j]);
+            }
+            for (int j = 0; j < keyRotations.Count; j++)
+            {
+                keyframes.Add(keyRotations[j]);
+            }
+
+            // Create animation curves from the keyframes
+            curves = CreateCurve(keyframes);
+
+            clip = CreateClip(curves);
+
+            name = clipNames[index];
             anim.AddClip(clip, name);
-            if (i == 0)
+
+            if (index == 0)
             {
                 anim.Play(name);
                 states.Add(anim[name]);
             }
-            else if (i > 0)
+            else
             {
                 states.Add(anim.PlayQueued(name));
             }
-
-            clipInPeriod++;
-
-            parametersSet = true;
-
-			yield return null;
-		}
-	}
+        }
+    }
 
 	/// <summary>
 	/// Max the specified a and b.
