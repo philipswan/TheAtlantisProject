@@ -132,55 +132,87 @@ public class TramMotion : MonoBehaviour {
 				}
 			}
 
-            if (name == "Accelerate")
-			{
-				if (accelerationState != AccelerationState.Accelerate)
-				{
-					speed = accelerationTime + cruiseTime;
-					accelerationState = AccelerationState.Accelerate;
-				}
-				if (speed > cruiseTime)
-				{
-					speed -= Time.deltaTime;
-				}
-				else
-				{
-					speed = cruiseTime;
-				}
-			}
-			else if (name == "Decelerate")
-			{
-				if (accelerationState != AccelerationState.Decelerate)
-				{
-					speed = cruiseTime;
-					accelerationState = AccelerationState.Decelerate;
-				}
-				if ((Time.unscaledTime - clipSwitchTime) >= (cruiseTime - accelerationTime))
-				{
-					speed += Time.deltaTime;
-				}
-				else
-				{
-					speed = cruiseTime;
-				}
+            if (!travelTram)
+            {
+                if (name == "Accelerate")
+                {
+                    if (accelerationState != AccelerationState.Accelerate)
+                    {
+                        speed = accelerationTime + cruiseTime;
+                        accelerationState = AccelerationState.Accelerate;
+                    }
+                    if (speed > cruiseTime)
+                    {
+                        speed -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        speed = cruiseTime;
+                    }
+                }
+                else if (name == "Decelerate")
+                {
+                    if (accelerationState != AccelerationState.Decelerate)
+                    {
+                        speed = cruiseTime;
+                        accelerationState = AccelerationState.Decelerate;
+                    }
+                    if ((Time.unscaledTime - clipSwitchTime) >= (cruiseTime - accelerationTime))
+                    {
+                        speed += Time.deltaTime;
+                    }
+                    else
+                    {
+                        speed = cruiseTime;
+                    }
 
-			}
-			else if (name == "Wait")
-			{
-				if (accelerationState != AccelerationState.Wait)
-				{
-					accelerationState = AccelerationState.Wait;
-					speed = cruiseTime;
-				}
-			}
-			else
-			{
-				if (accelerationState != AccelerationState.Cruise)
-				{
-					accelerationState = AccelerationState.Cruise;
-					speed = cruiseTime;
-				}
-			}
+                }
+                else if (name == "Wait")
+                {
+                    if (accelerationState != AccelerationState.Wait)
+                    {
+                        accelerationState = AccelerationState.Wait;
+                        speed = cruiseTime;
+                    }
+                }
+                else
+                {
+                    if (accelerationState != AccelerationState.Cruise)
+                    {
+                        accelerationState = AccelerationState.Cruise;
+                        speed = cruiseTime;
+                    }
+                }
+            }
+
+            else
+            {
+                if (currentClip == 0)
+                {
+                    if (accelerationState != AccelerationState.Accelerate)
+                    {
+                        speed = accelerationTime + cruiseTime;
+                        accelerationState = AccelerationState.Accelerate;
+                    }
+                    if (speed > cruiseTime)
+                    {
+                        speed -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        speed = cruiseTime;
+                    }
+                }
+                else
+                {
+                    if (accelerationState != AccelerationState.Cruise)
+                    {
+                        accelerationState = AccelerationState.Cruise;
+                        speed = cruiseTime;
+                    }
+                }
+            }
+
 			states[currentClip].speed = 1 / speed;
 		}
 	}
@@ -415,7 +447,7 @@ public class TramMotion : MonoBehaviour {
             int index = anim.GetClipCount();
 
             // If we're at a wait anim, set the start and end values to eachother
-            if (index % 5 == 0 && index != 0)
+            if (index % 5 == 0 && index != 0 && !travelTram)
             {
                 startPos = positions[index];
                 endPos = startPos;
