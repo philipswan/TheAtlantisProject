@@ -30,11 +30,11 @@ namespace Constants{
 		[Tooltip("Time the elevator waits at it's destination")]
 		public float ElevatorWaitTime = 0.0f;
 
-		[Tooltip("Lerp time for tram movement with stops")]
-		public float TramTravelTimeStops = 10.0f;
+		[Tooltip("Rate of acceleration for trams (m/s^2)")]
+		public float TramAcceleration = 11.7f;
 
-		[Tooltip("Lerp time for tram movement without stops")]
-		public float TramTravelTime = 10.0f;
+		[Tooltip("Top speed for trams (m/s)")]
+		public float TramVelocity = 223.5f;
 
 		[Header("Ring Constants")]
 		[Tooltip("Latitude of the ring")]

@@ -1460,9 +1460,9 @@ MonoBehaviour:
   CameraTravelTime: 1
   SystemTravelTime: 1
   ElevatorTravelTime: 10
-  ElevatorWaitTime: 0
-  TramTravelTimeStops: 10
-  TramTravelTime: 10
+  ElevatorWaitTime: 2
+  TramAcceleration: 11.7
+  TramVelocity: 223.5
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:
@@ -4083,16 +4083,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e28e8f248486f148add14736bd5f8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotations: []
-  positions: []
   HighlightMaterials:
   - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
-  accelerationTime: 0
-  travelTime: 0
-  topSpeed: 0
-  acceleration: 0
-  cruiseTime: 0
 --- !u!111 &1493160553
 Animation:
   m_ObjectHideFlags: 0
@@ -4353,8 +4346,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1734404744}
-  - component: {fileID: 1734404747}
-  - component: {fileID: 1734404746}
   - component: {fileID: 1734404745}
   m_Layer: 0
   m_Name: Tram Cars
@@ -4393,45 +4384,6 @@ MonoBehaviour:
   numTramsPerSection: 5
   habitatHeight: 0.00001
   train: {fileID: 1493160550}
---- !u!23 &1734404746
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1734404743}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &1734404747
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1734404743}
-  m_Mesh: {fileID: 0}
 --- !u!1 &1742824376
 GameObject:
   m_ObjectHideFlags: 0
