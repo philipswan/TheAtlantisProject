@@ -190,6 +190,17 @@ GameObject:
   m_PrefabParentObject: {fileID: 1551786871279306, guid: 07e2fbb6eb98b484f9706250514b0404,
     type: 2}
   m_PrefabInternal: {fileID: 559508755}
+--- !u!114 &129125184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 129125183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7483ca468c5ebe84e8a7d52b5ffdf87c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &129125187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4214,7 +4225,7 @@ GameObject:
   - component: {fileID: 1594401859}
   m_Layer: 0
   m_Name: Point light
-  m_TagString: Untagged
+  m_TagString: Sun
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
