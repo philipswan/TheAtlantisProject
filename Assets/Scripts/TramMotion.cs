@@ -31,17 +31,19 @@ public class TramMotion : MonoBehaviour {
 
     private List<Keyframe[]> keyPositions = new List<Keyframe[]>();              // List of keyframes for the x, y, and z positions for the current clip
     private List<Keyframe[]> keyRotations = new List<Keyframe[]>();              // List of keyframes for the w, x, y, and z rotations for the current clip
-    private Keyframe[] rotationKeyframesX = new Keyframe[500];                   // Initialize array to hold x rotation coord keyframes
-    private Keyframe[] rotationKeyframesY = new Keyframe[500];                   // Initialize array to hold y rotation coord keyframes
-    private Keyframe[] rotationKeyframesZ = new Keyframe[500];                   // Initialize array to hold z rotation coord keyframes
-    private Keyframe[] rotationKeyframesW = new Keyframe[500];                   // Initialize array to hold w rotation coord keyframes
-    private Keyframe[] positionKeyframesX = new Keyframe[500];                   // Initialize array to hold x position coord keyframes
-    private Keyframe[] positionKeyframesY = new Keyframe[500];                   // Initialize array to hold y position coord keyframes
-    private Keyframe[] positionKeyframesZ = new Keyframe[500];                   // Initialize array to hold z position coord keyframes
+    private Keyframe[] rotationKeyframesX;                                       // Initialize array to hold x rotation coord keyframes
+    private Keyframe[] rotationKeyframesY;                                       // Initialize array to hold y rotation coord keyframes
+    private Keyframe[] rotationKeyframesZ;                                       // Initialize array to hold z rotation coord keyframes
+    private Keyframe[] rotationKeyframesW;                                       // Initialize array to hold w rotation coord keyframes
+    private Keyframe[] positionKeyframesX;                                       // Initialize array to hold x position coord keyframes
+    private Keyframe[] positionKeyframesY;                                       // Initialize array to hold y position coord keyframes
+    private Keyframe[] positionKeyframesZ;                                       // Initialize array to hold z position coord keyframes
 
     private enum AccelerationState { Accelerate, Cruise, Decelerate, Wait, None }  // Enumeration of possible acceleration states
     private AccelerationState accelerationState;                                   // Enumaration accessor
     private Animation anim;                                                        // Reference to animation component
+
+    private Constants.Configuration config;										// Holds reference to config file
     #endregion
 
     #region Mono Methods
@@ -57,6 +59,7 @@ public class TramMotion : MonoBehaviour {
         currentClip = 0;
         waitOffset = 0;
         accelerationState = AccelerationState.None;
+        config = Constants.Configuration.Instance;
 
         // Set the highlighted materials
         DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
@@ -64,6 +67,19 @@ public class TramMotion : MonoBehaviour {
         {
             HighlightMaterials.Add(DefaultMaterials[i]);
         }
+
+        int samples = config.Samples;
+
+        rotationKeyframesX = new Keyframe[samples];
+        rotationKeyframesY = new Keyframe[samples];
+        rotationKeyframesZ = new Keyframe[samples];
+        rotationKeyframesW = new Keyframe[samples];
+        positionKeyframesX = new Keyframe[samples];
+        positionKeyframesY = new Keyframe[samples];
+        positionKeyframesZ = new Keyframe[samples];
+
+        // Now that our arrays have been initialized, we can create our first two clips
+        StartCoroutine("CreateClips", 2);
     }
 
     // Update is called once per frame
@@ -139,7 +155,6 @@ public class TramMotion : MonoBehaviour {
 
     /// <summary>
     /// Set the movement parameters for the tram
-    /// When called the tram will calculate two animation clips in a coroutine
     /// </summary>
     /// <param name="_acceleration"></param>
     /// <param name="_topSpeed"></param>
@@ -149,8 +164,6 @@ public class TramMotion : MonoBehaviour {
     {
         cruiseTime = _cruiseTime;
         accelerationTime = _accelerationTime;
-
-        StartCoroutine("CreateClips", 2);
     }
 
     /// <summary>
@@ -457,7 +470,7 @@ public class TramMotion : MonoBehaviour {
             finishedKeyPositions = false;
             float waitTime;
             float.TryParse(name, out waitTime);
-            waitTime /= 100;
+            waitTime /= 10;
 
             // If we're at a wait anim, set the start and end values to eachother
             if (index % 5 == 0 && index != 0 && !travelTram)
@@ -502,7 +515,6 @@ public class TramMotion : MonoBehaviour {
                 keyframes.Add(keyRotations[j]);
             }
 
-            print(waitTime);
             yield return new WaitForSeconds(waitTime);
 
             // Create animation curves from the keyframes

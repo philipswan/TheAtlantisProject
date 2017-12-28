@@ -8,11 +8,11 @@ public class TramCars : MonoBehaviour {
     #region Public Properties
     public static TramCars Instance;
 	[Tooltip("Totol keys is numSections * numKeysPerSectoin")]
-	public int numSections = 10;												// Number of sections
-	public int numKeysPerSection = 10;											// Total number of trams
+	public int numSections = 100;												// Number of sections
+	public int numKeysPerSection = 50;											// Total number of trams
 	[Tooltip("Each tram per section includes 4 trams (1 for each track)." +
 		" Total trams does not equal Num Sections * Num Trams Per Section because we only need to render what the user will see.")]
-	public int numTramsPerSection = 1;											// Number of trams per section
+	public int numTramsPerSection = 5;											// Number of trams per section
 	public float habitatHeight = 0.00001f;										// Offset
 	public GameObject train;                                                    // Train car prefab
     #endregion
@@ -61,10 +61,10 @@ public class TramCars : MonoBehaviour {
         UpdateKeyPositions();   // Move keys to proper positions
         CreateClipNames();      // Create list of clip names
         SetKeysToTrams();		// Now that all trams and sections are created, set all the tram keys for their movement
-		DeleteKeys();			// Delete keys as they are no longer needed
+		DeleteKeys();           // Delete keys as they are no longer needed
 
-		//FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
-	}
+        FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1, 1, 1));
+    }
     #endregion
 
     #region Public Methods
