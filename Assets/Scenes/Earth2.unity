@@ -2882,8 +2882,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be88806953723df46a0b4b7d5d97238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultMaterials: []
-  HighlightMaterials: []
+  DefaultMaterials:
+  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  HighlightMaterials:
+  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
 --- !u!1 &1040828027
 GameObject:
   m_ObjectHideFlags: 0
