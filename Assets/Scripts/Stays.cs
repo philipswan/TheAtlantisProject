@@ -23,8 +23,8 @@ public class Stays : MonoBehaviour
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshStays();
 
-		FloatingMenu.Instance.AddItems(menuStay, "Stays", new Vector3(250,500,1000));
-		Destroy(menuStay);
+        FloatingMenu.Instance.AddItems(menuStay, "Stays", new Vector3(250, 500, 1000));
+        Destroy(menuStay);
     }
 
     public void DrawCylinder(Vector3 start, Vector3 end, float Radius, Vector3[] vertices, int[] triangleIndices, int tubePrimitiveBaseOffset, int tubeIndexBaseOffset)

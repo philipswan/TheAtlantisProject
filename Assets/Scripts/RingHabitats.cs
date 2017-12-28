@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class RingHabitats : MonoBehaviour {
 
 	public static RingHabitats Instance;
-    public int numInstances = 10;
+    public int numInstances = 100;
     public int numRingHabitatsPerInstance = 10;
     public int numTubeSides = 8;
     public float tubeRadius = 0.0001f;
@@ -31,9 +31,9 @@ public class RingHabitats : MonoBehaviour {
 
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshRingHabitats();		// Create habitats and their sections
-		UpdatePositions();			// Move habitats to be adjacent to transit ring
+		UpdatePositions();          // Move habitats to be adjacent to transit ring
 
-		FloatingMenu.Instance.AddItems(habitat, "Habitat", new Vector3(100,100,100));
+        FloatingMenu.Instance.AddItems(habitat, "Habitat", new Vector3(100, 100, 100));
     }
 
 	/// <summary>
