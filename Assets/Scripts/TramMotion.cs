@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class TramMotion : MonoBehaviour {
@@ -20,6 +22,7 @@ public class TramMotion : MonoBehaviour {
     private float cruiseTime;                                                    // Time it takes to travel between two keys at top speed
     private float speed;                                                         // Speed of the animation clip
     private float clipSwitchTime;                                                // Used to decelerate the tram so it stops at habitat, not before it
+    private float waitTime;                                                      // How long the tram waits at the habitat
 
     private List<Vector3> positions = new List<Vector3>();                       // All destinatins for the tram
     private List<Quaternion> rotations = new List<Quaternion>();                 // Rotation of the tram at its destination
@@ -31,13 +34,6 @@ public class TramMotion : MonoBehaviour {
 
     private List<Keyframe[]> keyPositions = new List<Keyframe[]>();              // List of keyframes for the x, y, and z positions for the current clip
     private List<Keyframe[]> keyRotations = new List<Keyframe[]>();              // List of keyframes for the w, x, y, and z rotations for the current clip
-    private Keyframe[] rotationKeyframesX;                                       // Initialize array to hold x rotation coord keyframes
-    private Keyframe[] rotationKeyframesY;                                       // Initialize array to hold y rotation coord keyframes
-    private Keyframe[] rotationKeyframesZ;                                       // Initialize array to hold z rotation coord keyframes
-    private Keyframe[] rotationKeyframesW;                                       // Initialize array to hold w rotation coord keyframes
-    private Keyframe[] positionKeyframesX;                                       // Initialize array to hold x position coord keyframes
-    private Keyframe[] positionKeyframesY;                                       // Initialize array to hold y position coord keyframes
-    private Keyframe[] positionKeyframesZ;                                       // Initialize array to hold z position coord keyframes
 
     private enum AccelerationState { Accelerate, Cruise, Decelerate, Wait, None }  // Enumeration of possible acceleration states
     private AccelerationState accelerationState;                                   // Enumaration accessor
@@ -55,11 +51,13 @@ public class TramMotion : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        config = Constants.Configuration.Instance;
+
         highlited = false;
         currentClip = 0;
         waitOffset = 0;
         accelerationState = AccelerationState.None;
-        config = Constants.Configuration.Instance;
+        waitTime = config.TramWaitTime;
 
         // Set the highlighted materials
         DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
@@ -67,16 +65,6 @@ public class TramMotion : MonoBehaviour {
         {
             HighlightMaterials.Add(DefaultMaterials[i]);
         }
-
-        int samples = config.Samples;
-
-        rotationKeyframesX = new Keyframe[samples];
-        rotationKeyframesY = new Keyframe[samples];
-        rotationKeyframesZ = new Keyframe[samples];
-        rotationKeyframesW = new Keyframe[samples];
-        positionKeyframesX = new Keyframe[samples];
-        positionKeyframesY = new Keyframe[samples];
-        positionKeyframesZ = new Keyframe[samples];
 
         // Now that our arrays have been initialized, we can create our first two clips
         StartCoroutine("CreateClips", 2);
@@ -94,12 +82,6 @@ public class TramMotion : MonoBehaviour {
         {
             // Get the name of the clip without the number at the end
             string clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - 2); ;
-
-            // Debug info
-            //if (name == "Bottom Right Tram 0")
-            //{
-            //    print("name: " + name + " index: " + currentClip + " wait offset: " + waitOffset + " acceleration state: " + accelerationState.ToString());
-            //}
 
             // If the clip is no longer playing, create a new one and increase the clip index by 1
             if (!anim.IsPlaying(clipNames[currentClip]))
@@ -254,7 +236,7 @@ public class TramMotion : MonoBehaviour {
             if (accelerationState != AccelerationState.Wait)
             {
                 accelerationState = AccelerationState.Wait;
-                speed = cruiseTime;
+                speed = config.TramWaitTime;
             }
         }
         else
@@ -304,120 +286,19 @@ public class TramMotion : MonoBehaviour {
     }
 
     /// <summary>
-    /// Gets the position keyframes.
-    /// </summary>
-    /// <returns>The position keyframes.</returns>
-    /// <param name="startPos">Start position.</param>
-    /// <param name="endPos">End position.</param>
-    /// <param name="state">State.</param>
-    /// <param name="samples">Samples.</param>
-    private IEnumerator GetPositionKeyframes(object[] parameters)
-    {
-        Vector3 startPos = (Vector3)parameters[0];
-        Vector3 endPos = (Vector3)parameters[1];
-
-        for (int i = 0; i < positionKeyframesX.Length; i++)
-        {
-            // Lerp through points by sample interval
-            positionKeyframesX[i] = new Keyframe(((float)i / positionKeyframesX.Length), Mathf.Lerp(startPos.x, endPos.x, (float)i / positionKeyframesX.Length));
-        }
-
-        yield return null;
-
-        for (int i = 0; i < positionKeyframesY.Length; i++)
-        {
-            // Lerp through points by sample interval
-            positionKeyframesY[i] = new Keyframe(((float)i / positionKeyframesY.Length), Mathf.Lerp(startPos.y, endPos.y, (float)i / positionKeyframesY.Length));
-        }
-
-        yield return null;
-
-        for (int i = 0; i < positionKeyframesZ.Length; i++)
-        {
-            // Lerp through points by sample interval
-            positionKeyframesZ[i] = new Keyframe(((float)i / positionKeyframesZ.Length), Mathf.Lerp(startPos.z, endPos.z, (float)i / positionKeyframesZ.Length));
-        }
-
-        yield return null;
-
-        keyPositions.Clear();
-
-        keyPositions.Add(positionKeyframesX);
-        keyPositions.Add(positionKeyframesY);
-        keyPositions.Add(positionKeyframesZ);
-
-        finishedKeyPositions = true;
-    }
-
-    /// <summary>
-    /// Gets the rotation keyframes.
-    /// </summary>
-    /// <returns>The rotation keyframes.</returns>
-    /// <param name="startRot">Start rot.</param>
-    /// <param name="endRot">End rot.</param>
-    /// <param name="state">State.</param>
-    /// <param name="samples">Samples.</param>
-    private IEnumerator GetRotationKeyframes(object[] parameters)
-    {
-        Quaternion startRot = (Quaternion)parameters[0];
-        Quaternion endRot = (Quaternion)parameters[1];
-
-        for (int i = 0; i < rotationKeyframesX.Length; i++)
-        {
-            // Lerp through points by sample interval
-            rotationKeyframesX[i] = new Keyframe(((float)i / rotationKeyframesX.Length), Mathf.Lerp(startRot.x, endRot.x, (float)i / rotationKeyframesX.Length));
-        }
-
-        yield return null;
-
-        for (int i = 0; i < rotationKeyframesY.Length; i++)
-        {
-            // Lerp through points by sample interval
-            rotationKeyframesY[i] = new Keyframe(((float)i / rotationKeyframesY.Length), Mathf.Lerp(startRot.y, endRot.y, (float)i / rotationKeyframesY.Length));
-        }
-
-        yield return null;
-
-        for (int i = 0; i < rotationKeyframesZ.Length; i++)
-        {
-            // Lerp through points by sample interval
-            rotationKeyframesZ[i] = new Keyframe(((float)i / rotationKeyframesZ.Length), Mathf.Lerp(startRot.z, endRot.z, (float)i / rotationKeyframesZ.Length));
-        }
-
-        yield return null;
-
-        for (int i = 0; i < rotationKeyframesW.Length; i++)
-        {
-            // Lerp through points by sample interval
-            rotationKeyframesW[i] = new Keyframe(((float)i / rotationKeyframesW.Length), Mathf.Lerp(startRot.w, endRot.w, (float)i / rotationKeyframesW.Length));
-        }
-
-        yield return null;
-
-        keyRotations.Clear();
-
-        keyRotations.Add(rotationKeyframesX);
-        keyRotations.Add(rotationKeyframesY);
-        keyRotations.Add(rotationKeyframesZ);
-        keyRotations.Add(rotationKeyframesW);
-
-        finishedKeyRotations = true;
-    }
-
-    /// <summary>
-    /// Creates the curves for the x, y, and z positions or rotations
+    /// Creates the curves for the x, y, and z (and w for rot) positions and rotations
     /// </summary>
     /// <returns>The curve.</returns>
     /// <param name="keyframes">Keyframes.</param>
-    private List<AnimationCurve> CreateCurve(List<Keyframe[]> keyframes)
+    private List<AnimationCurve> CreateCurve(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot)
     {
-        AnimationCurve localxPos = new AnimationCurve(keyframes[0]);
-        AnimationCurve localyPos = new AnimationCurve(keyframes[1]);
-        AnimationCurve localzPos = new AnimationCurve(keyframes[2]);
-        AnimationCurve localxRot = new AnimationCurve(keyframes[3]);
-        AnimationCurve localyRot = new AnimationCurve(keyframes[4]);
-        AnimationCurve localzRot = new AnimationCurve(keyframes[5]);
-        AnimationCurve localwRot = new AnimationCurve(keyframes[6]);
+        AnimationCurve localxPos = AnimationCurve.Linear(0, startPos.x, 1, endPos.x);
+        AnimationCurve localyPos = AnimationCurve.Linear(0, startPos.y, 1, endPos.y);
+        AnimationCurve localzPos = AnimationCurve.Linear(0, startPos.z, 1, endPos.z);
+        AnimationCurve localxRot = AnimationCurve.Linear(0, startRot.x, 1, endRot.x);
+        AnimationCurve localyRot = AnimationCurve.Linear(0, startRot.y, 1, endRot.y);
+        AnimationCurve localzRot = AnimationCurve.Linear(0, startRot.z, 1, endRot.z);
+        AnimationCurve localwRot = AnimationCurve.Linear(0, startRot.w, 1, endRot.w);
 
         List<AnimationCurve> curves = new List<AnimationCurve>() { localxPos, localyPos, localzPos, localxRot, localyRot, localzRot, localwRot };
         return curves;
@@ -455,9 +336,6 @@ public class TramMotion : MonoBehaviour {
         for (int i = 0; i < clipsToCreate; i++)
         {
             // Clear lists from previous clip
-            keyPositions.Clear();
-            keyRotations.Clear();
-            keyframes.Clear();
             curves.Clear();
 
             // Set up our variables
@@ -466,11 +344,9 @@ public class TramMotion : MonoBehaviour {
             Vector3 startPos, endPos;
             Quaternion startRot, endRot;
             int index = anim.GetClipCount();
-            finishedKeyRotations = false;
-            finishedKeyPositions = false;
-            float waitTime;
-            float.TryParse(name, out waitTime);
-            waitTime /= 10;
+            float yieldTime;
+            float.TryParse(name, out yieldTime);
+            yieldTime /= 10;
 
             // If we're at a wait anim, set the start and end values to eachother
             if (index % 5 == 0 && index != 0 && !travelTram)
@@ -493,35 +369,13 @@ public class TramMotion : MonoBehaviour {
                 endRot = rotations[index + 1 - waitOffset];
             }
 
-            // Get the keyframes between the two positions
-            object[] parameters = new object[2]{startPos, endPos};
-            StartCoroutine("GetPositionKeyframes", parameters);
-
-            parameters = new object[2]{startRot, endRot};
-            StartCoroutine("GetRotationKeyframes", parameters);
-
-            while (!finishedKeyPositions || !finishedKeyRotations)
-            {
-                yield return null;
-            }
-
-            // Combine the x, y, and z coordinates for position and rotation into one list
-            for (int j = 0; j < keyPositions.Count; j++)
-            {
-                keyframes.Add(keyPositions[j]);
-            }
-            for (int j = 0; j < keyRotations.Count; j++)
-            {
-                keyframes.Add(keyRotations[j]);
-            }
-
-            yield return new WaitForSeconds(waitTime);
-
             // Create animation curves from the keyframes
-            curves = CreateCurve(keyframes);
+            curves = CreateCurve(startPos, endPos, startRot, endRot);
 
             // Create the animation clip
             clip = CreateClip(curves);
+
+            yield return new WaitForSeconds(yieldTime);
 
             // Set the reference name of the clip
             clipName = clipNames[index];

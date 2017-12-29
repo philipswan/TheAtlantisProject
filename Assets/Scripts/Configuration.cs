@@ -38,6 +38,9 @@ namespace Constants{
 		[Tooltip("Top speed for trams (m/s)")]
 		public float TramVelocity = 223.5f;
 
+        [Tooltip("Time tram waits at habitats(s)")]
+        public float TramWaitTime = 5f;
+
         [Tooltip("Number of keyframes to create for each curve")]
         public int Samples = 500;
 
