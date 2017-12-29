@@ -22,7 +22,5 @@ public class OctahedronSphereTester : MonoBehaviour {
 	public void SetMaterials()
 	{
 		GetComponent<MeshRenderer>().materials = Earthmaterials.ToArray();
-
-		GetComponent<AtmosphereEffect>().OnMaterialsSet();
 	}
 }

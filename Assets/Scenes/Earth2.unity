@@ -190,17 +190,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1551786871279306, guid: 07e2fbb6eb98b484f9706250514b0404,
     type: 2}
   m_PrefabInternal: {fileID: 559508755}
---- !u!114 &129125184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 129125183}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7483ca468c5ebe84e8a7d52b5ffdf87c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &129125187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,8 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Earthmaterials:
-  - {fileID: 2100000, guid: f201b6451c1d274449d6875178099975, type: 2}
-  - {fileID: 2100000, guid: f01d2d50e41869846818a3a2b5032f7e, type: 2}
+  - {fileID: 2100000, guid: ca76c6a60a7f03c4fac184b2e5388829, type: 2}
   subdivisions: 6
   radius: 0.495
 --- !u!114 &129125188
@@ -2150,7 +2138,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 352609fe1d0bce94f9daaf984fc915aa, type: 2}
+      objectReference: {fileID: 2100000, guid: ca76c6a60a7f03c4fac184b2e5388829, type: 2}
     - target: {fileID: 23880072864617066, guid: 07e2fbb6eb98b484f9706250514b0404,
         type: 2}
       propertyPath: m_Materials.Array.data[1]
@@ -3580,7 +3568,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 158226, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}
