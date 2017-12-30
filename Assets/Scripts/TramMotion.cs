@@ -39,7 +39,7 @@ public class TramMotion : MonoBehaviour {
     private AccelerationState accelerationState;                                   // Enumaration accessor
     private Animation anim;                                                        // Reference to animation component
 
-    private Constants.Configuration config;										// Holds reference to config file
+    private Constants.Configuration config;										 // Holds reference to config file
     #endregion
 
     #region Mono Methods
