@@ -41,9 +41,6 @@ namespace Constants{
         [Tooltip("Time tram waits at habitats(s)")]
         public float TramWaitTime = 5f;
 
-        [Tooltip("Number of keyframes to create for each curve")]
-        public int Samples = 500;
-
         [Header("Ring Constants")]
 		[Tooltip("Latitude of the ring")]
 		public float RingLatitude = -34.0f;
