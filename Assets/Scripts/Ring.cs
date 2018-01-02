@@ -37,12 +37,12 @@ public class Ring : MonoBehaviour {
 
 		if (TramRing)
 		{
-			FloatingMenu.Instance.AddItems(p, "Transit Ring", new Vector3(14,2860,15), furthestPoint);
-		}
+            FloatingMenu.Instance.AddItems(p, "Transit Ring", new Vector3(14, 2860, 15), furthestPoint);
+        }
 		else
 		{
-			FloatingMenu.Instance.AddItems(p, "Tethered Ring", new Vector3(14,2860,15), furthestPoint);
-		}
+            FloatingMenu.Instance.AddItems(p, "Tethered Ring", new Vector3(14, 2860, 15), furthestPoint);
+        }
     }
 
 	/// <summary>
@@ -67,7 +67,7 @@ public class Ring : MonoBehaviour {
 	/// Retuns the diameter of the ring
 	/// </summary>
 	/// <param name="_go">Go.</param>
-	private void FindPointOnMesh(GameObject _go)
+	private float FindPointOnMesh(GameObject _go)
 	{
 		Vector3[] verticies = GetComponent<MeshFilter>().mesh.vertices;
 		float distance = 0;
@@ -80,7 +80,8 @@ public class Ring : MonoBehaviour {
 			}
 		}
 
-		furthestPoint = distance;
+		//print(TramRing + " " + 5000 * (distance/2));
+		return distance;
 	}
 
     private void RefreshRing() {
@@ -163,6 +164,6 @@ public class Ring : MonoBehaviour {
 		MeshRenderer mr = GetComponent<MeshRenderer>();
 		mr.materials = DefaultMaterials.ToArray();
 
-		FindPointOnMesh(gameObject);
+		furthestPoint = FindPointOnMesh(gameObject);
 	}
 }

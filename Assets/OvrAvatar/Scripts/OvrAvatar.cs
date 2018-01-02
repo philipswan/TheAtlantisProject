@@ -309,6 +309,11 @@ public class OvrAvatar : MonoBehaviour {
                         if (part != null)
                         {
                             part.OnAssetsLoaded();
+
+							if (componentObject.name == "controller_left" || componentObject.name == "controller_right")
+							{
+								componentObject.BroadcastMessage("OnCreate");
+							}
                         }
                     }
                 }

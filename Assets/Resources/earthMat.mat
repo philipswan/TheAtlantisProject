@@ -30,7 +30,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _EmissionStr: 0.15671642
+    - _EmissionStr: 0.129
     - _Shininess: 0.037
     - _SpecPower: 43
     m_Colors:

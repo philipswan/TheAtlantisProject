@@ -31,19 +31,19 @@ public class FloatingMenu : MonoBehaviour {
 		// Wait for the user to reset the thumbstick position to prevent flying through the menu
 		if (waitToReset)
 		{
-			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) == Vector2.zero)
+			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick) == Vector2.zero && OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick) == Vector2.zero)
 			{
 				waitToReset = false;
 			}
 		}
 		else if (activated)
 		{
-			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x > 0.5)
+			if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x > 0.5f || OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x > 0.5f)
 			{
 				// Cycle menu right
 				CycleRight();
 			}
-			else if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x < -0.5)
+			else if (OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x < -0.5f || OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick).x < -0.5f)
 			{
 				// Cycle menu left
 				CycleLeft();
@@ -51,14 +51,14 @@ public class FloatingMenu : MonoBehaviour {
 		}
 
 		// Activate menu
-		if (OVRInput.GetDown(OVRInput.Button.One) && !activated)
+		if ((OVRInput.GetDown(OVRInput.Button.One) || OVRInput.GetDown(OVRInput.Button.Two)) && !activated)
 		{
 			ActivateMenu();
 			ControllerTransition.Instance.Activate(false);	// Since we need the thumbstick to navigate the menu
 			return;
 		}
 		// Deactive menu
-		if (OVRInput.GetDown(OVRInput.Button.One) && activated)
+		if ((OVRInput.GetDown(OVRInput.Button.One) || OVRInput.GetDown(OVRInput.Button.Two))  && activated)
 		{
 			DeactivateMenu();
 			ControllerTransition.Instance.Activate(true);	// Thumbstick for this script is no longer needed
@@ -137,6 +137,13 @@ public class FloatingMenu : MonoBehaviour {
 		UpdateMaterials(currentTag);
 
 		StartCoroutine("RotateItem", index);
+
+		// Update the messages to be displayed in the help menu
+		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
+		foreach(GameObject go in helpMenus)
+		{
+			go.GetComponent<HelpMenuManager>().UpdateMessages(true);
+		}
 	}
 
 	/// <summary>
@@ -154,6 +161,13 @@ public class FloatingMenu : MonoBehaviour {
 		tm.text = "";
 
 		StopCoroutine("RotateItem");
+
+		// Update the messages to be displayed in the help menu
+		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
+		foreach(GameObject go in helpMenus)
+		{
+			go.GetComponent<HelpMenuManager>().UpdateMessages(false);
+		}
 	}
 
 	/// <summary>

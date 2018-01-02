@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEditor;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TramCars : MonoBehaviour {
 
-	public static TramCars Instance;
+    #region Public Properties
+    public static TramCars Instance;
 	[Tooltip("Totol keys is numSections * numKeysPerSectoin")]
-	public int numSections = 10;												// Number of sections
-	public int numKeysPerSection = 10;											// Total number of trams
+	public int numSections = 100;												// Number of sections
+	public int numKeysPerSection = 50;											// Total number of trams
 	[Tooltip("Each tram per section includes 4 trams (1 for each track)." +
 		" Total trams does not equal Num Sections * Num Trams Per Section because we only need to render what the user will see.")]
-	public int numTramsPerSection = 1;											// Number of trams per section
+	public int numTramsPerSection = 5;											// Number of trams per section
 	public float habitatHeight = 0.00001f;										// Offset
-	public GameObject train;													// Train car prefab
+	public GameObject train;                                                    // Train car prefab
+    #endregion
 
-	private float torusRadius;													// Radius of torus ring
+    #region Private Properties
+    private float torusRadius;													// Radius of torus ring
+	private float travelTime;                                                   // Time it takes to travel from one key to the next (s)
+	private float accelerationTime;                                             // Time it takes to accelerate (s)
 	private Constants.Configuration config;										// Holds reference to config file
 	private Vector3 prevUp;														// Holds up position for first tram
 	private int startIndex;														// What index the trams should start being created
@@ -31,9 +36,11 @@ public class TramCars : MonoBehaviour {
 	private List<GameObject> keysTopLeft = new List<GameObject>();				// List of all top left keys. Points for the top left trams to travel to
 	private List<GameObject> keysTopRight = new List<GameObject>();				// List of all top right keys. Points for the top right trams to travel to
 
-	private List<Material> onGazeEnterMaterials = new List<Material>();
-	private Material onGazeExitMaterial;
-	void Awake()
+    private List<string> clipNames = new List<string>();
+    #endregion
+
+    #region Mono Methods
+    void Awake()
 	{
 		Instance = this;
 	}
@@ -50,56 +57,69 @@ public class TramCars : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 
 		CreateTramSections();	// Create all trams and keys
-		UpdatePositions();		// Move trams to proper positions
-		UpdateTramKeys();		// Now that all trams and sections are created, set all the tram keys for their movement
-		DeleteKeys();			// Delete keys as they are no longer needed
+		UpdateTramPositions();	// Move trams to proper positions
+        UpdateKeyPositions();   // Move keys to proper positions
+        CreateClipNames();      // Create list of clip names
+        SetKeysToTrams();		// Now that all trams and sections are created, set all the tram keys for their movement
+		DeleteKeys();           // Delete keys as they are no longer needed
 
-		FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1,1,1));
+        FloatingMenu.Instance.AddItems(train, "Tram", new Vector3(1, 1, 1));
+    }
+    #endregion
 
-
-	}
-		
-	/// <summary>
-	/// Set trams active over multiple frames
-	/// </summary>
-	/// <returns>The trams.</returns>
-	public void ActivateTrams()
+    #region Public Methods
+    /// <summary>
+    /// Set all trams active, copy the clip names list to each tram, and set
+    /// the acceleration and top speed times to travel between each key
+    /// </summary>
+    /// <returns>The trams.</returns>
+    public void ActivateTrams()
 	{
 		foreach(GameObject t in tramBottomRightObjects)
 		{
 			t.SetActive(true);
+            t.GetComponent<TramMotion>().AddClipNames(clipNames);
+            t.GetComponent<TramMotion>().SetSpeeds(travelTime, accelerationTime);
 		}
 
 		foreach(GameObject t in tramTopRightObjects)
 		{
 			t.SetActive(true);
 			t.GetComponent<TramMotion>().SetTravelTram();
-		}
-			
-		foreach(GameObject t in tramBottomLeftObjects)
+            t.GetComponent<TramMotion>().AddClipNames(clipNames);
+            t.GetComponent<TramMotion>().SetSpeeds(travelTime, accelerationTime);
+        }
+
+        foreach (GameObject t in tramBottomLeftObjects)
 		{
 			t.SetActive(true);
 			t.GetComponent<TramMotion>().SetTravelTram();
-		}
+            t.GetComponent<TramMotion>().AddClipNames(clipNames);
+            t.GetComponent<TramMotion>().SetSpeeds(travelTime, accelerationTime);
+        }
 
-		foreach(GameObject t in tramTopLeftObjects)
+        foreach (GameObject t in tramTopLeftObjects)
 		{
 			t.SetActive(true);
-		}
-	}
+            t.GetComponent<TramMotion>().AddClipNames(clipNames);
+            t.GetComponent<TramMotion>().SetSpeeds(travelTime, accelerationTime);
+        }
+    }
+    #endregion
 
-	/// <summary>
-	/// Delete all keys
-	/// </summary>
-	private void DeleteKeys()
+    #region Private Methods
+    /// <summary>
+    /// Delete all keys
+    /// </summary>
+    private void DeleteKeys()
 	{
-		foreach (GameObject k in keysTopLeft)
-		{
-			Destroy(k);
-		}
-		keysTopLeft.Clear();
+        foreach (GameObject k in keysTopLeft)
+        {
+            Destroy(k);
+        }
+        keysTopLeft.Clear();
 
-		foreach (GameObject k in keysBottomRight)
+        foreach (GameObject k in keysBottomRight)
 		{
 			Destroy(k);
 		}
@@ -126,22 +146,29 @@ public class TramCars : MonoBehaviour {
 		bool createTram;
 		int tramSpacing = (int)numKeysPerSection / numTramsPerSection;
 
-		/*
-		// Calculate distance in meters between trams and keys
-		// R of ring at key 3 is 2072
-		// R of earth is 6.371e6f
-		// Hyperloop train speed is 333 m/s
-		// Ratio of real radius to system radius 3.25e-4
-		// Arc length = RC where C is the center angle
-		float radius = 2072f;
-		float velocity = 0.108f;
-		float rpk = (2 * Mathf.PI) / (numSections * numKeysPerSection);
-		print("tram spacing: " + tramSpacing + " total keys: " + numSections * numKeysPerSection);
-		print("rad per key: " + rpk + "rad");
-		print("arc length between keys: " + radius * rpk + "m");
-		print("arc length between trams: " + radius * rpk * tramSpacing + "m");
-		print("travel time between keys: " + (radius * rpk) / velocity + "s");
-		*/
+		//  R of actual ring is 5,182,853 m
+		//  R of tram ring is 0.41453875 (Sphere size (1, 1, 1))
+		//  R of tram ring at scale 5000 is 2072 m
+		//  Arc length = RC where C is the center angle
+        //  Acceleration and velocity are set in the constants script
+
+		float radiusRing 	= 2072f;	                                            // Radius of the tram ring
+		float rpk 			= (2 * Mathf.PI) / (numSections * numKeysPerSection);	// Radians between keys
+		float scaleRatio 	= 2072.0f / 5182853.0f;	                                // ratio of tram ring to actual ring (when the system is at scale 5000)
+		float alKeys 		= radiusRing * rpk;	                                    // arc length between keys in meters
+		float topSpeed 		= config.TramVelocity * scaleRatio;	                    // top speed scaled to system
+		float acceleration 	= config.TramAcceleration * scaleRatio;	                // acceleartion scaled to system
+		travelTime 			= alKeys / topSpeed;                                    // Time it takes to travel from one key to the next
+		accelerationTime 	= topSpeed / acceleration;                              // Time it takes to accelerate to full speed
+
+		// Print calculations for debuggin
+		print("Scale Ratio: " + scaleRatio);
+		print("Ttotal keys: " + numSections * numKeysPerSection);
+		print("rad per key: " + rpk);
+		print("arc length between keys: " + alKeys + "m");
+		print("Top speed: " + topSpeed + "m/s" + " acceleration: " + acceleration + "m/s^2");
+		print("Top speed travel time: " + travelTime + "s");
+		print("Acceleartion time: " + accelerationTime + "s");
 
 		int numKeys = numKeysPerSection * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numKeys;
@@ -184,7 +211,7 @@ public class TramCars : MonoBehaviour {
 
 		theta = (instance * numKeysPerSection + ringHabitatIndex) * ringHabitatSpacing;
 		phi0 = torusRadius;
-		phi1 = torusRadius - habitatHeight * Mathf.Cos(config.RingLatitude * Mathf.Deg2Rad);
+		phi1 = torusRadius - habitatHeight * Mathf.Cos(-34 * Mathf.Deg2Rad);
 
 		// Find the current and next segments
 		Vector3 habtop, habbot;
@@ -246,18 +273,18 @@ public class TramCars : MonoBehaviour {
 		if (createTram)
 		{
 			GameObject tram = Instantiate(train, transform);
-			tram.name = "Bottom Right Tram " + tramBottomRightObjects.Count;
+			tram.name = tramBottomRightObjects.Count.ToString();
 			tram.transform.localPosition = habtop;
 			tram.transform.localScale = new Vector3(6e-6f, 6e-6f, 6e-6f);
 
 			GameObject tram1 = Instantiate(tram, transform);
-			tram1.name = "Top Left Tram " + tramTopLeftObjects.Count;
+			tram1.name = tramTopLeftObjects.Count.ToString();
 
 			GameObject tram2 = Instantiate(tram, transform);
-			tram2.name = "Bottom Left Tram " + tramBottomLeftObjects.Count;
+			tram2.name = tramBottomLeftObjects.Count.ToString();
 
 			GameObject tram3 = Instantiate(tram, transform);
-			tram3.name = "Top Right Tram " + tramTopRightObjects.Count;
+			tram3.name = tramTopRightObjects.Count.ToString();
 
 			// Set orientation of trams other than the first
 			if (tramBottomRightObjects.Count > 0)
@@ -277,33 +304,16 @@ public class TramCars : MonoBehaviour {
 		}
 	}
 
-	private void SetTramMaterials(GameObject tram)
-	{
-		MeshRenderer mr = tram.GetComponent<MeshRenderer>();
-		List<Material> materials = new List<Material>();
-		materials.Add(mr.material);
-		materials.Add(Resources.Load("Outline Diffuse") as Material);
-		mr.materials = materials.ToArray();
-		//mr.materials[1].SetFloat("_Outline", 0);
-	}
-
 	/// <summary>
-	/// Update positions of keys and trams
+	/// Update positions of trams
 	/// </summary>
-	private void UpdatePositions()
+	private void UpdateTramPositions()
 	{
 		// Adjust bottom right trams
 		foreach (GameObject t in tramBottomRightObjects)
 		{
 			t.transform.localPosition += transform.InverseTransformPoint(t.transform.right) * 9.5e-5f;
 			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 6e-5f;
-		}
-
-		// Adjust bottom right keys
-		foreach (GameObject k in keysBottomRight)
-		{
-			k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 9.5e-5f;
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 6e-5f;
 		}
 
 		// Adjust top right trams
@@ -313,25 +323,11 @@ public class TramCars : MonoBehaviour {
 			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 3e-5f;
 		}
 
-		// Adjust top right keys
-		foreach (GameObject k in keysTopRight)
-		{
-			k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 1.2e-4f;
-			k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 3e-5f;
-		}
-
 		// Adjust bottom left trams
 		foreach (GameObject t in tramBottomLeftObjects)
 		{
 			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
 			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 1e-5f;
-		}
-
-		// Adjust bottom left keys
-		foreach (GameObject k in keysBottomLeft)
-		{
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 1e-5f;
 		}
 
 		// Adjust top left trams
@@ -340,72 +336,125 @@ public class TramCars : MonoBehaviour {
 			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
 			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 9e-5f;
 		}
-
-		// Adjust top left keys
-		foreach (GameObject k in keysTopLeft)
-		{
-			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
-			k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 9e-5f;
-		}
 	}
+
+    /// <summary>
+    /// Update positions of keys
+    /// </summary>
+    private void UpdateKeyPositions()
+    {
+        // Adjust bottom right keys
+        foreach (GameObject k in keysBottomRight)
+        {
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 9.5e-5f;
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 6e-5f;
+        }
+
+        // Adjust top right keys
+        foreach (GameObject k in keysTopRight)
+        {
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 1.2e-4f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 3e-5f;
+        }
+
+        // Adjust bottom left keys
+        foreach (GameObject k in keysBottomLeft)
+        {
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 1e-5f;
+        }
+
+        // Adjust top left keys
+        foreach (GameObject k in keysTopLeft)
+        {
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 9e-5f;
+        }
+    }
 
 	/// <summary>
 	/// Set the keys to each tram
 	/// </summary>
-	private void UpdateTramKeys()
+	private void SetKeysToTrams()
 	{
 		// Set the keys for each tram in the bottom right track
 		for (int i=0; i<tramBottomRightObjects.Count; i++)
 		{
-			List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottomRight);
-			sortedRotations = InsertRotations(sortedRotations);
-			tramBottomRightObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
+            List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottomRight);
+            tramBottomRightObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
-			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottomRight);
-			sortedPositions = InsertPositions(sortedPositions);
-			tramBottomRightObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
-		}
+            List<Vector3> sortedPositions = SortKeysPositions(i, keysBottomRight);
+            tramBottomRightObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
+        }
 
-		// Set the keys for each tram in the bottom left track
-		for (int i=0; i<tramBottomLeftObjects.Count; i++)
+        // Set the keys for each tram in the bottom left track
+        for (int i=0; i<tramBottomLeftObjects.Count; i++)
 		{
-			List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottomLeft);
-			tramBottomLeftObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
+            List<Quaternion> sortedRotations = SortKeysRotations(i, keysBottomLeft);
+            tramBottomLeftObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
-			List<Vector3> sortedPositions = SortKeysPositions(i, keysBottomLeft);
-			tramBottomLeftObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
-		}
+            List<Vector3> sortedPositions = SortKeysPositions(i, keysBottomLeft);
+            tramBottomLeftObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
+        }
 
 		// Set the keys for each tram in the top left track
 		for (int i=0; i<tramTopLeftObjects.Count; i++)
 		{
-			List<Quaternion> sortedRotations = ReverseSortKeysRotations(i, keysTopLeft);
-			sortedRotations = InsertRotations(sortedRotations);
-			tramTopLeftObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
+            List<Quaternion> sortedRotations = ReverseSortKeysRotations(i, keysTopLeft);
+            tramTopLeftObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
-			List<Vector3> sortedPositions = ReverseSortKeysPositions(i, keysTopLeft);
-			sortedPositions = InsertPositions(sortedPositions);
-			tramTopLeftObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
-		}
+            List<Vector3> sortedPositions = ReverseSortKeysPositions(i, keysTopLeft);
+            tramTopLeftObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
+        }
 
 		// Set the keys for each tram in the top right track
 		for (int i=0; i<tramTopRightObjects.Count; i++)
 		{
-			List<Quaternion> sortedRotations = ReverseSortKeysRotations(i, keysTopRight);
-			tramTopRightObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
+            List<Quaternion> sortedRotations = ReverseSortKeysRotations(i, keysTopRight);
+            tramTopRightObjects[i].GetComponent<TramMotion>().AddRotation(sortedRotations);
 
-			List<Vector3> sortedPositions = ReverseSortKeysPositions(i, keysTopRight);
-			tramTopRightObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
-		}
+            List<Vector3> sortedPositions = ReverseSortKeysPositions(i, keysTopRight);
+            tramTopRightObjects[i].GetComponent<TramMotion>().AddPosition(sortedPositions);
+        }
 	}
 
-	/// <summary>
-	/// Sorts the Gameobject keys.
-	/// </summary>
-	/// <returns>Gameobjects in order.</returns>
-	/// <param name="index">Index.</param>
-	/// <param name="keys">Keys.</param>
-	private List<Quaternion> SortKeysRotations(int index, List<GameObject> keys)
+    private void CreateClipNames()
+    {
+        int clipInPeriod = 0;
+        string name = "";
+
+        for (int i=0; i<keysBottomLeft.Count; i++)
+        {
+            if (clipInPeriod == 0)
+            {
+                name = "Accelerate " + i;
+            }
+            else if (clipInPeriod == 4)
+            {
+                name = "Decelerate " + i;
+            }
+            else if (clipInPeriod == 5)
+            {
+                name = "Wait " + i;
+                clipInPeriod = -1;
+            }
+            else
+            {
+                name = "Cruise " + i;
+            }
+
+            clipInPeriod++;
+            clipNames.Add(name);
+        }
+    }
+
+    /// <summary>
+    /// Sorts the Gameobject keys.
+    /// </summary>
+    /// <returns>Gameobjects in order.</returns>
+    /// <param name="index">Index.</param>
+    /// <param name="keys">Keys.</param>
+    private List<Quaternion> SortKeysRotations(int index, List<GameObject> keys)
 	{
 		List<Quaternion> sortedKeys = new List<Quaternion>();
 		index *= (int)numKeysPerSection / numTramsPerSection;
@@ -494,63 +543,5 @@ public class TramCars : MonoBehaviour {
 
 		return sortedKeys;
 	}
-
-	private List<Vector3> InsertPositions(List<Vector3> positions)
-	{
-		List<Vector3> newPos = new List<Vector3>();
-
-		for (int i=0; i<positions.Count; i++)
-		{
-			newPos.Add(positions[i]);
-			if (i % habitatIndex == 0)
-			{
-				newPos.Add(positions[i]);
-				newPos.Add(positions[i]);
-				newPos.Add(positions[i]);
-			}
-		}
-
-		return newPos;
-	}
-
-	private List<Quaternion> InsertRotations(List<Quaternion> rotations)
-	{
-		List<Quaternion> newRot = new List<Quaternion>();
-
-		for (int i=0; i<rotations.Count; i++)
-		{
-			newRot.Add(rotations[i]);
-			if (i % habitatIndex == 0)
-			{
-				newRot.Add(rotations[i]);
-				newRot.Add(rotations[i]);
-				newRot.Add(rotations[i]);
-			}
-		}
-
-		return newRot;
-	}
-
-	private void OnGazeEnter()
-	{
-		foreach(GameObject t in tramBottomRightObjects)
-		{
-			
-		}
-
-		foreach(GameObject t in tramTopRightObjects)
-		{
-
-		}
-
-		foreach(GameObject t in tramBottomLeftObjects)
-		{
-
-		}
-
-		foreach(GameObject t in tramTopLeftObjects)
-		{
-			
-		}
-	}
+    #endregion
 }
