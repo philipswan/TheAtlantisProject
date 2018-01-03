@@ -45,11 +45,44 @@ namespace Constants{
 		[Tooltip("Latitude of the ring")]
 		public float RingLatitude = -34.0f;
 
+        private float transitRingDiamter;
+
+        private float ringDiameter;
+
 		public static Configuration Instance;
 
-		void Awake()
+        public float TransitRingDiamter
+        {
+            get
+            {
+                return transitRingDiamter;
+            }
+
+            set
+            {
+                transitRingDiamter = value;
+            }
+        }
+
+        public float RingDiameter
+        {
+            get
+            {
+                return ringDiameter;
+            }
+
+            set
+            {
+                ringDiameter = value;
+            }
+        }
+
+        void Awake()
 		{
 			Instance = this;
+
+            ringDiameter = -1;
+            transitRingDiamter = -1;
 		}
 	}
 }

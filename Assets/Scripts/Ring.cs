@@ -66,7 +66,7 @@ public class Ring : MonoBehaviour {
     //        GameObject sphere = GameObject.FindGameObjectWithTag("sphere").gameObject;
     //        Vector3 pos = sphere.GetComponent<SphereCollider>().ClosestPoint(transform.position);
     //        float distance = Vector3.Distance(pos, transform.position);
-    //        //print(distance / scaleRatio);
+    //        print(distance / scaleRatio);
 
     //        Gizmos.DrawLine(pos, transform.position);
     //    }
@@ -190,5 +190,14 @@ public class Ring : MonoBehaviour {
 		mr.materials = DefaultMaterials.ToArray();
 
 		furthestPoint = GetDiameter();
-	}
+
+        if (TramRing)
+        {
+            config.TransitRingDiamter = furthestPoint;
+        }
+        else
+        {
+            config.RingDiameter = furthestPoint;
+        }
+    }
 }

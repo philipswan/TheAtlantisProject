@@ -16,75 +16,86 @@ public class RingContainer : MonoBehaviour {
     private float radius;
     private Vector3 furthestPoint;
     private GameObject ring;
+    private string ringTag;
 
     private bool printed = false;
+    private bool positionSet = false;
+
+    private Constants.Configuration config;
 
 	// Use this for initialization
 	void Start () {
-        ring = transform.GetChild(0).gameObject;
-
-        newScale = GetNewScale();
-        radius = ring.GetComponent<Ring>().GetDiameter() / 2;
-        print(radius);
-
-		List<Vector3> children = new List<Vector3>();
-
-		for (int i=0; i<transform.childCount; i++)
-		{
-			children.Add(transform.GetChild(i).position);
-		}
-
-        transform.localPosition = Vector3.zero - ring.transform.InverseTransformDirection(ring.transform.right) * radius;
-		//transform.position = GameObject.FindGameObjectWithTag("Positioner").transform.position;
-
-		for (int i=0; i<transform.childCount; i++)
-		{
-			transform.GetChild(i).position = children[i];
-		}
-			
-		transform.localScale = new Vector3(newScale, newScale, newScale);
+        config = Constants.Configuration.Instance;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (ring.name == "Ring - Transit" && !printed)
-        {
-            Vector3[] verts = ring.GetComponent<MeshFilter>().mesh.vertices;
+        if (config.RingDiameter == -1 || config.TransitRingDiamter == -1)
+        { return; }
 
-            for (int i = 0; i < verts.Length; i++)
-            {
-                print(Vector3.Distance(transform.localPosition, verts[i]));
-            }
-        }
+        SetPosition();
 
-        printed = true;
+        enabled = false;
+
+        //if (ring.name == "Ring - Transit" && !printed)
+        //{
+        //    Vector3[] verts = ring.GetComponent<MeshFilter>().mesh.vertices;
+
+        //    for (int i = 0; i < verts.Length; i++)
+        //    {
+        //        print(Vector3.Distance(transform.localPosition, verts[i]));
+        //    }
+        //}
+
+        //printed = true;
     }
 
-    //private float GetDiameter()
-    //{
-    //    float diameter = -1;
-    //    Vector3 objectPos = transform.GetChild(0).localPosition;
+    private void SetPosition()
+    {
+        ringTag = GetTag();
+        ring = GameObject.FindGameObjectWithTag(ringTag);
+        newScale = GetNewScale();
 
-    //    Vector3[] verts = transform.GetChild(0).GetComponent<MeshFilter>().mesh.vertices;
+        radius = ring.GetComponent<Ring>().GetDiameter() / 2;
+        print(name + " " + radius);
 
-    //    for (int i=0; i<verts.Length; i++)
-    //    {
-    //        float distance = Vector3.Distance(objectPos, verts[i]);
-    //        if (distance > diameter)
-    //        {
-    //            diameter = distance;
-    //            furthestPoint = verts[i];
-    //        }
-    //    }
+        List<Vector3> children = new List<Vector3>();
 
-    //    print(diameter);
-    //    return diameter / 2;
-    //}
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            children.Add(transform.GetChild(i).position);
+        }
 
-    //public void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawLine(furthestPoint, transform.GetChild(0).localPosition);
-    //}
+        transform.localPosition = Vector3.zero - ring.transform.InverseTransformDirection(ring.transform.right) * radius;
+        //transform.position = GameObject.FindGameObjectWithTag("Positioner").transform.position;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).position = children[i];
+        }
+
+        transform.localScale = new Vector3(newScale, 1, 1);
+    }
+
+    private string GetTag()
+    {
+        string tag = "";
+
+        switch (scale)
+        {
+            case Scale.Ring:
+                tag = "Ring";
+                break;
+            case Scale.TransitRing:
+                tag = "Ring - Transit";
+                break;
+            default:
+                tag = "Ring";
+                break;
+        }
+
+        return tag;
+    }
 
     private float GetNewScale()
     {
@@ -92,10 +103,10 @@ public class RingContainer : MonoBehaviour {
         switch (scale)
         {
             case Scale.Ring:
-                val = 0.989981f;
+                val = 0.985555f;
                 break;
             case Scale.TransitRing:
-                val = 0.988481f;
+                val = 0.98522f;
                 break;
             case Scale.Test:
                 val = 0.9985f;
