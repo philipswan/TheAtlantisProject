@@ -8,7 +8,7 @@ public class Transition1 : MonoBehaviour {
 	[Tooltip("The transforms that the camera will move to in the order that they entered.")]
 	public List<Transform> Keys = new List<Transform>();		// Holds list of all transforms for transitions
 	public static Transition1 Instance;							// Holds reference to this script
-	public float ElevatorBuffer = 1.5f;							// Multiplier for how much the camera should lead the elevator
+	//public float ElevatorBuffer = 1.5f;							// Multiplier for how much the camera should lead the elevator
 	[HideInInspector]
 	public bool MoveCamera;										// Flag controlling vector3 damp movement
 

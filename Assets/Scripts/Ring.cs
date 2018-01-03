@@ -32,7 +32,7 @@ public class Ring : MonoBehaviour {
 		tetheredRingRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 		RefreshRing();
 
-		GameObject p = Instantiate(gameObject, transform.parent);
+        GameObject p = Instantiate(gameObject, transform.parent);
 		p.GetComponent<Ring>().enabled = false;
 
 		if (TramRing)
@@ -45,10 +45,37 @@ public class Ring : MonoBehaviour {
         }
     }
 
-	/// <summary>
-	/// Toggle highlight material when selected on controller menu
-	/// </summary>
-	public void SetMaterials()
+    private void Update()
+    {
+        //float scaleRatio = 2072.0f / 5182853.0f;	                                // ratio of tram ring to actual ring (when the system is at scale 5000)
+
+        //GameObject sphere = GameObject.FindGameObjectWithTag("sphere").gameObject;
+        //Vector3 pos = sphere.GetComponent<SphereCollider>().ClosestPoint(transform.position);
+        //float distance = Vector3.Distance(pos, transform.position);
+        //print(distance / scaleRatio);
+
+        //Gizmos.DrawLine(pos, transform.position);
+    }
+
+    //public void OnDrawGizmos()
+    //{
+    //    if (!TramRing)
+    //    {
+    //        float scaleRatio = 2072.0f / 5182853.0f;                                    // ratio of tram ring to actual ring (when the system is at scale 5000)
+
+    //        GameObject sphere = GameObject.FindGameObjectWithTag("sphere").gameObject;
+    //        Vector3 pos = sphere.GetComponent<SphereCollider>().ClosestPoint(transform.position);
+    //        float distance = Vector3.Distance(pos, transform.position);
+    //        //print(distance / scaleRatio);
+
+    //        Gizmos.DrawLine(pos, transform.position);
+    //    }
+    //}
+
+    /// <summary>
+    /// Toggle highlight material when selected on controller menu
+    /// </summary>
+    public void SetMaterials()
 	{
 		if (highlited)
 		{
@@ -66,8 +93,7 @@ public class Ring : MonoBehaviour {
 	/// <summary>
 	/// Retuns the diameter of the ring
 	/// </summary>
-	/// <param name="_go">Go.</param>
-	private float FindPointOnMesh(GameObject _go)
+	public float GetDiameter()
 	{
 		Vector3[] verticies = GetComponent<MeshFilter>().mesh.vertices;
 		float distance = 0;
@@ -80,8 +106,7 @@ public class Ring : MonoBehaviour {
 			}
 		}
 
-		//print(TramRing + " " + 5000 * (distance/2));
-		return distance;
+        return distance;
 	}
 
     private void RefreshRing() {
@@ -164,6 +189,6 @@ public class Ring : MonoBehaviour {
 		MeshRenderer mr = GetComponent<MeshRenderer>();
 		mr.materials = DefaultMaterials.ToArray();
 
-		furthestPoint = FindPointOnMesh(gameObject);
+		furthestPoint = GetDiameter();
 	}
 }

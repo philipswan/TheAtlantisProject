@@ -22,6 +22,7 @@ TagManager:
   - Stay
   - Help Menu
   - Sun
+  - sphere
   layers:
   - Default
   - TransparentFX
