@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcec2271c979e74596e8968b60b916c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TubeRadius: 0.00004
+  TubeRadius: 0.00000024
   NumSegments: 1000
   NumTubes: 12
   DefaultMaterials:
@@ -5871,6 +5871,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2046304862}
+  - component: {fileID: 2046304863}
   m_Layer: 0
   m_Name: Habitat Conatiner
   m_TagString: Untagged
@@ -5892,6 +5893,18 @@ Transform:
   m_Father: {fileID: 1879430682}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2046304863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2046304861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7590ddc1be629784197e55b8a102e414, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 1
 --- !u!4 &2060391542 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400938, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 2}

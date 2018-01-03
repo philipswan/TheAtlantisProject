@@ -57,7 +57,7 @@ public class RingContainer : MonoBehaviour {
         newScale = GetNewScale();
 
         radius = ring.GetComponent<Ring>().GetDiameter() / 2;
-        print(name + " " + radius);
+        //print(name + " " + radius);
 
         List<Vector3> children = new List<Vector3>();
 

@@ -150,18 +150,18 @@ public class TramCars : MonoBehaviour {
 		//  R of tram ring is 0.41453875 (Sphere size (1, 1, 1))
 		//  R of tram ring at scale 5000 is 2072 m
 		//  Arc length = RC where C is the center angle
-        //  Acceleration and velocity are set in the constants script
+        //  Acceleration and velocity are set in the configuration script
 
 		float radiusRing 	= 2072f;	                                            // Radius of the tram ring
 		float rpk 			= (2 * Mathf.PI) / (numSections * numKeysPerSection);	// Radians between keys
-		float scaleRatio 	= 2072.0f / 5182853.0f;	                                // ratio of tram ring to actual ring (when the system is at scale 5000)
+		float scaleRatio 	= radiusRing / 5182853.0f;	                            // ratio of tram ring to actual ring (when the system is at scale 5000)
 		float alKeys 		= radiusRing * rpk;	                                    // arc length between keys in meters
 		float topSpeed 		= config.TramVelocity * scaleRatio;	                    // top speed scaled to system
 		float acceleration 	= config.TramAcceleration * scaleRatio;	                // acceleartion scaled to system
 		travelTime 			= alKeys / topSpeed;                                    // Time it takes to travel from one key to the next
 		accelerationTime 	= topSpeed / acceleration;                              // Time it takes to accelerate to full speed
 
-		// Print calculations for debuggin
+		// Print calculations for debugging
 		//print("Scale Ratio: " + scaleRatio);
 		//print("Ttotal keys: " + numSections * numKeysPerSection);
 		//print("rad per key: " + rpk);
@@ -275,7 +275,7 @@ public class TramCars : MonoBehaviour {
 			GameObject tram = Instantiate(train, transform);
 			tram.name = tramBottomRightObjects.Count.ToString();
 			tram.transform.localPosition = habtop;
-			tram.transform.localScale = new Vector3(6e-6f, 6e-6f, 6e-6f);
+			tram.transform.localScale = new Vector3(8e-8f, 8e-8f, 8e-8f);
 
 			GameObject tram1 = Instantiate(tram, transform);
 			tram1.name = tramTopLeftObjects.Count.ToString();

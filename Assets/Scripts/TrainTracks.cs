@@ -196,17 +196,17 @@ public class TrainTracks : MonoBehaviour {
 		// Adjust positions of the tracks
 		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
-			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-5f;
-			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 1e-4f;
+			//trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-5f;
+			//trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 1e-4f;
 
-			trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 6.5e-5f;
-			trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 1e-4f;
+			//trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 6.5e-5f;
+			//trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 1e-4f;
 
-			trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 9e-5f;
-			trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 1e-4f;
+			//trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 9e-5f;
+			//trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 1e-4f;
 
-			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  2e-5f;
-			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 8e-5f;
+			//trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  2e-5f;
+			//trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 8e-5f;
 		}
 	}
 
