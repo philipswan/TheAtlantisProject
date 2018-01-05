@@ -62,7 +62,6 @@ public class TrainTracks : MonoBehaviour {
 	/// </summary>
 	public void SetTracksActive()
 	{
-		//StartCoroutine("ActivateTracks");
 		ActivateTracks();
 	}
 
