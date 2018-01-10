@@ -47,7 +47,8 @@ public class Transition1 : MonoBehaviour {
 		else if (Scene == Keys.Count * 2 - 2)
 		{
 			ControllerTransition.Instance.enabled = true;	// Enable controller movement of player object
-			FloatingMenu.Instance.enabled = true;	// Enable floating menu
+			//FloatingMenu.Instance.enabled = true;	// Enable floating menu
+			StartRocketLaunch();
 			enabled = false;
 		}
 	}
@@ -86,6 +87,22 @@ public class Transition1 : MonoBehaviour {
 				break;
 			}
 		}
+	}
+
+	/// <summary>
+	/// Iterate through each engine, enable them and 
+	/// begin scaling them up
+	/// </summary>
+	private void StartRocketLaunch()
+	{
+		GameObject[] engines = GameObject.FindGameObjectsWithTag("Engine");
+		for (int i=0; i<engines.Length; i++)
+		{
+			engines[i].GetComponent<ParticleManager>().StartLaunch();
+		}
+
+		GameObject rocket = GameObject.FindGameObjectWithTag("Rocket");
+		rocket.GetComponent<RocketManager>().StartLaunch();
 	}
 
 	/// <summary>

@@ -23,6 +23,9 @@ TagManager:
   - Help Menu
   - Sun
   - Atmosphere
+  - Fire
+  - Engine
+  - Rocket
   layers:
   - Default
   - TransparentFX

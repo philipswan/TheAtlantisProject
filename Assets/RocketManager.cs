@@ -13,27 +13,45 @@ public class RocketManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        acceleration = 29;
+        acceleration = 0.01f;
         launched = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown("space") && !launched)
-        {
-            startTime = Time.time;
-            StartCoroutine("Launch");
-            launched = true;
-        }
+//        if (Input.GetKeyDown("space") && !launched)
+//        {
+//            startTime = Time.time;
+//            StartCoroutine("Launch");
+//            launched = true;
+//        }
 
     }
+
+	public void StartLaunch()
+	{
+		if (!launched)
+		{
+			startTime = Time.unscaledTime;
+			StartCoroutine("Launch");
+			launched = true;
+
+			GetComponent<AudioSource>().Play();
+		}
+	}
 
     private IEnumerator Launch()
     {
         while (true)
         {
-            transform.position = transform.up * 0.5f * acceleration * Mathf.Pow((Time.unscaledTime - startTime), 2);
+			transform.position += transform.up * 0.5f * acceleration *(Time.unscaledTime - startTime);
 
+			if (Vector3.Distance(Camera.main.transform.position, transform.position) > 150)
+			{
+				gameObject.SetActive(false);
+				yield break;
+			}
+				
             yield return null;
         }
     }
