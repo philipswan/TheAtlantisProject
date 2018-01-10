@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0030173191, g: 0.0030296124, b: 0.0030173191, a: 1}
+  m_IndirectSpecularColor: {r: 0.0030036338, g: 0.003032865, b: 0.0030036338, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -108,6 +108,90 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &5914340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 5914344}
+  - component: {fileID: 5914343}
+  - component: {fileID: 5914342}
+  - component: {fileID: 5914341}
+  m_Layer: 0
+  m_Name: Atmosphere
+  m_TagString: Atmosphere
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &5914341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 5914340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 808c1102408e42743a47bb8e4c57fd82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Atmosphere: {fileID: 2100000, guid: ca76c6a60a7f03c4fac184b2e5388829, type: 2}
+  subdivisions: 6
+  radius: 0.495
+--- !u!23 &5914342
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 5914340}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 352609fe1d0bce94f9daaf984fc915aa, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &5914343
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 5914340}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &5914344
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 5914340}
+  m_LocalRotation: {x: -0, y: -0.8746198, z: 0, w: -0.4848095}
+  m_LocalPosition: {x: -0.384946, y: 0.3230081, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1764438873}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -238, z: 0}
 --- !u!4 &58019899 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4739663493115022, guid: aa5f473e6154800489f7f0be74a36faa,
@@ -203,7 +287,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Earthmaterials:
   - {fileID: 2100000, guid: f201b6451c1d274449d6875178099975, type: 2}
-  - {fileID: 2100000, guid: f01d2d50e41869846818a3a2b5032f7e, type: 2}
   subdivisions: 6
   radius: 0.495
 --- !u!114 &129125188
@@ -244,8 +327,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.05, z: -0}
   m_LocalScale: {x: 0.017393868, y: 0.017393868, z: 0.017393868}
-  m_Children:
-  - {fileID: 1106139766}
+  m_Children: []
   m_Father: {fileID: 1336480826}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -869,8 +951,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: rctrl:b_button01
+  MovementAction: Toggle Menu
   MenuAction: 
 --- !u!1 &330127973
 GameObject:
@@ -1143,8 +1225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: lctrl:b_button02
+  MovementAction: Reset Position
   MenuAction: 
 --- !u!1 &385936869
 GameObject:
@@ -1327,8 +1409,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: rctrl:b_hold
+  MovementAction: Increase Size
   MenuAction: 
 --- !u!1 &440553184
 GameObject:
@@ -1660,7 +1742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
+  ButtonObjectName: rctrl:b_button02
   MovementAction: 
   MenuAction: 
 --- !u!1 &466295303
@@ -2089,9 +2171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
-  MenuAction: 
+  ButtonObjectName: rctrl:b_stick_IGNORE
+  MovementAction: Move Around
+  MenuAction: Cycle Menu Items
 --- !u!1001 &559508755
 Prefab:
   m_ObjectHideFlags: 0
@@ -2134,7 +2216,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4058849966807760, guid: 07e2fbb6eb98b484f9706250514b0404, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 23880072864617066, guid: 07e2fbb6eb98b484f9706250514b0404,
         type: 2}
@@ -2536,8 +2618,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: lctrl:b_button01
+  MovementAction: Reset Position
   MenuAction: 
 --- !u!23 &787905439
 MeshRenderer:
@@ -2590,7 +2672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &859023772
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2833,8 +2915,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: lctrl:b_trigger
+  MovementAction: Decrease Size
   MenuAction: 
 --- !u!23 &879371176
 MeshRenderer:
@@ -3037,8 +3119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: lctrl:b_hold
+  MovementAction: Decrease Size
   MenuAction: 
 --- !u!23 &1040828032
 MeshRenderer:
@@ -3129,36 +3211,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b75a0eb809411439313960aab1e566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial: []
-  DefaultMaterial: []
---- !u!1 &1106139765
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1106139766}
-  m_Layer: 0
-  m_Name: Icon
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1106139766
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1106139765}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 141075044}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  HighlightMaterial:
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
+  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
+  DefaultMaterial:
+  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
 --- !u!1 &1132047105
 GameObject:
   m_ObjectHideFlags: 0
@@ -4043,8 +4100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
+  ButtonObjectName: rctrl:b_trigger
+  MovementAction: Increase Size
   MenuAction: 
 --- !u!4 &1493160549
 Transform:
@@ -4527,6 +4584,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
+  - {fileID: 5914344}
   - {fileID: 1380999639}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -4558,8 +4616,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2ad2977d8623e48ae7456a5a734e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FinalSystemKey: {fileID: 0}
-  FinalCamerakey: {fileID: 0}
+  FinalSystemKey: {fileID: 159142380}
+  FinalCamerakey: {fileID: 1278440635}
   UppserScaleLimit: 10900
   LowerScaleLimit: 500
 --- !u!1 &1769944136
@@ -4815,9 +4873,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce16809c9280ac14388cb0e34605a161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonObjectName: 
-  MovementAction: 
-  MenuAction: 
+  ButtonObjectName: lctrl:b_stick_IGNORE
+  MovementAction: Move Up/Down
+  MenuAction: Cycle Menu Items
 --- !u!23 &1780617591
 MeshRenderer:
   m_ObjectHideFlags: 0

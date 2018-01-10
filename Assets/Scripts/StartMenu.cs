@@ -47,6 +47,7 @@ public class StartMenu : MonoBehaviour {
 			
 		Transition1b.Instance.enabled = true;	// Enable transition script
 		TramCars.Instance.ActivateTrams();	// Activate trams and their movement
+		AtmosphereManager.Instance.SetMaterial();	// Activate the atmospheric scattering
 
 		yield return null; 
 
