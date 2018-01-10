@@ -52,12 +52,12 @@ public class ControllerTransition : MonoBehaviour {
 			// Control system scale
 			if (OVRInput.Get(OVRInput.RawButton.LIndexTrigger) || OVRInput.Get(OVRInput.RawButton.LHandTrigger))
 			{
-				// Scale system up
+				// Scale system down
 				UpdateScale(false);
 			}
 			else if(OVRInput.Get(OVRInput.RawButton.RIndexTrigger) || OVRInput.Get(OVRInput.RawButton.RHandTrigger))
 			{
-				// Scale system down
+				// Scale system up
 				UpdateScale(true);
 			}
 				

@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class ButtonInfoManager : MonoBehaviour {
 
-	[Tooltip("Name of the gameobject this info is associated with")]
-	public string ButtonObjectName;
+	public enum Button {
+		X, Y, LHand, LIndex, LThumbstick, A, B, RHand, RIndex, RThumbstick
+	}
 
-	[Header("Text to be displayed")]
-	public string MovementAction;
-	public string MenuAction;
+	[Tooltip("Select the controller button this is tied to")]
+	public Button AssociatedButton;
+
+	private string movementAction;
+	private string menuAction;
 
 	private LineRenderer lr;
 	private TextMesh tm;
-	Transform button;
+	private string buttonObjectName;
+	private Transform button;
 
 	// Use this for initialization
 	void Start () {
 		lr = GetComponent<LineRenderer>();
 		tm = GetComponent<TextMesh>();
+		GetButtonName();
 
 		tm.text = "";
-		//lr.numCornerVertices = 10;
 	}
 	
 	// Update is called once per frame
@@ -80,7 +84,7 @@ public class ButtonInfoManager : MonoBehaviour {
 	/// </summary>
 	public void OnCreate()
 	{
-		button = GameObject.Find(ButtonObjectName).transform;
+		button = GameObject.Find(buttonObjectName).transform;
 
 		// If this is the last object to recieve the message, set all initial messages and deactive the objects
 		if (transform.parent.GetChild(transform.parent.childCount-1).name == gameObject.name)
@@ -101,11 +105,11 @@ public class ButtonInfoManager : MonoBehaviour {
 	{
 		if (_menuMessages)
 		{
-			tm.text = MenuAction;
+			tm.text = menuAction;
 		}
 		else
 		{
-			tm.text = MovementAction;
+			tm.text = movementAction;
 		}
 	}
 
@@ -114,6 +118,59 @@ public class ButtonInfoManager : MonoBehaviour {
 	/// </summary>
 	public void SetInitialMessage()
 	{
-		tm.text = MovementAction;
+		tm.text = movementAction;
+	}
+
+	private void GetButtonName()
+	{
+
+		switch (AssociatedButton)
+		{
+			case Button.A:
+				buttonObjectName = "rctrl:b_button01";
+				menuAction = "Toggle menu";
+				movementAction = "Toggle menu";
+				break;
+			case Button.B:
+				buttonObjectName = "rctrl:b_button02";
+				menuAction = "Toggle menu";
+				movementAction = "Toggle menu";
+				break;
+			case Button.LHand:
+				buttonObjectName = "lctrl:b_hold";
+				movementAction = "Decrease size";
+				break;
+			case Button.LIndex:
+				buttonObjectName = "lctrl:b_trigger";
+				movementAction = "Decrease size";
+				break;
+			case Button.LThumbstick:
+				buttonObjectName = "lctrl:b_stick_IGNORE";
+				movementAction = "Move up/down";
+				menuAction = "Cycle menu items";
+				break;
+			case Button.RHand:
+				buttonObjectName = "rctrl:b_hold";
+				movementAction = "Increase size";
+				break;
+			case Button.RIndex:
+				buttonObjectName = "rctrl:b_trigger";
+				movementAction = "Increase size";
+				break;
+			case Button.RThumbstick:
+				buttonObjectName = "rctrl:b_stick_IGNORE";
+				movementAction = "Move around";
+				menuAction = "Cycle meny items";
+				break;
+			case Button.X:
+				buttonObjectName = "lctrl:b_button01";
+				movementAction = "Reset position";
+				break;
+			case Button.Y:
+				buttonObjectName = "lctrl:b_button02";
+				movementAction = "Reset position";
+				break;
+		}
+
 	}
 }
