@@ -18,7 +18,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 99c9632c9fe394e45915313d6f670295, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CloudsMap:
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 24f2822635cc39547b605a436115c2cd, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -75,7 +75,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AtmosphereHeight: 60000
-    - _AtmosphereModifier: 0.01
+    - _AtmosphereModifier: 1
     - _AtmosphereRadius: 21.9
     - _BumpScale: 1
     - _CloudsAdditive: 1
@@ -89,7 +89,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _LightSamples: 135
+    - _LightSamples: 117
     - _Metallic: 0
     - _MieAnisotropy: -0.758
     - _MieDirection: 0.758
@@ -109,7 +109,7 @@ Material:
     - _ScatteringModifier: 0.2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SphereRadius: 2500
+    - _SphereRadius: 50
     - _SrcBlend: 1
     - _StepSize: 0.01
     - _SunIntensity: 31.9

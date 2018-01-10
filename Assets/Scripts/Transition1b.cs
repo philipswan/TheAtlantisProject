@@ -11,6 +11,7 @@ public class Transition1b : MonoBehaviour {
 
 	private Constants.Configuration config;						// Holds reference to config script
 	private float startTime;									// Time script was enabled
+	private MeshRenderer atmosphericEffect;						// Mesh renderer of atmospher object			
 
     // Use this for initialization
     void Awake () {
@@ -21,6 +22,7 @@ public class Transition1b : MonoBehaviour {
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
+		atmosphericEffect = GameObject.FindGameObjectWithTag("Atmosphere").GetComponent<MeshRenderer>();
 	}
 
     void Update() {
@@ -73,8 +75,24 @@ public class Transition1b : MonoBehaviour {
         int index0 = max(0, min(Keys.Count - 1, (int)Mathf.Floor(scene / 2)));
         int index1 = max(0, min(Keys.Count - 1, (int)Mathf.Floor((scene+1) / 2)));
 
-		transform.localRotation = Quaternion.Lerp(Keys[index0].localRotation, Keys[index1].localRotation, Mathf.Pow(blend, 1.05f));
-		transform.localScale = Vector3.Lerp(Keys[index0].localScale, Keys[index1].localScale, Mathf.Pow(blend, 1.75f));
+		Quaternion newRotation = Quaternion.Lerp(Keys[index0].localRotation, Keys[index1].localRotation, Mathf.Pow(blend, 1.05f));
+		Vector3 newScale = Vector3.Lerp(Keys[index0].localScale, Keys[index1].localScale, Mathf.Pow(blend, 1.75f));
+
+		transform.localRotation = newRotation;
+		transform.localScale = newScale;
+
+		if (newScale.x <= 10)
+		{
+			atmosphericEffect.materials[0].SetFloat("_SphereRadius", newScale.x / 2);
+			//		print(1 / newScale.x * 5);
+			atmosphericEffect.materials[0].SetFloat("_AtmosphereModifier", 625 / Mathf.Pow(newScale.x, 4));
+			atmosphericEffect.materials[0].SetFloat("_ScatteringModifier", 625 / Mathf.Pow(newScale.x, 4));
+		}
+		else if (atmosphericEffect.gameObject.activeSelf)
+		{
+			atmosphericEffect.gameObject.SetActive(false);
+		}
+
     }
 
 	/// <summary>

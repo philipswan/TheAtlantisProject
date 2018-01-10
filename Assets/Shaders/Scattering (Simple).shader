@@ -4,16 +4,7 @@
 Shader "Alan Zucconi/Scattering/Atmospheric Scattering (Simple)"
 {
 	Properties
-	{
-		// ----------------------------------------------
-		// --- Standard Shader ---
-		_Color ("Color", Color) = (1,1,1,1)
-		_MainTex ("Albedo (RGB)", 2D) = "white" {}
-		_Glossiness ("Smoothness", Range(0,1)) = 0.5
-		_GlossyMap ("Glossy Map", 2D) = "white" {}
-		_BumpMap ("Bump Map", 2D) = "bump" {}
-		// ---------------------------------------------
-		
+	{		
 		// ----------------------------------------------
 		// --- Scattering ---
 		[Space]
@@ -54,54 +45,6 @@ Shader "Alan Zucconi/Scattering/Atmospheric Scattering (Simple)"
 		_LightSamples("Light ray samples (in-scattering)", Range(0,256)) = 8
 	}
 	SubShader {
-
-		// ----------------------------------------------------
-		// --- STANDARD PASS ----------------------------------
-		// ----------------------------------------------------
-		Tags { "RenderType"="Opaque" }
-		LOD 200
-		
-		CGPROGRAM
-		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard fullforwardshadows
-
-		// Use shader model 3.0 target, to get nicer looking lighting
-		#pragma target 3.0
-
-		sampler2D _MainTex;
-		sampler2D _BumpMap;
-		sampler2D _GlossyMap;
-
-		struct Input {
-			float2 uv_MainTex;
-		};
-
-		half _Glossiness;
-		fixed4 _Color;
-
-		// Alpha blending macro
-		#define blend(c1, c2, a)	lerp((c1), (c2), (a))
-		// color = alpha * src + (1 - alpha) * dest
-		// color = alpha * (src - dest) + dest
-
-		void surf (Input IN, inout SurfaceOutputStandard o) {
-			// Albedo comes from a texture tinted by color
-			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-			o.Albedo = c.rgb;
-
-			// Metallic and smoothness come from slider variables
-			o.Metallic = 0;
-			o.Normal = UnpackNormal (tex2D (_BumpMap, IN.uv_MainTex));
-			o.Smoothness = tex2D (_GlossyMap, IN.uv_MainTex) * _Glossiness;
-			o.Alpha = c.a;
-		}
-		ENDCG
-		// ----------------------------------------------------
-
-
-
-
-
 		// ----------------------------------------------------
 		// --- SCATTERING PASS --------------------------------
 		// ----------------------------------------------------

@@ -77,6 +77,13 @@ public class FloatingMenu : MonoBehaviour {
 	{
 		Descriptions.Add(_desc);
 
+		// Deactive all scripts attached to this object
+		MonoBehaviour[] scripts = _go.GetComponents<MonoBehaviour>();
+		for (int i=0; i<scripts.Length; i++)
+		{
+			scripts[i].enabled = false;
+		}
+
 		InstantiateObjects(_go, _scale, _distance);
 	}
 
