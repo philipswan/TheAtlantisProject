@@ -4946,6 +4946,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: eae9f77983186fa44b9feadc9fe89b3d, type: 3}
       propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: eae9f77983186fa44b9feadc9fe89b3d, type: 3}
+      propertyPath: m_TagString
       value: Rocket
       objectReference: {fileID: 0}
     m_RemovedComponents: []
