@@ -112,11 +112,11 @@ public class TramCars : MonoBehaviour {
     /// </summary>
     private void DeleteKeys()
 	{
-//        foreach (GameObject k in keysTopLeft)
-//        {
-//            Destroy(k);
-//        }
-//        keysTopLeft.Clear();
+        foreach (GameObject k in keysTopLeft)
+        {
+            Destroy(k);
+        }
+        keysTopLeft.Clear();
 
         foreach (GameObject k in keysBottomRight)
 		{

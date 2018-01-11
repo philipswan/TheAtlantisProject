@@ -34,7 +34,8 @@ public class TramMotion : MonoBehaviour {
     private List<AnimationState> states = new List<AnimationState>();
     private List<Keyframe[]> keyframes = new List<Keyframe[]>();
     private List<AnimationCurve> curves = new List<AnimationCurve>();            // List of animation states to adjust their speeds (speed = animation clip speed / desired speed)
-    private Material[] DefaultMaterials;                                         // Regular materials
+	private List<AnimationClip> clips = new List<AnimationClip>();
+	private Material[] DefaultMaterials;                                         // Regular materials
 
     private List<Keyframe[]> keyPositions = new List<Keyframe[]>();              // List of keyframes for the x, y, and z positions for the current clip
     private List<Keyframe[]> keyRotations = new List<Keyframe[]>();              // List of keyframes for the w, x, y, and z rotations for the current clip
@@ -127,11 +128,6 @@ public class TramMotion : MonoBehaviour {
 
 					// Get the name of the clip without the number at the end
 					clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - (2 + (int)Mathf.Floor(currentClip / 10)));
-
-					if (name == "0")
-					{
-						print(clipName);
-					}
                 }
             }
 				
@@ -386,6 +382,8 @@ public class TramMotion : MonoBehaviour {
 			newClipName = clipNames[index];
             // Add clip to animation
 			anim.AddClip(clip, newClipName);
+			// Add clip to list to reference it later
+			clips.Add(clip);
 
             // If this is the first clip, play it immediately
             if (index == 0)
@@ -401,8 +399,24 @@ public class TramMotion : MonoBehaviour {
             {
 				states.Add(anim.PlayQueued(newClipName));  // Add animation state reference to list to allow us to change its speed in LateUpdate
             }
+
+//			if (index > 3)
+//			{
+//				DestroyClip(states.Count - 4);
+//			}
         }
     }
+
+	/// <summary>
+	/// Destroy clip it index in list
+	/// </summary>
+	/// <param name="index">Index.</param>
+	private void DestroyClip(int index)
+	{
+		print("index: " + index + " name: " + clipNames[index]);
+		anim.RemoveClip(clipNames[index]);
+//		Destroy(clips[index]);
+	}
 
 	/// <summary>
 	/// Max the specified a and b.
