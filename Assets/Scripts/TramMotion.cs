@@ -27,6 +27,7 @@ public class TramMotion : MonoBehaviour {
 	private Vector3 velocity;													 // Speed cap for smoothdamp
 	private string clipName;
 	private int clipInCycle;
+	private int clipCount;
 
     private List<Vector3> positions = new List<Vector3>();                       // All destinatins for the tram
     private List<Quaternion> rotations = new List<Quaternion>();                 // Rotation of the tram at its destination
@@ -62,6 +63,7 @@ public class TramMotion : MonoBehaviour {
         currentClip = 0;
         waitOffset = 0;
 		clipInCycle = 0;
+		clipCount = 0;
         accelerationState = AccelerationState.None;
         waitTime = config.TramWaitTime;
 
@@ -122,14 +124,19 @@ public class TramMotion : MonoBehaviour {
             {
                 if (currentClip < states.Count - 1)
                 {
-                    currentClip++;
-                    clipSwitchTime = Time.unscaledTime;
+					currentClip++;
+					clipSwitchTime = Time.unscaledTime;
+
                     StartCoroutine("CreateClips", 1);
 
 					// Get the name of the clip without the number at the end
 					clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - (2 + (int)Mathf.Floor(currentClip / 10)));
-                }
+				}
             }
+			else if (!anim.isPlaying)
+			{
+				DestroyClips();
+			}
 				
             MoveTramWithStops(clipName);
 
@@ -400,9 +407,11 @@ public class TramMotion : MonoBehaviour {
 				states.Add(anim.PlayQueued(newClipName));  // Add animation state reference to list to allow us to change its speed in LateUpdate
             }
 
-//			if (index > 3)
+			clipCount++;
+
+//			if (name == "0")
 //			{
-//				DestroyClip(states.Count - 4);
+//				print("Capacity: " + states.Capacity + " Count: " + states.Count);
 //			}
         }
     }
@@ -411,11 +420,13 @@ public class TramMotion : MonoBehaviour {
 	/// Destroy clip it index in list
 	/// </summary>
 	/// <param name="index">Index.</param>
-	private void DestroyClip(int index)
+	private void DestroyClips()
 	{
-		print("index: " + index + " name: " + clipNames[index]);
-		anim.RemoveClip(clipNames[index]);
-//		Destroy(clips[index]);
+//		print("index: " + index + " name: " + clipNames[index] + " name: " + name);
+		for (int i=0; i<clipNames.Count; i++)
+		{
+			anim.RemoveClip(clipNames[i]);
+		}
 	}
 
 	/// <summary>
