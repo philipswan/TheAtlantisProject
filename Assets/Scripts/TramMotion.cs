@@ -11,7 +11,7 @@ public class TramMotion : MonoBehaviour {
     #endregion
 
     #region Private Properties
-    private bool travelTram;                                                     // Set true if the tram does not stop
+	private bool travelTram;                                                     // Set true if the tram does not stop
     private bool highlited;												         // Current materials used
     private bool finishedKeyPositions;
     private bool finishedKeyRotations;
@@ -23,6 +23,10 @@ public class TramMotion : MonoBehaviour {
     private float speed;                                                         // Speed of the animation clip
     private float clipSwitchTime;                                                // Used to decelerate the tram so it stops at habitat, not before it
     private float waitTime;                                                      // How long the tram waits at the habitat
+	private float startTime;
+	private Vector3 velocity;													 // Speed cap for smoothdamp
+	private string clipName;
+	private int clipInCycle;
 
     private List<Vector3> positions = new List<Vector3>();                       // All destinatins for the tram
     private List<Quaternion> rotations = new List<Quaternion>();                 // Rotation of the tram at its destination
@@ -56,6 +60,7 @@ public class TramMotion : MonoBehaviour {
         highlited = false;
         currentClip = 0;
         waitOffset = 0;
+		clipInCycle = 0;
         accelerationState = AccelerationState.None;
         waitTime = config.TramWaitTime;
 
@@ -67,44 +72,70 @@ public class TramMotion : MonoBehaviour {
         }
 
         // Now that our arrays have been initialized, we can create our first two clips
-        StartCoroutine("CreateClips", 2);
+		if (!travelTram)
+		{
+			StartCoroutine("CreateClips", 2);
+		}
+		else
+		{
+			startTime = Time.unscaledTime;
+		}
     }
 
     // Update is called once per frame
     void Update() {
+		if (travelTram)
+		{
+			int Scene = 0;
+			float Blend = 0.0f;
+
+			if (travelTram)
+			{
+				Scene = (int)Mathf.Floor((Time.unscaledTime - startTime) / config.TramTravelTime);
+				Blend = Mathf.Min ((Time.unscaledTime - startTime) / config.TramTravelTime - Scene, 1.0f);
+			}
+
+			if (Scene < positions.Count - 1 && !travelTram)
+			{
+				UpdateSystem(Scene, Blend);
+			}
+			else if (Scene < positions.Count && travelTram)
+			{
+				UpdateSystem(Scene, Blend);
+			}
+			else
+			{
+				startTime = Time.unscaledTime;
+			}
+		}
     }
 
     // Used to update animation state
     void LateUpdate()
     {
         // Only proceed if we have animations to play
-        if (anim.GetClipCount() > 0)
+		if (!travelTram && anim.GetClipCount() > 0)
         {
-            // Get the name of the clip without the number at the end
-            string clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - 2); ;
-
             // If the clip is no longer playing, create a new one and increase the clip index by 1
             if (!anim.IsPlaying(clipNames[currentClip]))
             {
-                if (currentClip < clipNames.Count - 1)
+                if (currentClip < states.Count - 1)
                 {
                     currentClip++;
                     clipSwitchTime = Time.unscaledTime;
-
                     StartCoroutine("CreateClips", 1);
+
+					// Get the name of the clip without the number at the end
+					clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - (2 + (int)Mathf.Floor(currentClip / 10)));
+
+					if (name == "0")
+					{
+						print(clipName);
+					}
                 }
             }
-
-            // If the tram makes stops at the habitats
-            if (!travelTram)
-            {
-                MoveTramWithStops(clipName);
-            }
-            // If the tram does not make stops
-            else
-            {
-                MoveTramWithoutStops();
-            }
+				
+            MoveTramWithStops(clipName);
 
             // Set the clips speed
             states[currentClip].speed = 1 / speed;
@@ -252,40 +283,6 @@ public class TramMotion : MonoBehaviour {
     }
 
     /// <summary>
-    /// Controls movement of a tram if it does not makes stops
-    /// Only accelerates and then maintains top speed
-    /// </summary>
-    private void MoveTramWithoutStops()
-    {
-        if (currentClip == 0)
-        {
-            // Since we start at rest, accelerate to top speed
-            if (accelerationState != AccelerationState.Accelerate)
-            {
-                speed = accelerationTime + cruiseTime;
-                accelerationState = AccelerationState.Accelerate;
-            }
-            if (speed > cruiseTime)
-            {
-                speed -= Time.deltaTime;
-            }
-            else
-            {
-                speed = cruiseTime;
-            }
-        }
-        else
-        {
-            // Once we hit top speed, maintain it
-            if (accelerationState != AccelerationState.Cruise)
-            {
-                accelerationState = AccelerationState.Cruise;
-                speed = cruiseTime;
-            }
-        }
-    }
-
-    /// <summary>
     /// Creates the curves for the x, y, and z (and w for rot) positions and rotations
     /// </summary>
     /// <returns>The curve.</returns>
@@ -340,24 +337,29 @@ public class TramMotion : MonoBehaviour {
 
             // Set up our variables
             AnimationClip clip;
-            string clipName;
+            string newClipName;
             Vector3 startPos, endPos;
             Quaternion startRot, endRot;
             int index = anim.GetClipCount();
             float yieldTime;
             float.TryParse(name, out yieldTime);
-            yieldTime /= 10;
+            yieldTime /= 100;
 
+//			if (name == "0")
+//			{
+//				print("index: " + index + " offset: " + waitOffset + " cycle: " + clipInCycle);
+//			}
             // If we're at a wait anim, set the start and end values to eachother
-            if (index % 5 == 0 && index != 0 && !travelTram)
+			if (clipInCycle % 5 == 0 && clipInCycle != 0)
             {
-                startPos = positions[index];
+				startPos = positions[index - waitOffset];
                 endPos = startPos;
 
-                startRot = rotations[index];
+				startRot = rotations[index - waitOffset];
                 endRot = startRot;
 
                 waitOffset++;
+				clipInCycle = 0;
             }
             // Create an animation that moves to the next position and rotation
             else
@@ -367,8 +369,11 @@ public class TramMotion : MonoBehaviour {
 
                 startRot = rotations[index - waitOffset];
                 endRot = rotations[index + 1 - waitOffset];
-            }
 
+				clipInCycle++;
+
+            }
+				
             // Create animation curves from the keyframes
             curves = CreateCurve(startPos, endPos, startRot, endRot);
 
@@ -377,23 +382,68 @@ public class TramMotion : MonoBehaviour {
 
             yield return new WaitForSeconds(yieldTime);
 
-            // Set the reference name of the clip
-            clipName = clipNames[index];
+			// Set the reference name of the clip
+			newClipName = clipNames[index];
             // Add clip to animation
-            anim.AddClip(clip, clipName);
+			anim.AddClip(clip, newClipName);
 
             // If this is the first clip, play it immediately
             if (index == 0)
             {
-                anim.Play(clipName);
-                states.Add(anim[clipName]); // Add animation state reference to list to allow us to change its speed in LateUpdate
+				// Get the name of the clip without the number at the end
+				clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - 2);
+
+				anim.Play(newClipName);
+				states.Add(anim[newClipName]); // Add animation state reference to list to allow us to change its speed in LateUpdate
             }
             // If it isn't, add it to the queue
             else
             {
-                states.Add(anim.PlayQueued(clipName));  // Add animation state reference to list to allow us to change its speed in LateUpdate
+				states.Add(anim.PlayQueued(newClipName));  // Add animation state reference to list to allow us to change its speed in LateUpdate
             }
         }
     }
+
+	/// <summary>
+	/// Max the specified a and b.
+	/// </summary>
+	/// <param name="a">The alpha component.</param>
+	/// <param name="b">The blue component.</param>
+	private int max(int a, int b)
+	{
+		return (a > b) ? a : b;
+	}
+
+	/// <summary>
+	/// Minimum the specified a and b.
+	/// </summary>
+	/// <param name="a">The alpha component.</param>
+	/// <param name="b">The blue component.</param>
+	private int min(int a, int b)
+	{
+		return (a < b) ? a : b;
+	}
+
+	/// <summary>
+	/// Updates the tram transform.
+	/// </summary>
+	/// <param name="scene">Scene.</param>
+	/// <param name="blend">Blend.</param>
+	private void UpdateSystem(int scene, float blend)
+	{
+		int index0 = (scene > 0) ? (scene - 1) : 0;
+		int index1 = index0 + 1;
+
+		if (scene == 0)
+		{
+			transform.localPosition = Vector3.SmoothDamp(transform.localPosition, positions[scene], ref velocity, config.TramTravelTime);
+		}
+		else
+		{
+			transform.localPosition = Vector3.Lerp(positions[index0], positions[index1], Mathf.Pow(blend, 1.05f));
+		}
+		transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
+
+	}
     #endregion
 }

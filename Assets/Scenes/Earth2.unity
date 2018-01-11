@@ -4852,12 +4852,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FadeTime: 2
-  CameraTravelTime: 7
-  SystemTravelTime: 7
+  CameraTravelTime: 1
+  SystemTravelTime: 1
   ElevatorTravelTime: 10
   ElevatorWaitTime: 2
-  TramAcceleration: 11.7
-  TramVelocity: 223.5
+  TramAcceleration: 117
+  TramVelocity: 2235
   TramWaitTime: 5
   RingLatitude: -34
 --- !u!4 &461670053
@@ -15811,6 +15811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1594401860}
   - component: {fileID: 1594401859}
+  - component: {fileID: 1594401861}
   m_Layer: 0
   m_Name: Point light
   m_TagString: Sun
@@ -15867,6 +15868,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 20, y: -80, z: 0}
+--- !u!114 &1594401861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1594401858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb112ec3d22f6d449aa055d8be091838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Keys:
+  - {fileID: 1858898399}
+  - {fileID: 1581419235}
 --- !u!1 &1610100505
 GameObject:
   m_ObjectHideFlags: 0

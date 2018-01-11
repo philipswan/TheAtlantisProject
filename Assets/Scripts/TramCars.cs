@@ -112,11 +112,11 @@ public class TramCars : MonoBehaviour {
     /// </summary>
     private void DeleteKeys()
 	{
-        foreach (GameObject k in keysTopLeft)
-        {
-            Destroy(k);
-        }
-        keysTopLeft.Clear();
+//        foreach (GameObject k in keysTopLeft)
+//        {
+//            Destroy(k);
+//        }
+//        keysTopLeft.Clear();
 
         foreach (GameObject k in keysBottomRight)
 		{
@@ -161,13 +161,13 @@ public class TramCars : MonoBehaviour {
 		accelerationTime 	= topSpeed / acceleration;                              // Time it takes to accelerate to full speed
 
 		// Print calculations for debuggin
-//		print("Scale Ratio: " + scaleRatio);
-//		print("Ttotal keys: " + numSections * numKeysPerSection);
-//		print("rad per key: " + rpk);
-//		print("arc length between keys: " + alKeys + "m");
-//		print("Top speed: " + topSpeed + "m/s" + " acceleration: " + acceleration + "m/s^2");
-//		print("Top speed travel time: " + travelTime + "s");
-//		print("Acceleartion time: " + accelerationTime + "s");
+		print("Scale Ratio: " + scaleRatio);
+		print("Ttotal keys: " + numSections * numKeysPerSection);
+		print("rad per key: " + rpk);
+		print("arc length between keys: " + alKeys + "m");
+		print("Top speed: " + topSpeed + "m/s" + " acceleration: " + acceleration + "m/s^2");
+		print("Top speed travel time: " + travelTime + "s");
+		print("Acceleartion time: " + accelerationTime + "s");
 
 		int numKeys = numKeysPerSection * numSections;
 		float ringHabitatSpacing = 2.0f * Mathf.PI / (float)numKeys;
