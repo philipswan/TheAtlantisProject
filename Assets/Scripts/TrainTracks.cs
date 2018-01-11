@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections;
 
-[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class TrainTracks : MonoBehaviour {
 
 	private int numSections = 100;												// Number of track sections
@@ -77,9 +76,9 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer = bottomLeft.GetComponent<LineRenderer>();
 		lineRenderer.useWorldSpace = false;
 		lineRenderer.positionCount = trackBottomLeftObjects.Count;
-		lineRenderer.widthMultiplier = 0.001f;
+		lineRenderer.widthMultiplier = 0.01f;
 		lineRenderer.loop = true;
-		lineRenderer.material = Resources.Load("Ring") as Material;
+		lineRenderer.material = Resources.Load("Tracks") as Material;
 
 		// Get all positions for line
 		Vector3[] linePos = new Vector3[trackBottomLeftObjects.Count];
@@ -96,9 +95,9 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer1 = bottomRight.GetComponent<LineRenderer>();
 		lineRenderer1.useWorldSpace = false;
 		lineRenderer1.positionCount = trackBottomRightObjects.Count;
-		lineRenderer1.widthMultiplier = 0.001f;
+		lineRenderer1.widthMultiplier = 0.01f;
 		lineRenderer1.loop = true;
-		lineRenderer1.material = Resources.Load("Ring") as Material;
+		lineRenderer1.material = Resources.Load("Tracks") as Material;
 
 		Vector3[] linePos1 = new Vector3[trackBottomRightObjects.Count];
 		for (int i=0; i<trackBottomRightObjects.Count; i++)
@@ -113,9 +112,9 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer2 = topLeft.GetComponent<LineRenderer>();
 		lineRenderer2.useWorldSpace = false;
 		lineRenderer2.positionCount = trackTopLeftObjects.Count;
-		lineRenderer2.widthMultiplier = 0.001f;
+		lineRenderer2.widthMultiplier = 0.01f;
 		lineRenderer2.loop = true;
-		lineRenderer2.material = Resources.Load("Ring") as Material;
+		lineRenderer2.material = Resources.Load("Tracks") as Material;
 
 		Vector3[] linePos2 = new Vector3[trackTopLeftObjects.Count];
 		for (int i=0; i<trackTopLeftObjects.Count; i++)
@@ -130,9 +129,9 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer3 = topRight.GetComponent<LineRenderer>();
 		lineRenderer3.useWorldSpace = false;
 		lineRenderer3.positionCount = trackTopRightObjects.Count;
-		lineRenderer3.widthMultiplier = 0.001f;
+		lineRenderer3.widthMultiplier = 0.01f;
 		lineRenderer3.loop = true;
-		lineRenderer3.material = Resources.Load("Ring") as Material;
+		lineRenderer3.material = Resources.Load("Tracks") as Material;
 
 		Vector3[] linePos3 = new Vector3[trackTopRightObjects.Count];
 		for (int i=0; i<trackTopRightObjects.Count; i++)

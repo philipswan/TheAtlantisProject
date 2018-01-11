@@ -4856,9 +4856,10 @@ MonoBehaviour:
   SystemTravelTime: 1
   ElevatorTravelTime: 10
   ElevatorWaitTime: 2
-  TramAcceleration: 117
+  TramAcceleration: 850
   TramVelocity: 2235
   TramWaitTime: 5
+  TramTravelTime: 1
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:
