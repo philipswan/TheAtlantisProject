@@ -165,8 +165,6 @@ public class TramMotion : MonoBehaviour {
             transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.001f);
             transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetColor("_Color", new Color(1, 1, 1, 1));
         }
-		print("hilighted");
-
 
         highlited = !highlited;
     }

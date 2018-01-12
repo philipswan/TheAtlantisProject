@@ -4917,8 +4917,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FadeTime: 2
-  CameraTravelTime: 1
-  SystemTravelTime: 1
+  CameraTravelTime: 7
+  SystemTravelTime: 7
   ElevatorTravelTime: 10
   ElevatorWaitTime: 2
   TramAcceleration: 894
