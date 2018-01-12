@@ -56,7 +56,7 @@ public class TramCars : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 
 		CreateTramSections();	// Create all trams and keys
-		UpdateTramPositions();	// Move trams to proper positions
+		//UpdateTramPositions();	// Move trams to proper positions
         UpdateKeyPositions();   // Move keys to proper positions
         CreateClipNames();      // Create list of clip names
         SetKeysToTrams();		// Now that all trams and sections are created, set all the tram keys for their movement
@@ -358,22 +358,22 @@ public class TramCars : MonoBehaviour {
         // Adjust top right keys
         foreach (GameObject k in keysTopRight)
         {
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 6.5e-5f;
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 3e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 4e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 3.5e-6f;
         }
 
         // Adjust bottom left keys
         foreach (GameObject k in keysBottomLeft)
         {
-            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
-            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 1e-5f;
+			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 4e-5f;
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 2.5e-5f;
         }
 
         // Adjust top left keys
         foreach (GameObject k in keysTopLeft)
         {
-            //k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 9e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 4e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 1e-7f;
         }
     }
 
