@@ -65,7 +65,6 @@ public class TramMotion : MonoBehaviour {
 		clipInCycle = 0;
 		clipCount = 0;
         accelerationState = AccelerationState.None;
-        waitTime = config.TramWaitTime;
 
         // Set the highlighted materials
         DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
@@ -216,6 +215,12 @@ public class TramMotion : MonoBehaviour {
     {
         travelTram = true;
     }
+
+	public void SetWaitTime(int _waitTime)
+	{
+		waitTime = waitTime;
+		waitTime /= 100;
+	}
     #endregion
 
     #region Private Methods
@@ -344,9 +349,6 @@ public class TramMotion : MonoBehaviour {
             Vector3 startPos, endPos;
             Quaternion startRot, endRot;
             int index = anim.GetClipCount();
-            float yieldTime;
-            float.TryParse(name, out yieldTime);
-            yieldTime /= 100;
 
 //			if (name == "0")
 //			{
@@ -383,7 +385,7 @@ public class TramMotion : MonoBehaviour {
             // Create the animation clip
             clip = CreateClip(curves);
 
-            yield return new WaitForSeconds(yieldTime);
+			yield return new WaitForSeconds(waitTime);
 
 			// Set the reference name of the clip
 			newClipName = clipNames[index];

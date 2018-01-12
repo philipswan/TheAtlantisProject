@@ -76,7 +76,7 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer = bottomLeft.GetComponent<LineRenderer>();
 		lineRenderer.useWorldSpace = false;
 		lineRenderer.positionCount = trackBottomLeftObjects.Count;
-		lineRenderer.widthMultiplier = 0.01f;
+		lineRenderer.widthMultiplier = 0.005f;
 		lineRenderer.loop = true;
 		lineRenderer.material = Resources.Load("Tracks") as Material;
 
@@ -95,7 +95,7 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer1 = bottomRight.GetComponent<LineRenderer>();
 		lineRenderer1.useWorldSpace = false;
 		lineRenderer1.positionCount = trackBottomRightObjects.Count;
-		lineRenderer1.widthMultiplier = 0.01f;
+		lineRenderer1.widthMultiplier = 0.005f;
 		lineRenderer1.loop = true;
 		lineRenderer1.material = Resources.Load("Tracks") as Material;
 
@@ -112,7 +112,7 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer2 = topLeft.GetComponent<LineRenderer>();
 		lineRenderer2.useWorldSpace = false;
 		lineRenderer2.positionCount = trackTopLeftObjects.Count;
-		lineRenderer2.widthMultiplier = 0.01f;
+		lineRenderer2.widthMultiplier = 0.005f;
 		lineRenderer2.loop = true;
 		lineRenderer2.material = Resources.Load("Tracks") as Material;
 
@@ -129,7 +129,7 @@ public class TrainTracks : MonoBehaviour {
 		LineRenderer lineRenderer3 = topRight.GetComponent<LineRenderer>();
 		lineRenderer3.useWorldSpace = false;
 		lineRenderer3.positionCount = trackTopRightObjects.Count;
-		lineRenderer3.widthMultiplier = 0.01f;
+		lineRenderer3.widthMultiplier = 0.005f;
 		lineRenderer3.loop = true;
 		lineRenderer3.material = Resources.Load("Tracks") as Material;
 
@@ -194,17 +194,17 @@ public class TrainTracks : MonoBehaviour {
 		// Adjust positions of the tracks
 		for (int i=0; i<trackBottomLeftObjects.Count; i++)
 		{
+			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 3.5e-5f;
 			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.up) * 3.5e-5f;
-			trackBottomLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomLeftObjects[i].transform.right) * 1e-4f;
 
-			trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 6.5e-5f;
-			trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 1e-4f;
+			trackTopLeftObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackTopLeftObjects[i].transform.right) * 4e-5f;
+			trackTopLeftObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopLeftObjects[i].transform.up) * 1e-5f;
 
-			trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 9e-5f;
-			trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 1e-4f;
+			trackBottomRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackBottomRightObjects[i].transform.right) * 3.5e-5f;
+			trackBottomRightObjects[i].transform.localPosition -= transform.InverseTransformPoint(trackBottomRightObjects[i].transform.up) * 5e-5f;
 
-			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  2e-5f;
-			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 8e-5f;
+			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.right) * 2.5e-5f;
+			trackTopRightObjects[i].transform.localPosition += transform.InverseTransformPoint(trackTopRightObjects[i].transform.up) *  5e-7f;
 		}
 	}
 
