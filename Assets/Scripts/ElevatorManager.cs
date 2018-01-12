@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ElevatorManager : MonoBehaviour {
 
-	public List<Material> DefaultMaterials = new List<Material>();		// Regular materials
-	public List<Material> HighlightMaterials = new List<Material>();	// Regarul materials + highlight material
+	private Material[] defaultMaterials = new Material[1];				// Regular materials
+	private List<Material> highlightMaterials = new List<Material>();	// Regarul materials + highlight material
 
 	private bool highlited;												// Current materials used
 
@@ -13,7 +13,8 @@ public class ElevatorManager : MonoBehaviour {
 	void Start () {
 		tag = "Elevator";
 		highlited = false;
-		transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
+
+		LoadMaterials();
 	}
 	
 	// Update is called once per frame
@@ -28,14 +29,22 @@ public class ElevatorManager : MonoBehaviour {
 	{
 		if (highlited)
 		{
-			transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = defaultMaterials;
 		}
 		else
 		{
-			transform.GetChild(0).GetComponent<MeshRenderer>().materials = HighlightMaterials.ToArray();
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = highlightMaterials.ToArray();
 			transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.005f);
 		}
 
 		highlited = ! highlited;
+	}
+
+	private void LoadMaterials()
+	{
+		defaultMaterials[0] = Resources.Load("defaultMat")  as Material;
+
+		highlightMaterials.Add(defaultMaterials[0]);
+		highlightMaterials.Add(Resources.Load("Silhouetted Diffuse") as Material);
 	}
 }

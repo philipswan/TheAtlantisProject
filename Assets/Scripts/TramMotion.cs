@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class TramMotion : MonoBehaviour {
 
-    #region Public Properites
-    public List<Material> HighlightMaterials = new List<Material>();             // Regular materials + highlight material
-    #endregion
 
     #region Private Properties
 	private bool travelTram;                                                     // Set true if the tram does not stop
@@ -29,6 +26,7 @@ public class TramMotion : MonoBehaviour {
 	private int clipInCycle;
 	private int clipCount;
 
+	private List<Material> HighlightMaterials = new List<Material>();             // Regular materials + highlight material
     private List<Vector3> positions = new List<Vector3>();                       // All destinatins for the tram
     private List<Quaternion> rotations = new List<Quaternion>();                 // Rotation of the tram at its destination
     private List<string> clipNames = new List<string>();                         // Names assigned to clips to reference them
@@ -67,8 +65,10 @@ public class TramMotion : MonoBehaviour {
 		clipCount = 0;
         accelerationState = AccelerationState.None;
 
-        // Set the highlighted materials
+        // Set the highlighted and default materials
         DefaultMaterials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+		HighlightMaterials.Add(Resources.Load("Silhouetted Diffuse") as Material);
+		HighlightMaterials.Add(Resources.Load("Silhouetted Diffuse") as Material);
         for (int i = HighlightMaterials.Count - 1; i < DefaultMaterials.Length; i++)
         {
             HighlightMaterials.Add(DefaultMaterials[i]);
