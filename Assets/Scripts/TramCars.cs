@@ -56,7 +56,6 @@ public class TramCars : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 
 		CreateTramSections();	// Create all trams and keys
-		//UpdateTramPositions();	// Move trams to proper positions
         UpdateKeyPositions();   // Move keys to proper positions
         CreateClipNames();      // Create list of clip names
         SetKeysToTrams();		// Now that all trams and sections are created, set all the tram keys for their movement
@@ -306,40 +305,6 @@ public class TramCars : MonoBehaviour {
 			tramTopLeftObjects.Add(tram1);
 			tramBottomLeftObjects.Add(tram2);
 			tramTopRightObjects.Add(tram3);
-		}
-	}
-
-	/// <summary>
-	/// Update positions of trams
-	/// </summary>
-	private void UpdateTramPositions()
-	{
-		// Adjust bottom right trams
-		foreach (GameObject t in tramBottomRightObjects)
-		{
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.right) * 3.5e-5f;
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 3e-5f;
-		}
-
-		// Adjust top right trams
-		foreach (GameObject t in tramTopRightObjects)
-		{
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.right) * 6.5e-5f;
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 3e-5f;
-		}
-
-		// Adjust bottom left trams
-		foreach (GameObject t in tramBottomLeftObjects)
-		{
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 1e-5f;
-		}
-
-		// Adjust top left trams
-		foreach (GameObject t in tramTopLeftObjects)
-		{
-			//t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 6.5e-5f;
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 9e-5f;
 		}
 	}
 
