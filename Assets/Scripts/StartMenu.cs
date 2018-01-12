@@ -32,9 +32,6 @@ public class StartMenu : MonoBehaviour {
 	{
 		starting = true;
 
-		// Play click
-		GetComponent<AudioSource>().Play();
-
 		// Fade camera out
 		float startTime = Time.time;
 		Camera.main.SendMessage("FadeCamera", false);

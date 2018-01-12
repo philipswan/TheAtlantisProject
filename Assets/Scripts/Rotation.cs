@@ -8,6 +8,8 @@ public class Rotation : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Instance = this;
+
+		enabled = false;
 	}
 	
 	// Update is called once per frame

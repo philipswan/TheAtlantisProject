@@ -38,6 +38,11 @@ public class Transition1b : MonoBehaviour {
 			Transition1.Instance.enabled = true;	// When the system transition is done, start the camera transition
 			enabled = false;
 		}
+
+		if (Scene == Keys.Count * 2 - 2 && !Rotation.Instance.enabled)
+		{
+			Rotation.Instance.enabled = true;
+		}
     }
 
 	void OnEnable()

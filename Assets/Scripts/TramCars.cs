@@ -161,7 +161,7 @@ public class TramCars : MonoBehaviour {
 
 		// Print calculations for debuggin
 		print("Scale Ratio: " + scaleRatio);
-		print("Ttotal keys: " + numSections * numKeysPerSection);
+		print("Total keys: " + numSections * numKeysPerSection);
 		print("rad per key: " + rpk);
 		print("arc length between keys: " + alKeys + "m");
 		print("Top speed: " + topSpeed + "m/s" + " acceleration: " + acceleration + "m/s^2");

@@ -143,7 +143,7 @@ public class FloatingMenu : MonoBehaviour {
 		string currentTag = currentIcon.tag;
 		UpdateMaterials(currentTag);
 
-		StartCoroutine("RotateItem", index);
+//		StartCoroutine("RotateItem", index);
 
 		// Update the messages to be displayed in the help menu
 		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
@@ -167,7 +167,7 @@ public class FloatingMenu : MonoBehaviour {
 		menuObjects[index].SetActive(false);
 		tm.text = "";
 
-		StopCoroutine("RotateItem");
+//		StopCoroutine("RotateItem");
 
 		// Update the messages to be displayed in the help menu
 		GameObject[] helpMenus = GameObject.FindGameObjectsWithTag("Help Menu");
@@ -207,8 +207,8 @@ public class FloatingMenu : MonoBehaviour {
 		UpdateMaterials(currentTag, prevTag);
 
 		index = menuObjects.IndexOf(currentIcon);
-		StopCoroutine("RotateItem");
-		StartCoroutine("RotateItem", index);
+//		StopCoroutine("RotateItem");
+//		StartCoroutine("RotateItem", index);
 	}
 
 	/// <summary>
@@ -240,8 +240,8 @@ public class FloatingMenu : MonoBehaviour {
 		currentTag =  currentIcon.tag;
 		UpdateMaterials(currentTag, prevTag);
 		index = menuObjects.IndexOf(currentIcon);
-		StopCoroutine("RotateItem");
-		StartCoroutine("RotateItem", index);
+//		StopCoroutine("RotateItem");
+//		StartCoroutine("RotateItem", index);
 	}
 
 	/// <summary>

@@ -47,7 +47,7 @@ public class Transition1 : MonoBehaviour {
 		else if (Scene == Keys.Count * 2 - 2)
 		{
 			ControllerTransition.Instance.enabled = true;	// Enable controller movement of player object
-			//FloatingMenu.Instance.enabled = true;	// Enable floating menu
+			FloatingMenu.Instance.enabled = true;	// Enable floating menu
 			StartRocketLaunch();
 			enabled = false;
 		}

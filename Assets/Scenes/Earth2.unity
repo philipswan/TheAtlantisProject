@@ -3691,7 +3691,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 141075043}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bdff1723f886d740a63d1279e3d1105, type: 3}
   m_Name: 
@@ -4368,11 +4368,6 @@ MonoBehaviour:
   TubeRadius: 0.000004
   NumSegments: 1000
   NumTubes: 12
-  DefaultMaterials:
-  - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
-  HighlightMaterials:
-  - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   TramRing: 0
 --- !u!23 &330127975
 MeshRenderer:
@@ -5252,11 +5247,6 @@ MonoBehaviour:
   TubeRadius: 0.00002
   NumSegments: 1000
   NumTubes: 12
-  DefaultMaterials:
-  - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
-  HighlightMaterials:
-  - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   TramRing: 1
 --- !u!23 &466295306
 MeshRenderer:
@@ -5307,7 +5297,6 @@ GameObject:
   - component: {fileID: 480851268}
   - component: {fileID: 480851267}
   - component: {fileID: 480851265}
-  - component: {fileID: 480851269}
   m_Layer: 0
   m_Name: Start Menu
   m_TagString: Untagged
@@ -5372,86 +5361,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &480851269
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 480851264}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d9747de05e82cef4990ef91e0b60ea80, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.5
-  m_Pitch: 0.8
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
 --- !u!1 &504413098
 GameObject:
   m_ObjectHideFlags: 0
@@ -12645,11 +12554,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be88806953723df46a0b4b7d5d97238b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultMaterials:
-  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
-  HighlightMaterials:
-  - {fileID: 2100000, guid: 7f7b3de5999eb6941a24cc43bd6c0261, type: 2}
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
 --- !u!1 &1040828027
 GameObject:
   m_ObjectHideFlags: 0
@@ -13344,11 +13248,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b75a0eb809411439313960aab1e566, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterial:
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
-  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
-  DefaultMaterial:
-  - {fileID: 2100000, guid: 7dcfa954524d311409d10b17ee827328, type: 2}
 --- !u!1 &1106139765
 GameObject:
   m_ObjectHideFlags: 0
@@ -15694,9 +15593,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e28e8f248486f148add14736bd5f8c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighlightMaterials:
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
 --- !u!111 &1493160553
 Animation:
   m_ObjectHideFlags: 0
