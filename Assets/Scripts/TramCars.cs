@@ -56,7 +56,6 @@ public class TramCars : MonoBehaviour {
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
 
 		CreateTramSections();	// Create all trams and keys
-		UpdateTramPositions();	// Move trams to proper positions
         UpdateKeyPositions();   // Move keys to proper positions
         CreateClipNames();      // Create list of clip names
         SetKeysToTrams();		// Now that all trams and sections are created, set all the tram keys for their movement
@@ -272,18 +271,18 @@ public class TramCars : MonoBehaviour {
 		if (createTram)
 		{
 			GameObject tram = Instantiate(train, transform);
-			tram.name = tramBottomRightObjects.Count.ToString();
+			tram.name = "Bottom Right " + tramBottomRightObjects.Count.ToString();
 			tram.transform.localPosition = habtop;
-			tram.transform.localScale = new Vector3(6e-6f, 6e-6f, 6e-6f);
+			tram.transform.localScale = new Vector3(1.5e-6f, 1.5e-6f, 1.5e-6f);
 
 			GameObject tram1 = Instantiate(tram, transform);
-			tram1.name = tramTopLeftObjects.Count.ToString();
+			tram1.name =  "Top Left " + tramTopLeftObjects.Count.ToString();
 
 			GameObject tram2 = Instantiate(tram, transform);
-			tram2.name = tramBottomLeftObjects.Count.ToString();
+			tram2.name = "Bottom Left " + tramBottomLeftObjects.Count.ToString();
 
 			GameObject tram3 = Instantiate(tram, transform);
-			tram3.name = tramTopRightObjects.Count.ToString();
+			tram3.name = "Top Right " + tramTopRightObjects.Count.ToString();
 
 			// Set orientation of trams other than the first
 			if (tramBottomRightObjects.Count > 0)
@@ -294,46 +293,18 @@ public class TramCars : MonoBehaviour {
 				tramTopLeftObjects[tramTopLeftObjects.Count-1].transform.LookAt(keysTopLeft[keysTopLeft.Count-2].transform.position, transform.TransformVector(habtop - habbot));
 				tramTopRightObjects[tramTopRightObjects.Count-1].transform.LookAt(keysTopRight[keysTopRight.Count-2].transform.position, transform.TransformVector(habtop - habbot));
 			}
-				
+
+			// Set the yield time for each tram
+			tram.GetComponent<TramMotion>().SetWaitTime(tramBottomRightObjects.Count);
+			tram1.GetComponent<TramMotion>().SetWaitTime(tramTopLeftObjects.Count);
+			tram2.GetComponent<TramMotion>().SetWaitTime(tramBottomLeftObjects.Count);
+			tram3.GetComponent<TramMotion>().SetWaitTime(tramTopRightObjects.Count);
+
 			// Add trams to list to assign their keys later
 			tramBottomRightObjects.Add(tram);
 			tramTopLeftObjects.Add(tram1);
 			tramBottomLeftObjects.Add(tram2);
 			tramTopRightObjects.Add(tram3);
-		}
-	}
-
-	/// <summary>
-	/// Update positions of trams
-	/// </summary>
-	private void UpdateTramPositions()
-	{
-		// Adjust bottom right trams
-		foreach (GameObject t in tramBottomRightObjects)
-		{
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.right) * 9.5e-5f;
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 6e-5f;
-		}
-
-		// Adjust top right trams
-		foreach (GameObject t in tramTopRightObjects)
-		{
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.right) * 1.2e-4f;
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 3e-5f;
-		}
-
-		// Adjust bottom left trams
-		foreach (GameObject t in tramBottomLeftObjects)
-		{
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.up) * 1e-5f;
-		}
-
-		// Adjust top left trams
-		foreach (GameObject t in tramTopLeftObjects)
-		{
-			t.transform.localPosition -= transform.InverseTransformPoint(t.transform.right) * 1e-4f;
-			t.transform.localPosition += transform.InverseTransformPoint(t.transform.up) * 9e-5f;
 		}
 	}
 
@@ -345,29 +316,29 @@ public class TramCars : MonoBehaviour {
         // Adjust bottom right keys
         foreach (GameObject k in keysBottomRight)
         {
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 9.5e-5f;
-            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 6e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 3.5e-5f;
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 4e-5f;
         }
 
         // Adjust top right keys
         foreach (GameObject k in keysTopRight)
         {
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 1.2e-4f;
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 3e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 4e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 3.5e-6f;
         }
 
         // Adjust bottom left keys
         foreach (GameObject k in keysBottomLeft)
         {
-            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
-            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 1e-5f;
+			k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 4e-5f;
+            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.up) * 2.5e-5f;
         }
 
         // Adjust top left keys
         foreach (GameObject k in keysTopLeft)
         {
-            k.transform.localPosition -= transform.InverseTransformPoint(k.transform.right) * 1e-4f;
-            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 9e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.right) * 4e-5f;
+            k.transform.localPosition += transform.InverseTransformPoint(k.transform.up) * 1e-7f;
         }
     }
 
