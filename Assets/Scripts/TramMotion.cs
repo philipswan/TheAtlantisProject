@@ -58,6 +58,7 @@ public class TramMotion : MonoBehaviour {
     // Use this for initialization
     void Start() {
         config = Constants.Configuration.Instance;
+		tag = "Tram";
 
         highlited = false;
         currentClip = 0;
@@ -149,7 +150,7 @@ public class TramMotion : MonoBehaviour {
     /// <summary>
     /// Toggle highlight material when selected on controller menu
     /// </summary>
-    public void SetMaterials()
+	public void SetMaterials()
     {
         if (highlited)
         {
@@ -164,6 +165,8 @@ public class TramMotion : MonoBehaviour {
             transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.001f);
             transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetColor("_Color", new Color(1, 1, 1, 1));
         }
+		print("hilighted");
+
 
         highlited = !highlited;
     }

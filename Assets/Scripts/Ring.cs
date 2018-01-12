@@ -38,10 +38,12 @@ public class Ring : MonoBehaviour {
 		if (TramRing)
 		{
             FloatingMenu.Instance.AddItems(p, "Transit Ring", new Vector3(14, 2860, 15), furthestPoint);
+			tag = "Ring - Transit";
         }
 		else
 		{
             FloatingMenu.Instance.AddItems(p, "Tethered Ring", new Vector3(14, 2860, 15), furthestPoint);
+			tag = "Ring";
         }
     }
 

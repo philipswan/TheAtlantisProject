@@ -3595,7 +3595,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 129125183}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 21fa40ffdc5113642938149c383205f9, type: 3}
   m_Name: 
@@ -4371,8 +4371,8 @@ MonoBehaviour:
   DefaultMaterials:
   - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
   HighlightMaterials:
-  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   - {fileID: 2100000, guid: 6b0b4249658823944ad583b8891f9a30, type: 2}
+  - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
   TramRing: 0
 --- !u!23 &330127975
 MeshRenderer:
@@ -5257,7 +5257,7 @@ MonoBehaviour:
   HighlightMaterials:
   - {fileID: 2100000, guid: 94a6a485c718e6f47af0519b7cbd7b16, type: 2}
   - {fileID: 2100000, guid: 789dc1a0159e51e4f952fd2c97b00be6, type: 2}
-  TramRing: 0
+  TramRing: 1
 --- !u!23 &466295306
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15678,7 +15678,7 @@ GameObject:
   - component: {fileID: 1493160551}
   m_Layer: 0
   m_Name: Bullet_Train_01
-  m_TagString: Untagged
+  m_TagString: Tram
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

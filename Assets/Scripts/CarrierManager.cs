@@ -11,6 +11,7 @@ public class CarrierManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		tag = "Carrier";
 		highlited  = false;
 		transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
 	}

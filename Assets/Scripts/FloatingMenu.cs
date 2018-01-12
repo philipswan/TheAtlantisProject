@@ -287,7 +287,7 @@ public class FloatingMenu : MonoBehaviour {
 			}
 			else
 			{
-				go.SendMessage("SetMaterials");
+				go.BroadcastMessage("SetMaterials");
 			}
 		}
 
@@ -303,7 +303,7 @@ public class FloatingMenu : MonoBehaviour {
 				}
 				else
 				{
-					go.SendMessage("SetMaterials");
+					go.BroadcastMessage("SetMaterials");
 				}
 			}
 		}

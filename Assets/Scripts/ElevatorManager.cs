@@ -11,6 +11,7 @@ public class ElevatorManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		tag = "Elevator";
 		highlited = false;
 		transform.GetChild(0).GetComponent<MeshRenderer>().materials = DefaultMaterials.ToArray();
 	}
