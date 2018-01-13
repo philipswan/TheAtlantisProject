@@ -298,13 +298,13 @@ public class TramMotion : MonoBehaviour {
     /// <param name="keyframes">Keyframes.</param>
     private List<AnimationCurve> CreateCurve(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot)
     {
-        AnimationCurve localxPos = AnimationCurve.Linear(0, startPos.x, 1, endPos.x);
-        AnimationCurve localyPos = AnimationCurve.Linear(0, startPos.y, 1, endPos.y);
-        AnimationCurve localzPos = AnimationCurve.Linear(0, startPos.z, 1, endPos.z);
-        AnimationCurve localxRot = AnimationCurve.Linear(0, startRot.x, 1, endRot.x);
-        AnimationCurve localyRot = AnimationCurve.Linear(0, startRot.y, 1, endRot.y);
-        AnimationCurve localzRot = AnimationCurve.Linear(0, startRot.z, 1, endRot.z);
-        AnimationCurve localwRot = AnimationCurve.Linear(0, startRot.w, 1, endRot.w);
+        AnimationCurve localxPos = AnimationCurve.EaseInOut(0, startPos.x, 1, endPos.x);
+		AnimationCurve localyPos = AnimationCurve.EaseInOut(0, startPos.y, 1, endPos.y);
+		AnimationCurve localzPos = AnimationCurve.EaseInOut(0, startPos.z, 1, endPos.z);
+		AnimationCurve localxRot = AnimationCurve.EaseInOut(0, startRot.x, 1, endRot.x);
+		AnimationCurve localyRot = AnimationCurve.EaseInOut(0, startRot.y, 1, endRot.y);
+		AnimationCurve localzRot = AnimationCurve.EaseInOut(0, startRot.z, 1, endRot.z);
+		AnimationCurve localwRot = AnimationCurve.EaseInOut(0, startRot.w, 1, endRot.w);
 
         List<AnimationCurve> curves = new List<AnimationCurve>() { localxPos, localyPos, localzPos, localxRot, localyRot, localzRot, localwRot };
         return curves;
@@ -468,9 +468,9 @@ public class TramMotion : MonoBehaviour {
 		}
 		else
 		{
-			transform.localPosition = Vector3.Lerp(positions[index0], positions[index1], Mathf.Pow(blend, 1.05f));
+			transform.localPosition = Vector3.Lerp(positions[index0], positions[index1], blend);
 		}
-		transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], Mathf.Pow(blend, 1.05f));
+		transform.localRotation = Quaternion.Lerp(rotations[index0], rotations[scene], blend);
 
 	}
     #endregion

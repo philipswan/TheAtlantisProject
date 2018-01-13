@@ -4912,14 +4912,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FadeTime: 2
-  CameraTravelTime: 7
-  SystemTravelTime: 7
+  CameraTravelTime: 1
+  SystemTravelTime: 1
   ElevatorTravelTime: 10
   ElevatorWaitTime: 2
-  TramAcceleration: 894
-  TramVelocity: 2235
-  TramWaitTime: 5
-  TramTravelTime: 1
+  TramAcceleration: 2000
+  TramVelocity: 10000
+  TramWaitTime: 3
+  TramTravelTime: 3
   RingLatitude: -34
 --- !u!4 &461670053
 Transform:
@@ -5244,7 +5244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcec2271c979e74596e8968b60b916c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TubeRadius: 0.00002
+  TubeRadius: 0.00001
   NumSegments: 1000
   NumTubes: 12
   TramRing: 1
@@ -17296,7 +17296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numSections: 100
-  numKeysPerSection: 50
+  numKeysPerSection: 5
   numTramsPerSection: 5
   habitatHeight: 0.00001
   train: {fileID: 1493160550}

@@ -41,6 +41,7 @@ namespace Constants{
         [Tooltip("Time tram waits at habitats(s)")]
         public float TramWaitTime = 5f;
 
+		[Tooltip("Time tram takes to travel between keys")]
 		public float TramTravelTime = 1f;
 
         [Header("Ring Constants")]
