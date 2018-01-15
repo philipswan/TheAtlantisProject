@@ -17296,7 +17296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numSections: 100
-  numKeysPerSection: 5
+  numKeysPerSection: 50
   numTramsPerSection: 5
   habitatHeight: 0.00001
   train: {fileID: 1493160550}

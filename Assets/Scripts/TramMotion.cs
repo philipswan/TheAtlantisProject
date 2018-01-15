@@ -232,44 +232,7 @@ public class TramMotion : MonoBehaviour {
     /// <param name="clipName"></param>
     private void MoveTramWithStops(string clipName)
     {
-        if (clipName == "Accelerate")
-        {
-            // If we just switched to accelerating, set the state and the speed
-            if (accelerationState != AccelerationState.Accelerate)
-            {
-                speed = accelerationTime + cruiseTime;
-                accelerationState = AccelerationState.Accelerate;
-            }
-            // accelerate every frame until we're at full speed
-            if (speed > cruiseTime)
-            {
-                speed -= Time.deltaTime;
-            }
-            else
-            {
-                speed = cruiseTime;
-            }
-        }
-        else if (clipName == "Decelerate")
-        {
-            // If we just switched to decelerating, set the state and speed
-            if (accelerationState != AccelerationState.Decelerate)
-            {
-                speed = cruiseTime;
-                accelerationState = AccelerationState.Decelerate;
-            }
-            // Only start decelerating when we have accelerationTime seconds left until we reach the next key
-            if ((Time.unscaledTime - clipSwitchTime) >= (cruiseTime - accelerationTime))
-            {
-                speed += Time.deltaTime;
-            }
-            else
-            {
-                speed = cruiseTime;
-            }
-
-        }
-        else if (clipName == "Wait")
+		if (clipName == "Wait")
         {
             // If we just switched to waiting, set the state and the speed
             // This will make the tram wait at a key
@@ -291,12 +254,16 @@ public class TramMotion : MonoBehaviour {
         }
     }
 
-    /// <summary>
-    /// Creates the curves for the x, y, and z (and w for rot) positions and rotations
-    /// </summary>
-    /// <returns>The curve.</returns>
-    /// <param name="keyframes">Keyframes.</param>
-    private List<AnimationCurve> CreateCurve(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot)
+	/// <summary>
+	/// Creates the curves for the x, y, and z (and w for rot) positions and rotations
+	/// </summary>
+	/// <returns>The curve.</returns>
+	/// <param name="startPos">Start position.</param>
+	/// <param name="endPos">End position.</param>
+	/// <param name="startRot">Start rot.</param>
+	/// <param name="endRot">End rot.</param>
+	/// <param name="accelerate">If set to <c>true</c> accelerate, false if decelerating.</param>
+	private List<AnimationCurve> CreateCurve(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot, bool accelerate)
     {
         AnimationCurve localxPos = AnimationCurve.EaseInOut(0, startPos.x, 1, endPos.x);
 		AnimationCurve localyPos = AnimationCurve.EaseInOut(0, startPos.y, 1, endPos.y);
@@ -306,9 +273,68 @@ public class TramMotion : MonoBehaviour {
 		AnimationCurve localzRot = AnimationCurve.EaseInOut(0, startRot.z, 1, endRot.z);
 		AnimationCurve localwRot = AnimationCurve.EaseInOut(0, startRot.w, 1, endRot.w);
 
+		if (accelerate)
+		{
+//			localxPos.SmoothTangents(0, 0);
+//			localyPos.SmoothTangents(0, 0);
+//			localzPos.SmoothTangents(0, 0);
+//			localxRot.SmoothTangents(0, 0);
+//			localyRot.SmoothTangents(0, 0);
+//			localzRot.SmoothTangents(0, 0);
+//			localwRot.SmoothTangents(0, 0);
+
+			localxPos.SmoothTangents(1, 0.01f);
+			localyPos.SmoothTangents(1, 0.01f);
+			localzPos.SmoothTangents(1, 0.01f);
+			localxRot.SmoothTangents(1, 0.01f);
+			localyRot.SmoothTangents(1, 0.01f);
+			localzRot.SmoothTangents(1, 0.01f);
+			localwRot.SmoothTangents(1, 0.01f);
+		}
+		else
+		{
+			localxPos.SmoothTangents(0, 10);
+			localyPos.SmoothTangents(0, 10);
+			localzPos.SmoothTangents(0, 10);
+			localxRot.SmoothTangents(0, 10);
+			localyRot.SmoothTangents(0, 10);
+			localzRot.SmoothTangents(0, 10);
+			localwRot.SmoothTangents(0, 10);
+
+			localxPos.SmoothTangents(1, 5);
+			localyPos.SmoothTangents(1, 5);
+			localzPos.SmoothTangents(1, 5);
+			localxRot.SmoothTangents(1, 5);
+			localyRot.SmoothTangents(1, 5);
+			localzRot.SmoothTangents(1, 5);
+			localwRot.SmoothTangents(1, 5);
+		}
+
         List<AnimationCurve> curves = new List<AnimationCurve>() { localxPos, localyPos, localzPos, localxRot, localyRot, localzRot, localwRot };
         return curves;
     }
+
+	/// <summary>
+	/// Creates the curves for the x, y, and z (and w for rot) positions and rotations
+	/// </summary>
+	/// <returns>The curve.</returns>
+	/// <param name="startPos">Start position.</param>
+	/// <param name="endPos">End position.</param>
+	/// <param name="startRot">Start rot.</param>
+	/// <param name="endRot">End rot.</param>
+	private List<AnimationCurve> CreateCurve(Vector3 startPos, Vector3 endPos, Quaternion startRot, Quaternion endRot)
+	{
+		AnimationCurve localxPos = AnimationCurve.Linear(0, startPos.x, 1, endPos.x);
+		AnimationCurve localyPos = AnimationCurve.Linear(0, startPos.y, 1, endPos.y);
+		AnimationCurve localzPos = AnimationCurve.Linear(0, startPos.z, 1, endPos.z);
+		AnimationCurve localxRot = AnimationCurve.Linear(0, startRot.x, 1, endRot.x);
+		AnimationCurve localyRot = AnimationCurve.Linear(0, startRot.y, 1, endRot.y);
+		AnimationCurve localzRot = AnimationCurve.Linear(0, startRot.z, 1, endRot.z);
+		AnimationCurve localwRot = AnimationCurve.Linear(0, startRot.w, 1, endRot.w);
+
+		List<AnimationCurve> curves = new List<AnimationCurve>() { localxPos, localyPos, localzPos, localxRot, localyRot, localzRot, localwRot };
+		return curves;
+	}
 
     /// <summary>
     /// Creates an animation clip and adds it to the list
@@ -351,10 +377,6 @@ public class TramMotion : MonoBehaviour {
             Quaternion startRot, endRot;
             int index = anim.GetClipCount();
 
-//			if (name == "0")
-//			{
-//				print("index: " + index + " offset: " + waitOffset + " cycle: " + clipInCycle);
-//			}
             // If we're at a wait anim, set the start and end values to eachother
 			if (clipInCycle % 5 == 0 && clipInCycle != 0)
             {
@@ -377,11 +399,23 @@ public class TramMotion : MonoBehaviour {
                 endRot = rotations[index + 1 - waitOffset];
 
 				clipInCycle++;
-
             }
-				
-            // Create animation curves from the keyframes
-            curves = CreateCurve(startPos, endPos, startRot, endRot);
+
+			if (clipInCycle == 1)
+			{
+				// Create animation curves for acceleration
+				curves = CreateCurve(startPos, endPos, startRot, endRot, true);
+			}
+			else if (clipInCycle == 5)
+			{
+				// Create animation curves for deceleration
+				curves = CreateCurve(startPos, endPos, startRot, endRot, false);
+			}
+			else
+			{
+				// Create animation curves for cruise/waiting
+				curves = CreateCurve(startPos, endPos, startRot, endRot);
+			}
 
             // Create the animation clip
             clip = CreateClip(curves);
@@ -412,10 +446,6 @@ public class TramMotion : MonoBehaviour {
 
 			clipCount++;
 
-//			if (name == "0")
-//			{
-//				print("Capacity: " + states.Capacity + " Count: " + states.Count);
-//			}
         }
     }
 

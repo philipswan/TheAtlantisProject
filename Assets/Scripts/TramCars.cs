@@ -395,15 +395,7 @@ public class TramCars : MonoBehaviour {
 
         for (int i=0; i<keysBottomLeft.Count; i++)
         {
-            if (clipInPeriod == 0)
-            {
-                name = "Accelerate " + i;
-            }
-            else if (clipInPeriod == 4)
-            {
-                name = "Decelerate " + i;
-            }
-            else if (clipInPeriod == 5)
+            if (clipInPeriod == 5)
             {
                 name = "Wait " + i;
                 clipInPeriod = -1;
