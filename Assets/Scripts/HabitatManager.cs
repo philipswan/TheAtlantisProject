@@ -27,12 +27,16 @@ public class HabitatManager : MonoBehaviour {
 		// We only need to change the largest part of the habitat
 		if (highlited)
 		{
-			transform.GetChild(0).transform.GetChild(7).GetComponent<MeshRenderer>().materials = defaultMaterial;
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = defaultMaterial;
+			transform.GetChild(1).GetComponent<MeshRenderer>().materials = defaultMaterial;
 		}
 		else
 		{
-			transform.GetChild(0).transform.GetChild(7).GetComponent<MeshRenderer>().materials = highlightMaterial.ToArray();
-			transform.GetChild(0).transform.GetChild(7).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.5f);
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials = highlightMaterial.ToArray();
+			transform.GetChild(0).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.01f);
+
+			transform.GetChild(1).GetComponent<MeshRenderer>().materials = highlightMaterial.ToArray();
+			transform.GetChild(1).GetComponent<MeshRenderer>().materials[1].SetFloat("_Outline", 0.01f);
 		}
 
 		highlited = ! highlited;
@@ -40,7 +44,7 @@ public class HabitatManager : MonoBehaviour {
 
 	private void LoadMaterials()
 	{
-		defaultMaterial[0] = Resources.Load("material_21___31749") as Material;
+		defaultMaterial[0] = Resources.Load("01___Default") as Material;
 
 		highlightMaterial.Add(defaultMaterial[0]);
 		highlightMaterial.Add(Resources.Load("Silhouetted Diffuse") as Material);

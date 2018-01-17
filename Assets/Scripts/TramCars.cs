@@ -398,7 +398,7 @@ public class TramCars : MonoBehaviour {
             if (clipInPeriod == 5)
             {
                 name = "Wait " + i;
-                clipInPeriod = -1;
+                clipInPeriod = 0;
             }
             else
             {

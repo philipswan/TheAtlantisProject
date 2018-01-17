@@ -26,14 +26,14 @@ public class RingHabitats : MonoBehaviour {
     void Start()
     {
 		config = Constants.Configuration.Instance;
-		startIndex = 25;			// Set start/end index to only draw habitats visible to the user
-		endIndex = 88;
+		startIndex = 3;			// Set start/end index to only draw habitats visible to the user
+		endIndex = 97;
 
 		torusRadius = Mathf.Cos(config.RingLatitude * Mathf.PI / 180) / 2;
         RefreshRingHabitats();		// Create habitats and their sections
 		UpdatePositions();          // Move habitats to be adjacent to transit ring
 
-        FloatingMenu.Instance.AddItems(habitat, "Habitat", new Vector3(100, 100, 100));
+		FloatingMenu.Instance.AddItems(habitat, "Habitat", new Vector3(3.25f, 3.25f, 3.25f));
     }
 
 	/// <summary>
@@ -111,10 +111,6 @@ public class RingHabitats : MonoBehaviour {
 		newHabitat.name = "Habitat " + ringHabitatObjects.Count;
 		newHabitat.transform.localPosition = habbot;
 
-		if (ringHabitatObjects.Count % numRingHabitatsPerInstance != 0)
-		{
-			newHabitat.SetActive(true);
-		}
 
 		if (ringHabitatObjects.Count == 0)
 		{
@@ -123,6 +119,9 @@ public class RingHabitats : MonoBehaviour {
 		else if (ringHabitatObjects.Count > 0)
 		{
 			newHabitat.transform.LookAt(ringHabitatObjects[ringHabitatObjects.Count-1].transform.position, transform.TransformVector(habtop - habbot));
+			newHabitat.transform.RotateAround(newHabitat.transform.position, newHabitat.transform.up, 180); 
+			newHabitat.transform.position -= newHabitat.transform.right * 0.00002f;
+			newHabitat.transform.position -= newHabitat.transform.up * 0.00005f;
 		}
 
 		ringHabitatObjects.Add(newHabitat);
@@ -139,6 +138,25 @@ public class RingHabitats : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Sets the habitats active.
+	/// </summary>
+	/// <param name="firstHalf">If set to <c>true</c> first half, false if second half.</param>
+	public void SetHabitatsActive(bool firstHalf)
+	{
+		int count = ringHabitatObjects.Count;
+
+		int index = firstHalf ? 0 : count / 2;
+
+		for (int i=index; i<count; i++)
+		{
+			if (i % numRingHabitatsPerInstance != 0)
+			{
+				ringHabitatObjects[i].SetActive(true);
+			}
+		}
+	}
+
+	/// <summary>
 	/// Move habitats to be adjacent to transit ring
 	/// </summary>
 	private void UpdatePositions()
@@ -149,5 +167,4 @@ public class RingHabitats : MonoBehaviour {
 			r.transform.localPosition -= r.transform.right * 1e-5f;
 		}
 	}
-
 }

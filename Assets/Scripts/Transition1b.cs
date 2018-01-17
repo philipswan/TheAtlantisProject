@@ -12,17 +12,19 @@ public class Transition1b : MonoBehaviour {
 	private Constants.Configuration config;						// Holds reference to config script
 	private float startTime;									// Time script was enabled
 	private MeshRenderer atmosphericEffect;						// Mesh renderer of atmospher object			
+	private bool habitatsActivated;
 
     // Use this for initialization
     void Awake () {
 		Instance = this;
 		enabled = false;
+		habitatsActivated = false;
 	}
 
 	void Start()
 	{
 		config = Constants.Configuration.Instance;
-		atmosphericEffect = GameObject.FindGameObjectWithTag("Atmosphere").GetComponent<MeshRenderer>();
+//		atmosphericEffect = GameObject.FindGameObjectWithTag("Atmosphere").GetComponent<MeshRenderer>();
 	}
 
     void Update() {
@@ -39,9 +41,15 @@ public class Transition1b : MonoBehaviour {
 			enabled = false;
 		}
 
-		if (Scene == Keys.Count * 2 - 2 && !Rotation.Instance.enabled)
+		if (Scene == Keys.Count * 2 - 3 && !Rotation.Instance.enabled && !habitatsActivated)
+		{
+			RingHabitats.Instance.SetHabitatsActive(true);
+			habitatsActivated = true;
+		}
+		else if (Scene == Keys.Count * 2 - 2 && !Rotation.Instance.enabled)
 		{
 			Rotation.Instance.enabled = true;
+			RingHabitats.Instance.SetHabitatsActive(false);
 		}
     }
 
@@ -86,17 +94,17 @@ public class Transition1b : MonoBehaviour {
 		transform.localRotation = newRotation;
 		transform.localScale = newScale;
 
-		if (newScale.x <= 10)
-		{
-			atmosphericEffect.materials[0].SetFloat("_SphereRadius", newScale.x / 2);
-			//		print(1 / newScale.x * 5);
-			atmosphericEffect.materials[0].SetFloat("_AtmosphereModifier", 625 / Mathf.Pow(newScale.x, 4));
-			atmosphericEffect.materials[0].SetFloat("_ScatteringModifier", 625 / Mathf.Pow(newScale.x, 4));
-		}
-		else if (atmosphericEffect.gameObject.activeSelf)
-		{
-			atmosphericEffect.gameObject.SetActive(false);
-		}
+//		if (newScale.x <= 10)
+//		{
+//			atmosphericEffect.materials[0].SetFloat("_SphereRadius", newScale.x / 2);
+//			//		print(1 / newScale.x * 5);
+//			atmosphericEffect.materials[0].SetFloat("_AtmosphereModifier", 625 / Mathf.Pow(newScale.x, 4));
+//			atmosphericEffect.materials[0].SetFloat("_ScatteringModifier", 625 / Mathf.Pow(newScale.x, 4));
+//		}
+//		else if (atmosphericEffect.gameObject.activeSelf)
+//		{
+//			atmosphericEffect.gameObject.SetActive(false);
+//		}
 
     }
 

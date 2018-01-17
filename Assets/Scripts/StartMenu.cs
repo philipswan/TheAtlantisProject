@@ -42,10 +42,10 @@ public class StartMenu : MonoBehaviour {
 			yield return null;
 		}
 			
-		SunTransition.Instance.enabled = true;	// Enable the sun transition script
+		//SunTransition.Instance.enabled = true;	// Enable the sun transition script
 		Transition1b.Instance.enabled = true;	// Enable transition script
 		TramCars.Instance.ActivateTrams();	// Activate trams and their movement
-		AtmosphereManager.Instance.SetMaterial();	// Activate the atmospheric scattering
+		//AtmosphereManager.Instance.SetMaterial();	// Activate the atmospheric scattering
 
 		yield return null; 
 

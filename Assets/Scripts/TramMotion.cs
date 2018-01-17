@@ -25,6 +25,7 @@ public class TramMotion : MonoBehaviour {
 	private string clipName;
 	private int clipInCycle;
 	private int clipCount;
+	private int substringDivisor;
 
 	private List<Material> HighlightMaterials = new List<Material>();             // Regular materials + highlight material
     private List<Vector3> positions = new List<Vector3>();                       // All destinatins for the tram
@@ -63,6 +64,7 @@ public class TramMotion : MonoBehaviour {
         waitOffset = 0;
 		clipInCycle = 0;
 		clipCount = 0;
+		substringDivisor = 10;
         accelerationState = AccelerationState.None;
 
         // Set the highlighted and default materials
@@ -129,8 +131,13 @@ public class TramMotion : MonoBehaviour {
 
                     StartCoroutine("CreateClips", 1);
 
+					if (currentClip == 10)
+					{
+						substringDivisor = 100;
+					}
+
 					// Get the name of the clip without the number at the end
-					clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - (2 + (int)Mathf.Floor(currentClip / 10)));
+					clipName = clipNames[currentClip].Substring(0, clipNames[currentClip].Length - (2 + (int)Mathf.Floor(currentClip / substringDivisor)));
 				}
             }
 			else if (!anim.isPlaying)
@@ -219,7 +226,7 @@ public class TramMotion : MonoBehaviour {
 
 	public void SetWaitTime(int _waitTime)
 	{
-		waitTime = waitTime;
+		waitTime = _waitTime;
 		waitTime /= 100;
 	}
     #endregion
@@ -301,13 +308,13 @@ public class TramMotion : MonoBehaviour {
 			localzRot.SmoothTangents(0, 10);
 			localwRot.SmoothTangents(0, 10);
 
-			localxPos.SmoothTangents(1, 5);
-			localyPos.SmoothTangents(1, 5);
-			localzPos.SmoothTangents(1, 5);
-			localxRot.SmoothTangents(1, 5);
-			localyRot.SmoothTangents(1, 5);
-			localzRot.SmoothTangents(1, 5);
-			localwRot.SmoothTangents(1, 5);
+//			localxPos.SmoothTangents(1, 5);
+//			localyPos.SmoothTangents(1, 5);
+//			localzPos.SmoothTangents(1, 5);
+//			localxRot.SmoothTangents(1, 5);
+//			localyRot.SmoothTangents(1, 5);
+//			localzRot.SmoothTangents(1, 5);
+//			localwRot.SmoothTangents(1, 5);
 		}
 
         List<AnimationCurve> curves = new List<AnimationCurve>() { localxPos, localyPos, localzPos, localxRot, localyRot, localzRot, localwRot };
