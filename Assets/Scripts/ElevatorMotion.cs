@@ -57,12 +57,12 @@ public class ElevatorMotion : MonoBehaviour {
 		config = Constants.Configuration.Instance;
 
 		// Store button positions to prevent drift in update method
-		button1Pos = transform.GetChild(0).FindChild("Button 1").localPosition;
-		button2Pos = transform.GetChild(0).FindChild("Button 2").localPosition;
+		button1Pos = transform.GetChild(0).Find("Button 1").localPosition;
+		button2Pos = transform.GetChild(0).Find("Button 2").localPosition;
 
 		// Store button gameobject references
-		button1 = transform.GetChild(0).FindChild("Button 1").gameObject;
-		button2 = transform.GetChild(0).FindChild("Button 2").gameObject;
+		button1 = transform.GetChild(0).Find("Button 1").gameObject;
+		button2 = transform.GetChild(0).Find("Button 2").gameObject;
 	}
 
 	// Update is called once per frame
