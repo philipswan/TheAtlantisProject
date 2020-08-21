@@ -62,3 +62,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Earth2.unity
     guid: d3a0044145d21a8489facdf50d76776f
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 0d73bed7397322e43bc3db5a46c853c8,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 66bb76a1f2e36c14d9244d349c4794ba,
+      type: 2}

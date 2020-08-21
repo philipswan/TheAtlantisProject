@@ -7,6 +7,8 @@
 /Assets/AssetStoreTools*
 Assets/SampleScenes/
 Assets/SampleScenes.meta
+Assets/Sphere/Materials/textures/*
+Assets/Sphere/Materials/textures.7z
 
 # Visual Studio 2015 cache directory
 /.vs/

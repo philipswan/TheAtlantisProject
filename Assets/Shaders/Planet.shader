@@ -5,11 +5,14 @@ Shader "Custom/Planet" {
 	Properties {
 		_MainTex ("Diffuse(RGB) Spec(A)", 2D) = "white" {}
 		_BumpMap ("Bumpmap", 2D) = "bump" {}
+		_Shininess("Shininess", 2D) = "white" {}
+		_ShininessStr("Shininess Strength", Range(0,1)) = 0.5
 		_EmissionMap("Night Lights Map", 2D) = "white" {}
 		_EmissionStr("Night Lights Strength", Range(0,1)) = 0.5
 		_EmissionColor("Night Lights Color", Color) = (1.0, 1.0, 1.0, 1.0)
 		_SpecColor ("Specular Color", Color) = (0.5,0.5,0.5,1)
-		_Shininess ("Shininess", Range (0.01, 1)) = 0.078125 
+		//_ShininessMap("Ocean Map", 2D) = "black" {}
+		//_Shininess ("Shininess", Range (0.01, 1)) = 0.078125 
 		_SpecPower ("Specular Power", Float) = 48.0
 	}
 	SubShader {
@@ -17,7 +20,7 @@ Shader "Custom/Planet" {
 		CGPROGRAM
 		
 		#pragma surface surf Planet noambient
-		float _Shininess;
+		float _ShininessStr;
 		float _SpecPower;
 		float _EmissionStr;
 		half4 _EmissionColor;
@@ -29,7 +32,7 @@ Shader "Custom/Planet" {
 			float spec = pow (specStr, _SpecPower);
 			half4 c;
 			c.rgb = _LightColor0.rgb * (atten * 2) * (s.Albedo * diffuse + 
-				spec * s.Specular * _Shininess * _SpecColor) + 
+				spec * s.Specular * _ShininessStr * _SpecColor) + 
 				(saturate(1.0-2*diffuse) * s.Alpha * _EmissionStr * _EmissionColor);
 			c.a = s.Specular;
 			return c;
