@@ -66,3 +66,11 @@ The following packages were updated:
 The following packages were removed:
   com.unity.package-manager-ui@2.0.13
   com.unity.xr.oculus.standalone@1.38.4
+
+=== Thu Oct  1 17:07:47 2020
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.xr.oculus from version 1.4.0 to 1.4.3

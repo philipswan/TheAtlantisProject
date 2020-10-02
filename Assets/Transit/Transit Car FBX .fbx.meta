@@ -1,0 +1,658 @@
+fileFormatVersion: 2
+guid: e62c3720fa6c6a84da0be1c07919ca02
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Body152
+    100002: Body160
+    100004: Body207
+    100006: Body208
+    100008: Body209
+    100010: Body210
+    100012: Body211
+    100014: Body212
+    100016: Body213
+    100018: Body214
+    100020: Body215
+    100022: Body216
+    100024: Body217
+    100026: Body218
+    100028: Body219
+    100030: Body220
+    100032: Body220 (1)
+    100034: Body221
+    100036: Body221 (1)
+    100038: Body222
+    100040: Body222 (1)
+    100042: Body223
+    100044: Body223 (1)
+    100046: Body227
+    100048: Body227 (1)
+    100050: Body240
+    100052: Body241
+    100054: Body242
+    100056: Body243
+    100058: Body244
+    100060: Body245
+    100062: Body246
+    100064: Body248
+    100066: Body249
+    100068: Body250
+    100070: Body251
+    100072: Body252
+    100074: Body253
+    100076: Body254
+    100078: Body255
+    100080: Body256
+    100082: Body257
+    100084: Body258
+    100086: Body259
+    100088: Body260
+    100090: Body261
+    100092: Body262
+    100094: Body263
+    100096: Body264
+    100098: Body265
+    100100: Body266
+    100102: Body267
+    100104: Body268
+    100106: Body270
+    100108: Body271
+    100110: Body272
+    100112: Body273
+    100114: Body274
+    100116: Body275
+    100118: Body276
+    100120: Body277
+    100122: Body278
+    100124: Body279
+    100126: Body280
+    100128: Body281
+    100130: Body282
+    100132: Body283
+    100134: Body284
+    100136: Body285
+    100138: Body286
+    100140: Body287
+    100142: Body288
+    100144: Body289
+    100146: Body290
+    100148: Body291
+    100150: Body292
+    100152: Body293
+    100154: Body294
+    100156: Body295
+    100158: Body296
+    100160: Body305
+    100162: Body306
+    100164: Body307
+    100166: Body308
+    100168: Body309
+    100170: Body310
+    100172: Body311
+    100174: Body312
+    100176: Body313
+    100178: Body314
+    100180: Body315
+    100182: Body316
+    100184: Body330
+    100186: Body330 (1)
+    100188: Body331
+    100190: Body331 (1)
+    100192: Body332
+    100194: Body332 (1)
+    100196: Body52
+    100198: Body54
+    100200: Body55
+    100202: Body58
+    100204: Body59
+    100206: Body61
+    100208: Body63
+    100210: Body65
+    100212: Body67
+    100214: Body69
+    100216: Body71
+    100218: Body73
+    100220: Body75
+    100222: //RootNode
+    400000: Body152
+    400002: Body160
+    400004: Body207
+    400006: Body208
+    400008: Body209
+    400010: Body210
+    400012: Body211
+    400014: Body212
+    400016: Body213
+    400018: Body214
+    400020: Body215
+    400022: Body216
+    400024: Body217
+    400026: Body218
+    400028: Body219
+    400030: Body220
+    400032: Body220 (1)
+    400034: Body221
+    400036: Body221 (1)
+    400038: Body222
+    400040: Body222 (1)
+    400042: Body223
+    400044: Body223 (1)
+    400046: Body227
+    400048: Body227 (1)
+    400050: Body240
+    400052: Body241
+    400054: Body242
+    400056: Body243
+    400058: Body244
+    400060: Body245
+    400062: Body246
+    400064: Body248
+    400066: Body249
+    400068: Body250
+    400070: Body251
+    400072: Body252
+    400074: Body253
+    400076: Body254
+    400078: Body255
+    400080: Body256
+    400082: Body257
+    400084: Body258
+    400086: Body259
+    400088: Body260
+    400090: Body261
+    400092: Body262
+    400094: Body263
+    400096: Body264
+    400098: Body265
+    400100: Body266
+    400102: Body267
+    400104: Body268
+    400106: Body270
+    400108: Body271
+    400110: Body272
+    400112: Body273
+    400114: Body274
+    400116: Body275
+    400118: Body276
+    400120: Body277
+    400122: Body278
+    400124: Body279
+    400126: Body280
+    400128: Body281
+    400130: Body282
+    400132: Body283
+    400134: Body284
+    400136: Body285
+    400138: Body286
+    400140: Body287
+    400142: Body288
+    400144: Body289
+    400146: Body290
+    400148: Body291
+    400150: Body292
+    400152: Body293
+    400154: Body294
+    400156: Body295
+    400158: Body296
+    400160: Body305
+    400162: Body306
+    400164: Body307
+    400166: Body308
+    400168: Body309
+    400170: Body310
+    400172: Body311
+    400174: Body312
+    400176: Body313
+    400178: Body314
+    400180: Body315
+    400182: Body316
+    400184: Body330
+    400186: Body330 (1)
+    400188: Body331
+    400190: Body331 (1)
+    400192: Body332
+    400194: Body332 (1)
+    400196: Body52
+    400198: Body54
+    400200: Body55
+    400202: Body58
+    400204: Body59
+    400206: Body61
+    400208: Body63
+    400210: Body65
+    400212: Body67
+    400214: Body69
+    400216: Body71
+    400218: Body73
+    400220: Body75
+    400222: //RootNode
+    2100000: LED (Blue)
+    2100002: No Name
+    2100004: LED - SMD 3528 - 8lm (White)
+    2100006: Coating - Black Oxide
+    2100008: Glass (Blue)
+    2100010: Paint - Metallic (Yellow)
+    2100012: Paint - Enamel Glossy (White)
+    2100014: Plastic - Translucent Glossy (White)
+    2100016: Stainless Steel - Polished
+    2100018: Paint - Metallic (Dark Grey)
+    2300000: Body152
+    2300002: Body160
+    2300004: Body207
+    2300006: Body208
+    2300008: Body209
+    2300010: Body210
+    2300012: Body211
+    2300014: Body212
+    2300016: Body213
+    2300018: Body214
+    2300020: Body215
+    2300022: Body216
+    2300024: Body217
+    2300026: Body218
+    2300028: Body219
+    2300030: Body220
+    2300032: Body220 (1)
+    2300034: Body221
+    2300036: Body221 (1)
+    2300038: Body222
+    2300040: Body222 (1)
+    2300042: Body223
+    2300044: Body223 (1)
+    2300046: Body227
+    2300048: Body227 (1)
+    2300050: Body240
+    2300052: Body241
+    2300054: Body242
+    2300056: Body243
+    2300058: Body244
+    2300060: Body245
+    2300062: Body246
+    2300064: Body248
+    2300066: Body249
+    2300068: Body250
+    2300070: Body251
+    2300072: Body252
+    2300074: Body253
+    2300076: Body254
+    2300078: Body255
+    2300080: Body256
+    2300082: Body257
+    2300084: Body258
+    2300086: Body259
+    2300088: Body260
+    2300090: Body261
+    2300092: Body262
+    2300094: Body263
+    2300096: Body264
+    2300098: Body265
+    2300100: Body266
+    2300102: Body267
+    2300104: Body268
+    2300106: Body270
+    2300108: Body271
+    2300110: Body272
+    2300112: Body273
+    2300114: Body274
+    2300116: Body275
+    2300118: Body276
+    2300120: Body277
+    2300122: Body278
+    2300124: Body279
+    2300126: Body280
+    2300128: Body281
+    2300130: Body282
+    2300132: Body283
+    2300134: Body284
+    2300136: Body285
+    2300138: Body286
+    2300140: Body287
+    2300142: Body288
+    2300144: Body289
+    2300146: Body290
+    2300148: Body291
+    2300150: Body292
+    2300152: Body293
+    2300154: Body294
+    2300156: Body295
+    2300158: Body296
+    2300160: Body305
+    2300162: Body306
+    2300164: Body307
+    2300166: Body308
+    2300168: Body309
+    2300170: Body310
+    2300172: Body311
+    2300174: Body312
+    2300176: Body313
+    2300178: Body314
+    2300180: Body315
+    2300182: Body316
+    2300184: Body330
+    2300186: Body330 (1)
+    2300188: Body331
+    2300190: Body331 (1)
+    2300192: Body332
+    2300194: Body332 (1)
+    2300196: Body52
+    2300198: Body54
+    2300200: Body55
+    2300202: Body58
+    2300204: Body59
+    2300206: Body61
+    2300208: Body63
+    2300210: Body65
+    2300212: Body67
+    2300214: Body69
+    2300216: Body71
+    2300218: Body73
+    2300220: Body75
+    3300000: Body152
+    3300002: Body160
+    3300004: Body207
+    3300006: Body208
+    3300008: Body209
+    3300010: Body210
+    3300012: Body211
+    3300014: Body212
+    3300016: Body213
+    3300018: Body214
+    3300020: Body215
+    3300022: Body216
+    3300024: Body217
+    3300026: Body218
+    3300028: Body219
+    3300030: Body220
+    3300032: Body220 (1)
+    3300034: Body221
+    3300036: Body221 (1)
+    3300038: Body222
+    3300040: Body222 (1)
+    3300042: Body223
+    3300044: Body223 (1)
+    3300046: Body227
+    3300048: Body227 (1)
+    3300050: Body240
+    3300052: Body241
+    3300054: Body242
+    3300056: Body243
+    3300058: Body244
+    3300060: Body245
+    3300062: Body246
+    3300064: Body248
+    3300066: Body249
+    3300068: Body250
+    3300070: Body251
+    3300072: Body252
+    3300074: Body253
+    3300076: Body254
+    3300078: Body255
+    3300080: Body256
+    3300082: Body257
+    3300084: Body258
+    3300086: Body259
+    3300088: Body260
+    3300090: Body261
+    3300092: Body262
+    3300094: Body263
+    3300096: Body264
+    3300098: Body265
+    3300100: Body266
+    3300102: Body267
+    3300104: Body268
+    3300106: Body270
+    3300108: Body271
+    3300110: Body272
+    3300112: Body273
+    3300114: Body274
+    3300116: Body275
+    3300118: Body276
+    3300120: Body277
+    3300122: Body278
+    3300124: Body279
+    3300126: Body280
+    3300128: Body281
+    3300130: Body282
+    3300132: Body283
+    3300134: Body284
+    3300136: Body285
+    3300138: Body286
+    3300140: Body287
+    3300142: Body288
+    3300144: Body289
+    3300146: Body290
+    3300148: Body291
+    3300150: Body292
+    3300152: Body293
+    3300154: Body294
+    3300156: Body295
+    3300158: Body296
+    3300160: Body305
+    3300162: Body306
+    3300164: Body307
+    3300166: Body308
+    3300168: Body309
+    3300170: Body310
+    3300172: Body311
+    3300174: Body312
+    3300176: Body313
+    3300178: Body314
+    3300180: Body315
+    3300182: Body316
+    3300184: Body330
+    3300186: Body330 (1)
+    3300188: Body331
+    3300190: Body331 (1)
+    3300192: Body332
+    3300194: Body332 (1)
+    3300196: Body52
+    3300198: Body54
+    3300200: Body55
+    3300202: Body58
+    3300204: Body59
+    3300206: Body61
+    3300208: Body63
+    3300210: Body65
+    3300212: Body67
+    3300214: Body69
+    3300216: Body71
+    3300218: Body73
+    3300220: Body75
+    4300000: Body52
+    4300002: Body54
+    4300004: Body55
+    4300006: Body58
+    4300008: Body59
+    4300010: Body61
+    4300012: Body63
+    4300014: Body65
+    4300016: Body67
+    4300018: Body69
+    4300020: Body71
+    4300022: Body73
+    4300024: Body75
+    4300026: Body152
+    4300028: Body160
+    4300030: Body207
+    4300032: Body208
+    4300034: Body209
+    4300036: Body210
+    4300038: Body211
+    4300040: Body212
+    4300042: Body213
+    4300044: Body214
+    4300046: Body215
+    4300048: Body216
+    4300050: Body217
+    4300052: Body218
+    4300054: Body219
+    4300056: Body220
+    4300058: Body221
+    4300060: Body222
+    4300062: Body223
+    4300064: Body227
+    4300066: Body330
+    4300068: Body331
+    4300070: Body332
+    4300072: Body240
+    4300074: Body241
+    4300076: Body242
+    4300078: Body243
+    4300080: Body244
+    4300082: Body245
+    4300084: Body246
+    4300086: Body248
+    4300088: Body249
+    4300090: Body250
+    4300092: Body251
+    4300094: Body252
+    4300096: Body253
+    4300098: Body254
+    4300100: Body255
+    4300102: Body256
+    4300104: Body257
+    4300106: Body258
+    4300108: Body259
+    4300110: Body260
+    4300112: Body261
+    4300114: Body262
+    4300116: Body263
+    4300118: Body264
+    4300120: Body265
+    4300122: Body266
+    4300124: Body267
+    4300126: Body268
+    4300128: Body270
+    4300130: Body271
+    4300132: Body272
+    4300134: Body273
+    4300136: Body274
+    4300138: Body275
+    4300140: Body276
+    4300142: Body277
+    4300144: Body278
+    4300146: Body279
+    4300148: Body280
+    4300150: Body281
+    4300152: Body282
+    4300154: Body283
+    4300156: Body284
+    4300158: Body285
+    4300160: Body286
+    4300162: Body287
+    4300164: Body288
+    4300166: Body289
+    4300168: Body290
+    4300170: Body291
+    4300172: Body292
+    4300174: Body293
+    4300176: Body294
+    4300178: Body295
+    4300180: Body296
+    4300182: Body332 (1)
+    4300184: Body331 (1)
+    4300186: Body330 (1)
+    4300188: Body227 (1)
+    4300190: Body223 (1)
+    4300192: Body222 (1)
+    4300194: Body221 (1)
+    4300196: Body220 (1)
+    4300198: Body305
+    4300200: Body306
+    4300202: Body307
+    4300204: Body308
+    4300206: Body309
+    4300208: Body310
+    4300210: Body311
+    4300212: Body312
+    4300214: Body313
+    4300216: Body314
+    4300218: Body315
+    4300220: Body316
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
